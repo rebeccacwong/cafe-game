@@ -72,7 +72,6 @@ public class MainCharacter : CharacterBase
         {
             base.onUpdatefollowKeyDirections();
         }
-        Debug.Log("After updating, direction is: " + m_direction);
     }
 
     private void OnTriggerEnter(Collider other)

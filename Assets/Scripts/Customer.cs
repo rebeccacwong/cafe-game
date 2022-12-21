@@ -41,7 +41,7 @@ public class Customer : CharacterBase
         this.m_forwards = new Vector3(0, 0, 1);
 
         // Move to the counter
-        this.setNewTarget(this.m_frontOfLinePos, true);
+        this.setNewTarget(this.m_frontOfLinePos, true, true);
     }
 
     // Update is called once per frame

@@ -22,13 +22,7 @@ public class CharacterBase : MonoBehaviour
     protected Vector3 m_finalTarget;
     protected Vector3 m_direction;
     protected Vector3 m_forwards;
-
-    #region Lerp variables
-    private float m_a = 0;
-    private float m_b = 50;
-    private float m_rotationFrameCount = 0;
-    private float m_rotationFramesTotal = 5;
-    #endregion
+    private IEnumerator m_coroutine = null;
 
     private GameObject m_gameObject;
     public GameObject gameObj
@@ -79,9 +73,8 @@ public class CharacterBase : MonoBehaviour
      */
     private void changeTargetForCollisions(Vector3 target)
     {
-        this.m_direction = (target - gameObject.transform.position).normalized;
-        float distance = (target - gameObject.transform.position).magnitude;
         this.m_target = target;
+        float distance = (target - gameObject.transform.position).magnitude;
 
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
@@ -98,40 +91,58 @@ public class CharacterBase : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitData, 100, m_floorLayerMask))
         {
-            this.setNewTarget(hitData.point, adjustForCollisions);
+            this.setNewTarget(hitData.point, adjustForCollisions, true);
         }
     }
 
     protected void onUpdatefollowKeyDirections()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        // check if we need to change directions
+        Vector3 oldDirection = this.m_direction;
+        Vector3 newDirection = this.m_direction;
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            this.m_direction = -this.m_direction;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            newDirection = this.m_forwards;
+
+        } else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            this.m_direction = this.m_direction;
+            newDirection = -this.m_forwards;
+            //this.m_direction = Quaternion.AngleAxis(180, Vector3.up) * this.m_direction;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            this.m_direction = Quaternion.AngleAxis(90, Vector3.up) * this.m_direction;
-        } else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            newDirection = Quaternion.AngleAxis(-90, Vector3.up) * this.m_forwards;
+            //this.m_direction = Quaternion.AngleAxis(-90, Vector3.up) * this.m_direction;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            this.m_direction = Quaternion.AngleAxis(-90, Vector3.up) * this.m_direction;
+            newDirection = Quaternion.AngleAxis(90, Vector3.up) * this.m_forwards;
+            //this.m_direction = Quaternion.AngleAxis(90, Vector3.up) * this.m_direction;
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            // One of the key buttons is down, so we should update the target
+            this.setNewTarget((this.m_speed * newDirection) + gameObject.transform.position, false, (newDirection != oldDirection));
+            this.onUpdateMoveTowardsTarget();
         } else
         {
             return;
         }
-
-        Debug.Log(String.Format("Key direction, changed vector to: {0}", this.m_direction));
-
-        this.setNewTarget((this.m_speed * this.m_direction) + gameObject.transform.position, false);
-        this.onUpdateMoveTowardsTarget();
     }
 
-    protected void setNewTarget(Vector3 target, bool adjustForCollisions)
+    /*
+     * Updates the internal TARGET for the position of the character.
+     * If NEWANGLE is true, it will also set the rotation to change according
+     * to the new target.
+     */
+    protected void setNewTarget(Vector3 target, bool adjustForCollisions, bool newAngle)
     {
         this.m_finalTarget = target;
+        Vector3 oldDirection = this.m_direction;
+
+        this.m_direction = (target - gameObject.transform.position).normalized;
 
         if (adjustForCollisions)
         {
@@ -148,20 +159,23 @@ public class CharacterBase : MonoBehaviour
         //        gameObject.GetInstanceID()));
 
         // change rotation
-        float angle = Vector3.SignedAngle(
-            gameObject.transform.TransformDirection(this.m_forwards),
-            this.m_direction,
-            Vector3.up);
-        //gameObject.transform.Rotate(Vector3.up, angle);
-        this.m_a = 0;
-        this.m_b = angle;
-        this.m_rotationFrameCount = 0;
+        if (newAngle)
+        {
+            float angle = Vector3.SignedAngle(
+                oldDirection,
+                this.m_direction,
+                Vector3.up);
+            if (this.m_coroutine != null)
+            {
+                StopCoroutine(this.m_coroutine);
+            }
+            this.m_coroutine = updateRotation(angle);
+            StartCoroutine(this.m_coroutine);
+        }
     }
 
     protected void onUpdateMoveTowardsTarget()
     {
-        float angle_rotation = Mathf.Lerp(this.m_a, this.m_b, this.m_rotationFrameCount / this.m_rotationFramesTotal);
-        this.m_rotationFrameCount += 1;
 
         // check if we can update our target
         if (m_finalTarget != m_target)
@@ -199,4 +213,21 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
+    IEnumerator updateRotation(float finalAngle)
+    {
+        float t = 6f;
+        float i = 0f;
+        float angleRotation = finalAngle / t;
+        Debug.Log("starting coroutine");
+
+        while (i < t)
+        {
+            //angleRotation = Mathf.Lerp(0f, finalAngle, i / t);
+            Debug.Log("running coroutine with t=" + (i / t) + " and angleRotation=" + angleRotation);
+            gameObject.transform.Rotate(Vector3.up, angleRotation);
+            yield return new WaitForSeconds(.01f);
+            i++;
+        }
+        yield break;
+    }
 }
