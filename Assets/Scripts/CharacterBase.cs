@@ -143,6 +143,11 @@ public class CharacterBase : MonoBehaviour
             //this.m_direction = Quaternion.AngleAxis(90, Vector3.up) * this.m_direction;
         }
 
+        if (newDirection != oldDirection)
+        {
+            Debug.Log(oldDirection + " " + newDirection);
+        }
+
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow))
         {
             // One of the key buttons is down, so we should update the target
@@ -187,6 +192,7 @@ public class CharacterBase : MonoBehaviour
                 oldDirection,
                 this.m_direction,
                 Vector3.up);
+            Debug.Log(angle);
             if (this.m_coroutine != null)
             {
                 StopCoroutine(this.m_coroutine);
@@ -241,13 +247,14 @@ public class CharacterBase : MonoBehaviour
         float timeInterval = 0.01f;
         float t = 6f;
         float i = 0f;
-        float angleRotation = finalAngle / t;
 
         if (cc_CameraController.followingCharacter)
         {
-            t *= 10;
+            t *= 5;
             Debug.Log("Increased time");
         }
+
+        float angleRotation = finalAngle / t;
 
         while (i < t)
         {
