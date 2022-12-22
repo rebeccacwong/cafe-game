@@ -107,9 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64dcf8cfb6d7049519763ad113ab7147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_tables:
-    serializedVersion: 2
-    m_Bits: 0
   m_floorLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -126,9 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685df06ad8d57494facb376587c282d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_tables:
-    serializedVersion: 2
-    m_Bits: 0
   m_floorLayerMask:
     serializedVersion: 2
     m_Bits: 64

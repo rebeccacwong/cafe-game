@@ -24,11 +24,11 @@ public class CharacterBase : MonoBehaviour
     protected Vector3 m_forwards;
     private IEnumerator m_coroutine = null;
 
-    private GameObject m_gameObject;
-    public GameObject gameObj
+    private float m_rotationAngle;
+    public float getRotationAngle
     {
-        get { return m_gameObject; }
-        set { m_gameObject = value; }
+        get { return m_rotationAngle; }
+        set { m_rotationAngle = value; }
     }
 
     //[SerializeField]
@@ -45,13 +45,12 @@ public class CharacterBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Debug.Log("Character base awake");
         this.m_target = gameObject.transform.position;
-        //this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
-        //if (this.cc_CameraController == null)
-        //{
-        //    throw new Exception("Could not find CameraController object.");
-        //}
+        this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
+        if (this.cc_CameraController == null)
+        {
+            throw new Exception("Could not find CameraController object.");
+        }
     }
 
     // Start is called before the first frame update
@@ -79,6 +78,14 @@ public class CharacterBase : MonoBehaviour
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
         {
+            Vector3 modified = hit.point - (2 * this.m_direction);
+
+            // if sufficiently close, don't move
+            if (Vector3.Distance(gameObject.transform.position, modified) <= 1)
+            {
+                this.m_target = gameObject.transform.position;
+                return;
+            }
             this.m_target = hit.point - (2 * this.m_direction);
         }
         this.m_target.y = gameObject.transform.position.y;
@@ -104,27 +111,42 @@ public class CharacterBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             newDirection = this.m_forwards;
-
+            if (!cc_CameraController.followingCharacter)
+            {
+                newDirection *= -1;
+            }
         } else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             newDirection = -this.m_forwards;
+            if (!cc_CameraController.followingCharacter)
+            {
+                newDirection *= -1;
+            }
             //this.m_direction = Quaternion.AngleAxis(180, Vector3.up) * this.m_direction;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            newDirection = Quaternion.AngleAxis(-90, Vector3.up) * this.m_forwards;
+            newDirection = Quaternion.AngleAxis(90, Vector3.up) * this.m_forwards;
+            if (!cc_CameraController.followingCharacter)
+            {
+                newDirection *= -1;
+            }
             //this.m_direction = Quaternion.AngleAxis(-90, Vector3.up) * this.m_direction;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            newDirection = Quaternion.AngleAxis(90, Vector3.up) * this.m_forwards;
+            newDirection = Quaternion.AngleAxis(-90, Vector3.up) * this.m_forwards;
+            if (!cc_CameraController.followingCharacter)
+            {
+                newDirection *= -1;
+            }
             //this.m_direction = Quaternion.AngleAxis(90, Vector3.up) * this.m_direction;
         }
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow))
         {
             // One of the key buttons is down, so we should update the target
-            this.setNewTarget((this.m_speed * newDirection) + gameObject.transform.position, false, (newDirection != oldDirection));
+            this.setNewTarget((this.m_speed * newDirection) + gameObject.transform.position, true, (newDirection != oldDirection));
             this.onUpdateMoveTowardsTarget();
         } else
         {
@@ -169,6 +191,7 @@ public class CharacterBase : MonoBehaviour
             {
                 StopCoroutine(this.m_coroutine);
             }
+            m_rotationAngle = angle;
             this.m_coroutine = updateRotation(angle);
             StartCoroutine(this.m_coroutine);
         }
@@ -213,19 +236,24 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
-    IEnumerator updateRotation(float finalAngle)
+    private IEnumerator updateRotation(float finalAngle)
     {
+        float timeInterval = 0.01f;
         float t = 6f;
         float i = 0f;
         float angleRotation = finalAngle / t;
-        Debug.Log("starting coroutine");
+
+        if (cc_CameraController.followingCharacter)
+        {
+            t *= 10;
+            Debug.Log("Increased time");
+        }
 
         while (i < t)
         {
             //angleRotation = Mathf.Lerp(0f, finalAngle, i / t);
-            Debug.Log("running coroutine with t=" + (i / t) + " and angleRotation=" + angleRotation);
             gameObject.transform.Rotate(Vector3.up, angleRotation);
-            yield return new WaitForSeconds(.01f);
+            yield return new WaitForSeconds(timeInterval);
             i++;
         }
         yield break;

@@ -15,7 +15,6 @@ public class MainCharacter : CharacterBase
     #region Initialization
     protected override void Awake()
     {
-        this.gameObj = GameObject.Find("MainCharacter");
         base.Awake();
     }
     #endregion
