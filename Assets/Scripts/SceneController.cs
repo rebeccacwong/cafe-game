@@ -12,7 +12,7 @@ public class SceneController : MonoBehaviour
         Debug.unityLogger.filterLogType = LogType.Warning;
 
         // display all logs
-        //logger.filterLogType = LogType.Log;
+        //Debug.unityLogger.filterLogType = LogType.Log;
     }
 
     public void GoToScene(string name)

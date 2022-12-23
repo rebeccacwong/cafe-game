@@ -68,6 +68,7 @@ public class CharacterBase : MonoBehaviour
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
         {
+            Debug.LogWarning("Detected collision");
             Vector3 modified = hit.point - (2 * this.m_direction);
 
             // if sufficiently close, don't move
