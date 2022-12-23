@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum AnimationState
+public enum AnimationState
 {
     WALKING = 0,
     IDLE = 1
@@ -77,6 +77,7 @@ public class CharacterBase : MonoBehaviour
                 return;
             }
             this.m_target = hit.point - (2 * this.m_direction);
+            Debug.LogWarningFormat("Collision detected, was:{0} and now target is {1}", target, this.m_target);
         }
         this.m_target.y = gameObject.transform.position.y;
     }
@@ -150,11 +151,12 @@ public class CharacterBase : MonoBehaviour
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, this.m_target, delta);
     }
 
-    private void setState(AnimationState state)
+    protected void setState(AnimationState state)
     {
+        Debug.LogWarning("Changing state");
         if (this.cc_animator != null)
         {
-            this.cc_animator.SetInteger("State", (int) AnimationState.IDLE);
+            this.cc_animator.SetInteger("State", (int) state);
         }
     }
 

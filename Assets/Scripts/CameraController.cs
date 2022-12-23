@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     private Camera m_ActiveCamera;
 
     public bool followingCharacter = false;
+    private Vector3 m_characterStartPos;
+    private Vector3 m_camStartPos;
 
     GameObject cc_mainCharacter;
 
@@ -29,6 +31,9 @@ public class CameraController : MonoBehaviour
         m_ActiveCamera = Camera.main;
 
         cc_mainCharacter = GameObject.Find("MainCharacter");
+
+        this.m_characterStartPos = cc_mainCharacter.transform.position;
+        this.m_camStartPos = this.m_followCharacterCamera.transform.position;
     }
 
     // Update is called once per frame
@@ -39,7 +44,16 @@ public class CameraController : MonoBehaviour
             // swap cameras
             this.swapCameras();
         }
+        this.followCharacter();
+    }
+
+    private void followCharacter()
+    {
         this.m_followCharacterCamera.transform.LookAt(cc_mainCharacter.transform.position);
+
+        Vector3 displacement = this.cc_mainCharacter.transform.position - this.m_characterStartPos;
+
+        this.m_followCharacterCamera.transform.position = this.m_camStartPos + displacement;
     }
 
     /*

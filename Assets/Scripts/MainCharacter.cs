@@ -11,6 +11,7 @@ public class MainCharacter : CharacterBase
     protected override void Awake()
     {
         base.Awake();
+        this.cc_animator = gameObject.GetComponent<Animator>();
     }
     #endregion
 
@@ -20,12 +21,13 @@ public class MainCharacter : CharacterBase
         this.cc_rigidBody = GetComponent<Rigidbody>();
         this.m_forwards = new Vector3(0, 0, -1);
         this.m_direction = this.m_forwards;
+        this.setState(AnimationState.IDLE);
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        this.onUpdatefollowKeyDirections();
+        onUpdatefollowKeyDirections();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,8 +35,7 @@ public class MainCharacter : CharacterBase
 
     }
 
-    // does not use target
-    private void onUpdatefollowKeyDirections()
+    protected void onUpdatefollowKeyDirections()
     {
         float rotationSpeed = 80;
 
@@ -45,7 +46,12 @@ public class MainCharacter : CharacterBase
                 float delta = Time.deltaTime * this.m_speed;
                 Vector3 target = this.gameObject.transform.position + (delta * this.m_direction);
                 this.changeTargetForCollisions(target);
+                if (this.m_target != target)
+                {
+                    Debug.LogWarning("Collision detected");
+                }
                 gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, this.m_target, delta);
+                Debug.AssertFormat((this.gameObject.transform.position == this.m_target), "Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
@@ -59,11 +65,14 @@ public class MainCharacter : CharacterBase
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
-                //this.cc_animator.SetInteger("State", (int)AnimationState.WALKING);
+                Debug.LogWarning("Switch to walking");
+                this.setState(AnimationState.WALKING);
+                Debug.Assert((this.cc_animator.GetInteger("State") == 0), "Must be in walking state");
             }
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
             {
-                //this.cc_animator.SetInteger("State", (int)AnimationState.IDLE);
+                Debug.LogWarning("StopWalking");
+                this.setState(AnimationState.IDLE);
             }
         }
     }

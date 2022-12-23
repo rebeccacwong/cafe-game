@@ -2579,6 +2579,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2783149446773449119, guid: 82b5a296fecba40a480f1e950b8ebba9, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2783149446773449119, guid: 82b5a296fecba40a480f1e950b8ebba9, type: 3}
+      propertyPath: m_Center.y
+      value: 1.64
+      objectReference: {fileID: 0}
     - target: {fileID: 3982433152296299928, guid: 82b5a296fecba40a480f1e950b8ebba9, type: 3}
       propertyPath: m_Name
       value: MainCharacter
@@ -2593,7 +2601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4327855298106390306, guid: 82b5a296fecba40a480f1e950b8ebba9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.79
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 4327855298106390306, guid: 82b5a296fecba40a480f1e950b8ebba9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -26968,6 +26976,7 @@ MonoBehaviour:
   allCustomerObjs: []
   NPCPrefabs:
   - {fileID: 3514735359109474097, guid: 805c79c32c29545f288c2a54e8a00c8b, type: 3}
+  - {fileID: 1476521052997648934, guid: a6e5344cdd85243b38432e69a26151a2, type: 3}
   startPos: {x: 8.03, y: 0.34, z: -16.91}
 --- !u!4 &950009694
 Transform:
@@ -27151,9 +27160,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 2
   far clip plane: 5000
-  field of view: 65
+  field of view: 80
   orthographic: 0
   orthographic size: 10
   m_Depth: 2
@@ -27228,14 +27237,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961708785}
-  m_LocalRotation: {x: 0.035890922, y: -0.42559522, z: 0.001614171, w: 0.90420014}
-  m_LocalPosition: {x: 3.5, y: 8.4, z: -0.8}
+  m_LocalRotation: {x: -0, y: 0.9964485, z: -0.08420406, w: 0}
+  m_LocalPosition: {x: 9.5, y: 6.1, z: 26.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1265082393}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 3.8, y: -50.464, z: -1.587}
+  m_LocalEulerAnglesHint: {x: 9.661, y: 180, z: 0}
 --- !u!81 &961708791
 AudioListener:
   m_ObjectHideFlags: 0
