@@ -14,12 +14,12 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     [Tooltip("FollowCharacterCamera")]
     public Camera m_followCharacterCamera;
+
+    [SerializeField]
+    [Tooltip("The Cinemachine virtualCamera to follow the character")]
+    public GameObject m_cinemachineCam;
     #endregion
 
-    private Vector3 m_mainCharacterStartPos;
-    private Quaternion m_mainCharacterStartRot;
-    private Vector3 m_followCharacterCamStartPos;
-    private Quaternion m_followCameraCamStartRot;
     private Camera m_ActiveCamera;
 
     public bool followingCharacter = false;
@@ -33,8 +33,6 @@ public class CameraController : MonoBehaviour
         m_ActiveCamera = Camera.main;
 
         cc_mainCharacter = GameObject.Find("MainCharacter");
-        this.m_mainCharacterStartPos = cc_mainCharacter.transform.position;
-        this.m_followCharacterCamStartPos = m_followCharacterCamera.transform.position;
     }
 
     // Update is called once per frame
@@ -45,20 +43,7 @@ public class CameraController : MonoBehaviour
             // swap cameras
             this.swapCameras();
         }
-        //this.updateFollowCamera();
     }
-
-    /*
-     * Updates the position of the camera that follows
-     * the player
-     */
-    //private void updateFollowCamera()
-    //{
-    //    Vector3 displacement = cc_mainCharacter.transform.position - this.m_mainCharacterStartPos;
-    //    m_followCharacterCamera.transform.position = this.m_followCharacterCamStartPos + displacement;
-
-    //    m_followCharacterCamera.transform.LookAt(cc_mainCharacter.transform.position); ;
-    //}
 
     /*
      * swap camera that follows character with the wide angle
@@ -69,10 +54,12 @@ public class CameraController : MonoBehaviour
         if (activeCameraName == "MainCharacterCamera")
         {
             changeActiveCamera("far camera");
+            //m_cinemachineCam.SetActive(false);
             followingCharacter = false;
         } else
         {
             changeActiveCamera(m_followCharacterCamera);
+            //m_cinemachineCam.SetActive(true);
             followingCharacter = true;
         }
     }

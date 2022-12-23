@@ -60,7 +60,7 @@ public class CharacterBase : MonoBehaviour
      * collision if there is a collision in DIR direction
      * before DISTANCE dist. 
      */
-    private void changeTargetForCollisions(Vector3 target)
+    protected void changeTargetForCollisions(Vector3 target)
     {
         this.m_target = target;
         float distance = (target - gameObject.transform.position).magnitude;
@@ -79,18 +79,6 @@ public class CharacterBase : MonoBehaviour
             this.m_target = hit.point - (2 * this.m_direction);
         }
         this.m_target.y = gameObject.transform.position.y;
-    }
-
-    protected void setNewTargetFromMousePosition(bool adjustForCollisions)
-    {
-        Vector3 target = Input.mousePosition;
-        Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(target);
-
-        if (Physics.Raycast(ray, out RaycastHit hitData, 100, m_floorLayerMask))
-        {
-            Debug.Log("Set new target from mouse");
-            this.setNewTarget(hitData.point, adjustForCollisions, true);
-        }
     }
 
     /*
