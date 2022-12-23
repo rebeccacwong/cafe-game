@@ -14,10 +14,6 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     [Tooltip("FollowCharacterCamera")]
     public Camera m_followCharacterCamera;
-
-    [SerializeField]
-    [Tooltip("The Cinemachine virtualCamera to follow the character")]
-    public GameObject m_cinemachineCam;
     #endregion
 
     private Camera m_ActiveCamera;
@@ -43,6 +39,7 @@ public class CameraController : MonoBehaviour
             // swap cameras
             this.swapCameras();
         }
+        this.m_followCharacterCamera.transform.LookAt(cc_mainCharacter.transform.position);
     }
 
     /*
@@ -54,12 +51,10 @@ public class CameraController : MonoBehaviour
         if (activeCameraName == "MainCharacterCamera")
         {
             changeActiveCamera("far camera");
-            //m_cinemachineCam.SetActive(false);
             followingCharacter = false;
         } else
         {
             changeActiveCamera(m_followCharacterCamera);
-            //m_cinemachineCam.SetActive(true);
             followingCharacter = true;
         }
     }

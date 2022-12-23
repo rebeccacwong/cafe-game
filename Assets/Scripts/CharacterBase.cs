@@ -68,7 +68,6 @@ public class CharacterBase : MonoBehaviour
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
         {
-            Debug.LogWarning("Detected collision");
             Vector3 modified = hit.point - (2 * this.m_direction);
 
             // if sufficiently close, don't move
@@ -170,7 +169,7 @@ public class CharacterBase : MonoBehaviour
         while (i < t)
         {
             //angleRotation = Mathf.Lerp(0f, finalAngle, i / t);
-            gameObject.transform.Rotate(Vector3.up, angleRotation);
+            gameObject.transform.Rotate(Vector3.up, angleRotation, Space.World);
             yield return new WaitForSeconds(timeInterval);
             i++;
         }

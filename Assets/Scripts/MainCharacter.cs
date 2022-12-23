@@ -49,12 +49,12 @@ public class MainCharacter : CharacterBase
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
-                gameObject.transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
+                gameObject.transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0, Space.World);
                 this.m_direction = Quaternion.AngleAxis(-rotationSpeed * Time.deltaTime, Vector3.up) * this.m_direction;
             }
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
-                gameObject.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+                gameObject.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0, Space.World);
                 this.m_direction = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up) * this.m_direction;
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
