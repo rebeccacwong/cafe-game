@@ -113,11 +113,11 @@ public class CameraController : MonoBehaviour
 
     public Camera getActiveCamera()
     {
-        if (m_ActiveCamera == null)
+        if (this.m_ActiveCamera == null)
         {
-            m_ActiveCamera = Camera.main;
+            this.m_ActiveCamera = Camera.main;
             Camera.main.enabled = true;
         }
-        return m_ActiveCamera;
+        return this.m_ActiveCamera;
     }
 }

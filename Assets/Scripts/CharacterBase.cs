@@ -24,13 +24,6 @@ public class CharacterBase : MonoBehaviour
     protected Vector3 m_forwards;
     private IEnumerator m_coroutine = null;
 
-    private float m_rotationAngle;
-    public float getRotationAngle
-    {
-        get { return m_rotationAngle; }
-        set { m_rotationAngle = value; }
-    }
-
     //[SerializeField]
     //[Tooltip("The layer mask for all tables")]
     //public LayerMask m_tables;
@@ -98,64 +91,8 @@ public class CharacterBase : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitData, 100, m_floorLayerMask))
         {
+            Debug.Log("Set new target from mouse");
             this.setNewTarget(hitData.point, adjustForCollisions, true);
-        }
-    }
-
-    protected void onUpdatefollowKeyDirections()
-    {
-        // check if we need to change directions
-        Vector3 oldDirection = this.m_direction;
-        Vector3 newDirection = this.m_direction;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            newDirection = this.m_forwards;
-            if (!cc_CameraController.followingCharacter)
-            {
-                newDirection *= -1;
-            }
-        } else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            newDirection = -this.m_forwards;
-            if (!cc_CameraController.followingCharacter)
-            {
-                newDirection *= -1;
-            }
-            //this.m_direction = Quaternion.AngleAxis(180, Vector3.up) * this.m_direction;
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            newDirection = Quaternion.AngleAxis(90, Vector3.up) * this.m_forwards;
-            if (!cc_CameraController.followingCharacter)
-            {
-                newDirection *= -1;
-            }
-            //this.m_direction = Quaternion.AngleAxis(-90, Vector3.up) * this.m_direction;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            newDirection = Quaternion.AngleAxis(-90, Vector3.up) * this.m_forwards;
-            if (!cc_CameraController.followingCharacter)
-            {
-                newDirection *= -1;
-            }
-            //this.m_direction = Quaternion.AngleAxis(90, Vector3.up) * this.m_direction;
-        }
-
-        if (newDirection != oldDirection)
-        {
-            Debug.Log(oldDirection + " " + newDirection);
-        }
-
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            // One of the key buttons is down, so we should update the target
-            this.setNewTarget((this.m_speed * newDirection) + gameObject.transform.position, true, (newDirection != oldDirection));
-            this.onUpdateMoveTowardsTarget();
-        } else
-        {
-            return;
         }
     }
 
@@ -192,12 +129,10 @@ public class CharacterBase : MonoBehaviour
                 oldDirection,
                 this.m_direction,
                 Vector3.up);
-            Debug.Log(angle);
             if (this.m_coroutine != null)
             {
                 StopCoroutine(this.m_coroutine);
             }
-            m_rotationAngle = angle;
             this.m_coroutine = updateRotation(angle);
             StartCoroutine(this.m_coroutine);
         }
@@ -247,12 +182,6 @@ public class CharacterBase : MonoBehaviour
         float timeInterval = 0.01f;
         float t = 6f;
         float i = 0f;
-
-        if (cc_CameraController.followingCharacter)
-        {
-            t *= 5;
-            Debug.Log("Increased time");
-        }
 
         float angleRotation = finalAngle / t;
 

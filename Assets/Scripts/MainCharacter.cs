@@ -6,12 +6,6 @@ using UnityEngine;
 public class MainCharacter : CharacterBase
 {
 
-    #region Editor variables
-    [SerializeField]
-    [Tooltip("Enabled as true if the player should follow mouse")]
-    private bool m_followMouse = false;
-    #endregion
-
     #region Initialization
     protected override void Awake()
     {
@@ -19,17 +13,10 @@ public class MainCharacter : CharacterBase
     }
     #endregion
 
-    public void startMainCharacterMovement()
-    {
-        this.m_followMouse = true;
-    }
-
-
     // Start is called before the first frame update
     protected override void Start()
     {
         this.cc_rigidBody = GetComponent<Rigidbody>();
-        this.m_followMouse = false;
         this.m_forwards = new Vector3(0, 0, -1);
         this.m_direction = this.m_forwards;
     }
@@ -37,7 +24,11 @@ public class MainCharacter : CharacterBase
     // Update is called once per frame
     protected override void Update()
     {
-        if (this.m_followMouse)
+        if (this.cc_CameraController.followingCharacter)
+        {
+            this.onUpdatefollowKeyDirections();
+        }
+        else
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -67,14 +58,48 @@ public class MainCharacter : CharacterBase
                 //    transform.Rotate(Vector3.up, angle);
             }
             this.onUpdateMoveTowardsTarget();
-        } else
-        {
-            base.onUpdatefollowKeyDirections();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
 
+    }
+
+    // does not use target
+    private void onUpdatefollowKeyDirections()
+    {
+        float rotationSpeed = 60;
+
+        if (!cc_CameraController.followingCharacter)
+        {
+            throw new Exception("To follow key directions, need to be using POV camera.");
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            float delta = Time.deltaTime * this.m_speed;
+            Vector3 target = this.gameObject.transform.position + (delta * this.m_direction);
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, delta); 
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            gameObject.transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
+            this.m_direction = Quaternion.AngleAxis(-rotationSpeed * Time.deltaTime, Vector3.up) * this.m_direction;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            gameObject.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+            this.m_direction = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up) * this.m_direction;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            //this.cc_animator.SetInteger("State", (int)AnimationState.WALKING);
+        }
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            //this.cc_animator.SetInteger("State", (int)AnimationState.IDLE);
+        }
     }
 }
