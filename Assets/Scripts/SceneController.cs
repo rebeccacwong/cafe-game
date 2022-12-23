@@ -6,6 +6,15 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class SceneController : MonoBehaviour
 {
+    private void Awake()
+    {
+        // show warning, assert, errors, and exceptions
+        Debug.unityLogger.filterLogType = LogType.Warning;
+
+        // display all logs
+        //logger.filterLogType = LogType.Log;
+    }
+
     public void GoToScene(string name)
     {
         SceneManager.LoadSceneAsync(name);

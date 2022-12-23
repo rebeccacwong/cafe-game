@@ -24,10 +24,6 @@ public class CharacterBase : MonoBehaviour
     protected Vector3 m_forwards;
     private IEnumerator m_coroutine = null;
 
-    //[SerializeField]
-    //[Tooltip("The layer mask for all tables")]
-    //public LayerMask m_tables;
-
     [SerializeField]
     [Tooltip("The layer mask of the floor")]
     public LayerMask m_floorLayerMask;
@@ -38,6 +34,7 @@ public class CharacterBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+
         this.m_target = gameObject.transform.position;
         this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
         if (this.cc_CameraController == null)
@@ -113,14 +110,11 @@ public class CharacterBase : MonoBehaviour
             // set our temporary target until we can reach our final target
             this.changeTargetForCollisions(target);
         }
-        //this.m_target.y = 1.79f;
-
-        //Debug.Log(
-        //    String.Format(
-        //        "[gameObject id: {2}] Set new target to {0} and move in direction {1}",
-        //        this.m_target,
-        //        this.m_direction,
-        //        gameObject.GetInstanceID()));
+        
+        Debug.LogFormat("[gameObject id: {2}] Set new target to {0} and move in direction {1}",
+                        this.m_target,
+                        this.m_direction,
+                        gameObject.GetInstanceID());
 
         // change rotation
         if (newAngle)
@@ -159,11 +153,10 @@ public class CharacterBase : MonoBehaviour
             return;
         }
 
-        //Debug.Log(
-        //    String.Format("[gameObject id: {2}] Target is {0}, currently at {1}",
-        //    this.m_target,
-        //    gameObject.transform.position,
-        //    gameObject.GetInstanceID()));
+        Debug.LogFormat("[gameObject id: {2}] Target is {0}, currently at {1}",
+                        this.m_target,
+                        gameObject.transform.position,
+                        gameObject.GetInstanceID());
 
         var delta = this.m_speed * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, this.m_target, delta);
