@@ -45,18 +45,7 @@ public class MainCharacter : CharacterBase
             {
                 float delta = Time.deltaTime * this.m_speed;
                 Vector3 target = this.gameObject.transform.position + (delta * this.m_direction);
-                //this.changeTargetForCollisions(target);
-                //if (this.m_target != target)
-                //{
-                //    Debug.LogWarning("Collision detected");
-                //    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
-                //}
-                //cc_rigidBody.MovePosition(target);
                 gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, delta);
-                //if (this.gameObject.transform.position != this.m_target)
-                //{
-                //    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
-                //}
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
@@ -78,30 +67,6 @@ public class MainCharacter : CharacterBase
             }
         }
     }
-
-    //private void onUpdateFollowMouseClick()
-    //{
-    //    float turnSmoothTime = 0.1f;
-
-    //    if (this.cc_CameraController.followingCharacter && Input.GetMouseButtonDown(0))
-    //    {
-    //        Debug.LogWarning("Clicked");
-    //        float horizontalInput = Input.GetAxisRaw("Horizontal");
-    //        float verticalInput = Input.GetAxisRaw("Vertical");
-
-    //        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-
-    //        if (direction.magnitude >= 0.1f)
-    //        {
-    //            Debug.LogWarning("Rotating");
-    //            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-    //            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref m_turnSmoothVelocity, turnSmoothTime);
-    //            gameObject.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-    //            Vector3 target = gameObject.transform.position + direction * m_speed * Time.deltaTime;
-    //            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, m_speed * Time.deltaTime);
-    //        }
-    //    }
-    //}
 
     protected void setNewTargetFromMousePosition(bool adjustForCollisions)
     {
