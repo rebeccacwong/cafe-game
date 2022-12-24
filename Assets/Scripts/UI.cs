@@ -48,7 +48,7 @@ public class UI : MonoBehaviour
         cc_spawnController.maxNumCustomers = 4;
         cc_spawnController.minSpawnInterval = 5f;
         cc_spawnController.maxSpawnInterval = 5f;
-        //cc_spawnController.StartSpawningCustomers();
+        cc_spawnController.StartSpawningCustomers();
     }
 
 

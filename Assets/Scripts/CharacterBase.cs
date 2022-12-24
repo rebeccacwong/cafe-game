@@ -16,6 +16,7 @@ public class CharacterBase : MonoBehaviour
     protected CameraController cc_CameraController;
     protected Rigidbody cc_rigidBody;
     protected Animator cc_animator;
+    private GameObject cc_mainCharacter;
     #endregion
 
     protected Vector3 m_target;
@@ -37,6 +38,7 @@ public class CharacterBase : MonoBehaviour
 
         this.m_target = gameObject.transform.position;
         this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
+        this.cc_mainCharacter = GameObject.Find("MainCharacter");
         if (this.cc_CameraController == null)
         {
             throw new Exception("Could not find CameraController object.");
@@ -71,14 +73,14 @@ public class CharacterBase : MonoBehaviour
         {
             Vector3 modified = hit.point - (2 * this.m_direction);
 
-            // if sufficiently close, don't move
-            if (Vector3.Distance(gameObject.transform.position, modified) <= 1)
+            // if sufficiently close or we collided with main character, don't move
+            if (Vector3.Distance(gameObject.transform.position, modified) <= 1 ||
+                hit.collider == cc_mainCharacter.GetComponent<Collider>())
             {
                 this.m_target = gameObject.transform.position;
                 return;
             }
             this.m_target = hit.point - (2 * this.m_direction);
-            Debug.LogWarningFormat("Collision detected, was:{0} and now target is {1} after seeing hit point {2}", target, this.m_target, hit.point);
         }
         this.m_target.y = gameObject.transform.position.y;
     }
