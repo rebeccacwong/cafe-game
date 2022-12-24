@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1935941270197082611}
   m_Layer: 0
   m_Name: customer
-  m_TagString: Untagged
+  m_TagString: Customer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,9 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685df06ad8d57494facb376587c282d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_floorLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
   m_speed: 4
 --- !u!114 &1935941270197082611
 MonoBehaviour:
@@ -93,9 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64dcf8cfb6d7049519763ad113ab7147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_floorLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
   m_speed: 4
 --- !u!1001 &2587817333855762687
 PrefabInstance:

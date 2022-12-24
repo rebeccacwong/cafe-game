@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: dog
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
+      propertyPath: m_TagString
+      value: Customer
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
       propertyPath: m_Controller
       value: 
@@ -107,9 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64dcf8cfb6d7049519763ad113ab7147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_floorLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
   m_speed: 4
 --- !u!114 &3442818140918836589
 MonoBehaviour:
@@ -123,7 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685df06ad8d57494facb376587c282d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_floorLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
   m_speed: 4

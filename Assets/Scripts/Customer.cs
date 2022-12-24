@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Customer : CharacterBase
+public class Customer : CharacterBase, IDraggableObject
 {
     #region Static variables
 
@@ -11,8 +11,8 @@ public class Customer : CharacterBase
 
     #region Instance variables
     private Vector3 m_frontOfLinePos;
-    private bool m_dragging;
     private Vector3 m_screenPointOfCharacter;
+    private bool m_isBeingDragged;
     #endregion
 
     #region Cached components
@@ -50,32 +50,7 @@ public class Customer : CharacterBase
     protected override void Update()
     {
         this.onUpdateMoveTowardsTarget();
-        //this.onUpdateDragToFollowMousePos();
-    }
-
-    private void onUpdateDragToFollowMousePos()
-    {
-        Camera activeCamera = this.cc_CameraController.getActiveCamera();
-
-        if (Utils.isObjectClicked(gameObject))
-        {
-            // drag character
-            this.m_screenPointOfCharacter = activeCamera.WorldToScreenPoint(gameObject.transform.position);
-            //Vector3 offset = Vector3.zero;
-            Debug.LogWarning("Clicked character");
-            this.m_dragging = true;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
-            Vector3 curPosition = activeCamera.ScreenToWorldPoint(curScreenPoint); // + offset optional
-            gameObject.transform.position = curPosition;
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            this.m_dragging = false;
-            // TODO: add behavior for when the user lets go of mouse
-        }
+        this.onUpdateDragObject();
     }
 
     private void removeCustomer()
@@ -92,4 +67,45 @@ public class Customer : CharacterBase
         }
         this.cc_spawnController.allCustomerObjs.RemoveAt(index);
     }
+
+
+
+    #region IDraggableObject override
+    public bool isBeingDragged
+    {
+        get { return m_isBeingDragged; }
+        set { m_isBeingDragged = value; }
+    }
+
+    public void startDraggingObject()
+    {
+        this.isBeingDragged = false;
+        Debug.LogWarningFormat("Start dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
+
+        //        this.m_screenPointOfCharacter = activeCamera.WorldToScreenPoint(gameObject.transform.position);
+        //        //Vector3 offset = Vector3.zero;
+        //        Debug.LogWarning("Clicked character");
+        //        this.m_dragging = true;
+    }
+
+    public void stopDraggingObject()
+    {
+        this.isBeingDragged = false;
+        Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
+    }
+
+    public void onUpdateDragObject()
+    {
+        if (this.isBeingDragged)
+        {
+            // update position
+            //    if (Input.GetMouseButton(0))
+            //    {
+            //        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
+            //        Vector3 curPosition = activeCamera.ScreenToWorldPoint(curScreenPoint); // + offset optional
+            //        gameObject.transform.position = curPosition;
+            //    }
+        }
+    }
+    #endregion
 }

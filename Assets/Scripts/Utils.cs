@@ -14,26 +14,23 @@ public static class Utils
         return cameraController.GetComponent<CameraController>();
     }
 
-    public static bool isObjectClicked(GameObject obj)
+    public static GameObject returnObjectMouseIsOn()
     {
-        if (Input.GetMouseButtonDown(0))
+        Debug.LogWarning("Clicked");
+        Vector3 target = Input.mousePosition;
+        CameraController camController = getCameraController();
+
+        Ray ray = camController.getActiveCamera().ScreenPointToRay(target);
+
+        if (Physics.Raycast(ray, out RaycastHit hitData, 100))
         {
-            Debug.LogWarning("Clicked");
-            Vector3 target = Input.mousePosition;
-            CameraController camController = getCameraController();
-
-            Ray ray = camController.getActiveCamera().ScreenPointToRay(target);
-
-            if (Physics.Raycast(ray, out RaycastHit hitData, 100))
+            Debug.LogWarning("Hit");
+            if (hitData.transform != null)
             {
-                Debug.LogWarning("Hit");
-                if (hitData.transform != null)
-                {
-                    return (hitData.transform.gameObject == obj);
-                }
+                return hitData.transform.gameObject;
             }
         }
-        return false;
+        return null;
     }
 
     /*
