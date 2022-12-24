@@ -62,13 +62,13 @@ public class CameraController : MonoBehaviour
     private void swapCameras()
     {
         string activeCameraName = m_ActiveCamera.gameObject.name;
-        if (activeCameraName == "MainCharacterCamera")
+        if (activeCameraName == "mainCharacterCamera")
         {
             changeActiveCamera("far camera");
             followingCharacter = false;
         } else
         {
-            changeActiveCamera(m_followCharacterCamera);
+            changeActiveCamera(m_followCharacterCamera.name);
             followingCharacter = true;
         }
     }
@@ -103,8 +103,8 @@ public class CameraController : MonoBehaviour
             camera.gameObject.SetActive(false);
         }
         newActiveCamera.gameObject.SetActive(true);
+        Debug.LogFormat("Changed from camera {0} to camera {1}", this.m_ActiveCamera.gameObject.name, cameraName);
         this.m_ActiveCamera = newActiveCamera;
-        Debug.Log("Changed to camera " + cameraName);
     }
 
     public Camera getActiveCamera()

@@ -64,6 +64,8 @@ public class CharacterBase : MonoBehaviour
     {
         this.m_target = target;
         float distance = (target - gameObject.transform.position).magnitude;
+        this.m_direction = this.m_direction.normalized;
+        Debug.LogWarning("Attempting to change target");
 
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
@@ -77,7 +79,7 @@ public class CharacterBase : MonoBehaviour
                 return;
             }
             this.m_target = hit.point - (2 * this.m_direction);
-            Debug.LogWarningFormat("Collision detected, was:{0} and now target is {1}", target, this.m_target);
+            Debug.LogWarningFormat("Collision detected, was:{0} and now target is {1} after seeing hit point {2}", target, this.m_target, hit.point);
         }
         this.m_target.y = gameObject.transform.position.y;
     }
@@ -153,7 +155,6 @@ public class CharacterBase : MonoBehaviour
 
     protected void setState(AnimationState state)
     {
-        Debug.LogWarning("Changing state");
         if (this.cc_animator != null)
         {
             this.cc_animator.SetInteger("State", (int) state);

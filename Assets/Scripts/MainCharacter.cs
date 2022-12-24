@@ -51,7 +51,10 @@ public class MainCharacter : CharacterBase
                     Debug.LogWarning("Collision detected");
                 }
                 gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, this.m_target, delta);
-                Debug.AssertFormat((this.gameObject.transform.position == this.m_target), "Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
+                if (this.gameObject.transform.position == this.m_target)
+                {
+                    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
+                }
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
