@@ -68,16 +68,16 @@ public class MainCharacter : CharacterBase
         }
     }
 
-    protected void setNewTargetFromMousePosition(bool adjustForCollisions)
-    {
-        Vector3 target = Input.mousePosition;
-        Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(target);
+    //protected void setNewTargetFromMousePosition(bool adjustForCollisions)
+    //{
+    //    Vector3 target = Input.mousePosition;
+    //    Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(target);
 
-        if (Physics.Raycast(ray, out RaycastHit hitData, 100, m_floorLayerMask))
-        {
-            Debug.Log("Set new target from mouse");
-            this.setNewTarget(hitData.point, adjustForCollisions, true);
-        }
-    }
+    //    if (Physics.Raycast(ray, out RaycastHit hitData, 100, cc_CameraController.floorLayerMask))
+    //    {
+    //        Debug.Log("Set new target from mouse");
+    //        this.setNewTarget(hitData.point, adjustForCollisions, true);
+    //    }
+    //}
 
 }

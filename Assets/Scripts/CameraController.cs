@@ -6,6 +6,10 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class CameraController : MonoBehaviour
 {
+    [SerializeField]
+    [Tooltip("The layer mask of the floor")]
+    public LayerMask floorLayerMask;
+
     #region Editor Variables
     [SerializeField]
     [Tooltip("Camera objects")]

@@ -26,10 +26,6 @@ public class CharacterBase : MonoBehaviour
     private IEnumerator m_coroutine = null;
 
     [SerializeField]
-    [Tooltip("The layer mask of the floor")]
-    public LayerMask m_floorLayerMask;
-
-    [SerializeField]
     [Tooltip("The speed the character should move at")]
     protected float m_speed;
 
