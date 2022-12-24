@@ -10,7 +10,7 @@ public enum AnimationState
 }
 
 [System.Serializable]
-public class CharacterBase : MonoBehaviour
+public class CharacterBase : MonoBehaviour, IPausable
 {
     #region Cached Components
     protected CameraController cc_CameraController;
@@ -174,4 +174,29 @@ public class CharacterBase : MonoBehaviour
         }
         yield break;
     }
+
+
+    #region Implement IPausable
+    private bool m_isPaused;
+
+    public bool isPaused
+    {
+        get { return this.m_isPaused; }
+    }
+
+    public void Pause()
+    {
+        this.m_isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        this.m_isPaused = false;
+    }
+
+    public GameObject GetPausableGameObject()
+    {
+        return gameObject;
+    }
+    #endregion
 }

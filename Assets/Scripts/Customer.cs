@@ -49,6 +49,11 @@ public class Customer : CharacterBase, IDraggableObject
     // Update is called once per frame
     protected override void Update()
     {
+        if (base.isPaused)
+        {
+            Debug.LogWarningFormat("Customer with id {0} is paused", gameObject.GetInstanceID());
+        }
+
         this.onUpdateMoveTowardsTarget();
         this.onUpdateDragObject();
     }
@@ -97,7 +102,6 @@ public class Customer : CharacterBase, IDraggableObject
     {
         if (this.isBeingDragged)
         {
-            Debug.LogWarning("Should drag");
             // update position
             if (Input.GetMouseButton(0))
             {

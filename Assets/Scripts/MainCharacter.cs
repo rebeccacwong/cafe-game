@@ -27,7 +27,10 @@ public class MainCharacter : CharacterBase
     // Update is called once per frame
     protected override void Update()
     {
-        onUpdatefollowKeyDirections();
+        if (!this.isPaused)
+        {
+            onUpdatefollowKeyDirections();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
