@@ -65,7 +65,6 @@ public class CharacterBase : MonoBehaviour
         this.m_target = target;
         float distance = (target - gameObject.transform.position).magnitude;
         this.m_direction = this.m_direction.normalized;
-        Debug.LogWarning("Attempting to change target");
 
         RaycastHit hit;
         if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))

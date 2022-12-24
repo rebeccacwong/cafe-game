@@ -49,10 +49,9 @@ public class CameraController : MonoBehaviour
 
     private void followCharacter()
     {
-        this.m_followCharacterCamera.transform.LookAt(cc_mainCharacter.transform.position);
+        this.m_followCharacterCamera.transform.LookAt(new Vector3(cc_mainCharacter.transform.position.x, cc_mainCharacter.transform.position.y + 3, cc_mainCharacter.transform.position.z));
 
         Vector3 displacement = this.cc_mainCharacter.transform.position - this.m_characterStartPos;
-
         this.m_followCharacterCamera.transform.position = this.m_camStartPos + displacement;
     }
 

@@ -45,16 +45,18 @@ public class MainCharacter : CharacterBase
             {
                 float delta = Time.deltaTime * this.m_speed;
                 Vector3 target = this.gameObject.transform.position + (delta * this.m_direction);
-                this.changeTargetForCollisions(target);
-                if (this.m_target != target)
-                {
-                    Debug.LogWarning("Collision detected");
-                }
-                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, this.m_target, delta);
-                if (this.gameObject.transform.position == this.m_target)
-                {
-                    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
-                }
+                //this.changeTargetForCollisions(target);
+                //if (this.m_target != target)
+                //{
+                //    Debug.LogWarning("Collision detected");
+                //    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
+                //}
+                //cc_rigidBody.MovePosition(target);
+                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, delta);
+                //if (this.gameObject.transform.position != this.m_target)
+                //{
+                //    Debug.LogWarningFormat("Original target:{0}, adjusted target{1}, current position{2}", target, this.m_target, gameObject.transform.position);
+                //}
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
@@ -68,13 +70,10 @@ public class MainCharacter : CharacterBase
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
-                Debug.LogWarning("Switch to walking");
                 this.setState(AnimationState.WALKING);
-                Debug.Assert((this.cc_animator.GetInteger("State") == 0), "Must be in walking state");
             }
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
             {
-                Debug.LogWarning("StopWalking");
                 this.setState(AnimationState.IDLE);
             }
         }
@@ -115,4 +114,5 @@ public class MainCharacter : CharacterBase
             this.setNewTarget(hitData.point, adjustForCollisions, true);
         }
     }
+
 }
