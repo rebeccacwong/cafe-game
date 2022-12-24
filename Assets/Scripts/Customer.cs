@@ -79,18 +79,17 @@ public class Customer : CharacterBase, IDraggableObject
 
     public void startDraggingObject()
     {
-        this.isBeingDragged = false;
+        this.isBeingDragged = true;
         Debug.LogWarningFormat("Start dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
 
-        //        this.m_screenPointOfCharacter = activeCamera.WorldToScreenPoint(gameObject.transform.position);
-        //        //Vector3 offset = Vector3.zero;
-        //        Debug.LogWarning("Clicked character");
-        //        this.m_dragging = true;
+        this.cc_rigidBody.isKinematic = false;
+        this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
     }
 
     public void stopDraggingObject()
     {
         this.isBeingDragged = false;
+        this.cc_rigidBody.isKinematic = true;
         Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
     }
 
@@ -98,13 +97,16 @@ public class Customer : CharacterBase, IDraggableObject
     {
         if (this.isBeingDragged)
         {
+            Debug.LogWarning("Should drag");
             // update position
-            //    if (Input.GetMouseButton(0))
-            //    {
-            //        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
-            //        Vector3 curPosition = activeCamera.ScreenToWorldPoint(curScreenPoint); // + offset optional
-            //        gameObject.transform.position = curPosition;
-            //    }
+            if (Input.GetMouseButton(0))
+            {
+                Debug.LogWarning("Dragging character");
+                Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
+                Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint); // + offset optional
+                curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
+                gameObject.transform.position = curPosition;
+            }
         }
     }
     #endregion

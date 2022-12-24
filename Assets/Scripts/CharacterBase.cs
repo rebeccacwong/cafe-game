@@ -122,7 +122,6 @@ public class CharacterBase : MonoBehaviour
 
     protected void onUpdateMoveTowardsTarget()
     {
-
         // check if we can update our target
         if (m_finalTarget != m_target)
         {

@@ -6,7 +6,6 @@ using System.IO;
 
 public static class Utils
 {
-    private static CameraController cc_cameraController;
 
     private static CameraController getCameraController()
     {
@@ -14,6 +13,10 @@ public static class Utils
         return cameraController.GetComponent<CameraController>();
     }
 
+    /*
+     * Returns the GameObject that the mouse position is on
+     * if the mouse is over an object. Otherwise returns null.
+     */
     public static GameObject returnObjectMouseIsOn()
     {
         Debug.LogWarning("Clicked");
@@ -24,7 +27,6 @@ public static class Utils
 
         if (Physics.Raycast(ray, out RaycastHit hitData, 100))
         {
-            Debug.LogWarning("Hit");
             if (hitData.transform != null)
             {
                 return hitData.transform.gameObject;
