@@ -64,8 +64,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6733177361254619370, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -6733177361254619370, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -5568371526223589888, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -5568371526223589888, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -76,6 +84,10 @@ PrefabInstance:
       value: chair2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_TagString
       value: Chair
       objectReference: {fileID: 0}
@@ -84,12 +96,24 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3930566978707800232, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3930566978707800232, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8513859187771203891, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513859187771203891, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700725330082129686, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8700725330082129686, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_StaticEditorFlags

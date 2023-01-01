@@ -64,8 +64,16 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -5824510187379060028, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -5824510187379060028, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2377678898046858952, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -2377678898046858952, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -76,6 +84,10 @@ PrefabInstance:
       value: chair
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
       propertyPath: m_TagString
       value: Chair
       objectReference: {fileID: 0}
@@ -84,8 +96,16 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1365132098506396400, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365132098506396400, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3930566978707800232, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3930566978707800232, guid: 7f02c686a44ad4ac3bded09c32d0c101, type: 3}
       propertyPath: m_StaticEditorFlags

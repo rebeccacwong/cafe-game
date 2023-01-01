@@ -17,15 +17,24 @@ public static class Utils
      * Returns the GameObject that the mouse position is on
      * if the mouse is over an object. Otherwise returns null.
      */
-    public static GameObject returnObjectMouseIsOn()
+    public static GameObject returnObjectMouseIsOn(int layerMask = 0)
     {
-        Debug.LogWarning("Clicked");
         Vector3 target = Input.mousePosition;
         CameraController camController = getCameraController();
 
         Ray ray = camController.getActiveCamera().ScreenPointToRay(target);
+        bool raycastOutput;
+        RaycastHit hitData;
 
-        if (Physics.Raycast(ray, out RaycastHit hitData, 100))
+        if (layerMask == 0)
+        {
+            raycastOutput = Physics.Raycast(ray, out hitData, 100);
+        } else
+        {
+            raycastOutput = Physics.Raycast(ray, out hitData, 100, layerMask);
+        }
+
+        if (raycastOutput)
         {
             if (hitData.transform != null)
             {

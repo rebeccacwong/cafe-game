@@ -13,6 +13,7 @@ public class Customer : CharacterBase, IDraggableObject
     private Vector3 m_frontOfLinePos;
     private Vector3 m_screenPointOfCharacter;
     private bool m_isBeingDragged;
+    private bool m_isMoving;
     #endregion
 
     #region Cached components
@@ -31,6 +32,7 @@ public class Customer : CharacterBase, IDraggableObject
         cc_spawnController = customerSpawner.GetComponent<SpawnController>();
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
+        this.m_isMoving = true;
     }
 
     // Start is called before the first frame update
@@ -54,7 +56,10 @@ public class Customer : CharacterBase, IDraggableObject
             return;
         }
 
-        this.onUpdateMoveTowardsTarget();
+        if (this.m_isMoving)
+        {
+            this.onUpdateMoveTowardsTarget();
+        }
         this.onUpdateDragObject();
     }
 
@@ -89,7 +94,6 @@ public class Customer : CharacterBase, IDraggableObject
 
         this.cc_rigidBody.isKinematic = false;
         this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
-        gameObject.layer = LayerMask.NameToLayer("ItemIsHeldIgnoreRaycast");
     }
 
     public void stopDraggingObject()
@@ -97,7 +101,11 @@ public class Customer : CharacterBase, IDraggableObject
         this.isBeingDragged = false;
         this.cc_rigidBody.isKinematic = true;
         Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
-        gameObject.layer = LayerMask.NameToLayer("Default"); ;
+    }
+
+    public void sitDown()
+    {
+        this.m_isMoving = false;
     }
 
     public void onUpdateDragObject()
@@ -107,17 +115,15 @@ public class Customer : CharacterBase, IDraggableObject
             if (Input.GetMouseButton(0))
             {
                 // check if we're intersecting with a chair or table and we should drop
-                Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out RaycastHit hitData, 100, LayerMask.NameToLayer("ItemIsHeldIgnoreRaycast")))
+                GameObject collisionObj = Utils.returnObjectMouseIsOn(LayerMask.GetMask("Chairs"));
+                if (collisionObj != null)
                 {
-                    GameObject collisionObj = hitData.collider.gameObject;
-                    Debug.LogWarning("Collided with: ", collisionObj);
+                    Debug.LogWarning("collision detected with: " + collisionObj);
                     if (collisionObj.tag == "Chair")
                     {
                         Debug.LogWarning("collided with a chair");
-                        // put the character in the chair
                         this.stopDraggingObject();
+                        this.sitDown();
                     }
                 }
 
