@@ -51,7 +51,7 @@ public class Customer : CharacterBase, IDraggableObject
     {
         if (base.isPaused)
         {
-            Debug.LogWarningFormat("Customer with id {0} is paused", gameObject.GetInstanceID());
+            return;
         }
 
         this.onUpdateMoveTowardsTarget();
@@ -112,16 +112,20 @@ public class Customer : CharacterBase, IDraggableObject
                 if (Physics.Raycast(ray, out RaycastHit hitData, 100, LayerMask.NameToLayer("ItemIsHeldIgnoreRaycast")))
                 {
                     GameObject collisionObj = hitData.collider.gameObject;
+                    Debug.LogWarning("Collided with: ", collisionObj);
                     if (collisionObj.tag == "Chair")
                     {
+                        Debug.LogWarning("collided with a chair");
                         // put the character in the chair
                         this.stopDraggingObject();
                     }
                 }
 
+                // TODO: edit so that we get more range of motion along x,z axis
                 // update the position of the character
                 Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
-                Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint); // + offset optional
+                Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint);
+                curPosition.y -= gameObject.GetComponent<BoxCollider>().size.y / 2;
                 curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
                 gameObject.transform.position = curPosition;
             }

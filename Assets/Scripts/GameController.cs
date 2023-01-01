@@ -9,12 +9,13 @@ public class GameController : MonoBehaviour
     // the object that the mouse is currently carrying
     private IDraggableObject m_currentlyCarrying = null;
 
-    private IPausable[] m_pausableObjects;
+    #region Cached components
+    private SpawnController cc_spawnController;
+    #endregion
 
     private void Awake()
     {
-        m_pausableObjects = FindObjectsOfType<MonoBehaviour>().OfType<IPausable>().ToArray();
-        Debug.Assert(m_pausableObjects.Length > 0, "Found no pausable objects!");
+        cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
     }
 
     // Start is called before the first frame update
@@ -33,19 +34,26 @@ public class GameController : MonoBehaviour
             if (obj != null)
             {
                 IDraggableObject draggableObject = obj.GetComponent<IDraggableObject>();
+                IPausable[] pausableObjects = getAllPausableObjects();
                 if (draggableObject != null)
                 {
                     if (obj.tag == "Customer")
                     {
+                        // TODO: ensure that pausing succeeds
                         // Pause all movement except for the customer
-                        foreach (IPausable pausableObj in m_pausableObjects)
+                        
+                        Debug.LogWarning("Found " + pausableObjects.Length + " pausable objects");
+
+                        foreach (IPausable pausableObj in pausableObjects)
                         {
                             if (pausableObj.GetPausableGameObject() != obj)
                             {
-                                Debug.LogWarning("Pausing");
                                 pausableObj.Pause();
                             }
                         }
+
+                        obj.GetComponent<IPausable>().pauseAnimation();
+                        cc_spawnController.PauseCustomerSpawning();
                     }
 
                     m_currentlyCarrying = draggableObject;
@@ -58,6 +66,19 @@ public class GameController : MonoBehaviour
             m_currentlyCarrying.stopDraggingObject();
             m_currentlyCarrying = null;
 
+            cc_spawnController.ResumeCustomerSpawning();
+
+            Debug.LogWarning("Unpausing all pausable objects");
+            foreach (IPausable pausableObj in getAllPausableObjects())
+            {
+                pausableObj.Unpause();
+            }
+
         }
+    }
+
+    private IPausable[] getAllPausableObjects()
+    {
+        return FindObjectsOfType<MonoBehaviour>().OfType<IPausable>().ToArray();
     }
 }

@@ -15,9 +15,23 @@ public interface IPausable
         get;
     }
 
+    /*
+     * Pauses all character movement (transforms) and animations.
+     */
     public void Pause();
 
     public void Unpause();
+
+
+    /*
+     * Only pauses the character animation cycle. The transforms can 
+     * continue to change.
+     */
+    public void pauseAnimation();
+
+    public void unpauseAnimation();
+
+
 
     public GameObject GetPausableGameObject();
 }

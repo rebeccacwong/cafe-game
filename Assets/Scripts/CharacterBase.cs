@@ -24,6 +24,7 @@ public class CharacterBase : MonoBehaviour, IPausable
     protected Vector3 m_direction;
     protected Vector3 m_forwards;
     private IEnumerator m_coroutine = null;
+    private float m_animatorSpeed;
 
     [SerializeField]
     [Tooltip("The speed the character should move at")]
@@ -187,11 +188,24 @@ public class CharacterBase : MonoBehaviour, IPausable
     public void Pause()
     {
         this.m_isPaused = true;
+        this.pauseAnimation();
     }
 
     public void Unpause()
     {
         this.m_isPaused = false;
+        this.unpauseAnimation();
+    }
+
+    public void pauseAnimation()
+    {
+        this.m_animatorSpeed = cc_animator.speed;
+        cc_animator.speed = 0;
+    }
+
+    public void unpauseAnimation()
+    {
+        cc_animator.speed = this.m_animatorSpeed;
     }
 
     public GameObject GetPausableGameObject()
