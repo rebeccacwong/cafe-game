@@ -89,6 +89,7 @@ public class Customer : CharacterBase, IDraggableObject
 
         this.cc_rigidBody.isKinematic = false;
         this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
+        gameObject.layer = LayerMask.NameToLayer("ItemIsHeldIgnoreRaycast");
     }
 
     public void stopDraggingObject()
@@ -96,16 +97,29 @@ public class Customer : CharacterBase, IDraggableObject
         this.isBeingDragged = false;
         this.cc_rigidBody.isKinematic = true;
         Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
+        gameObject.layer = LayerMask.NameToLayer("Default"); ;
     }
 
     public void onUpdateDragObject()
     {
         if (this.isBeingDragged)
         {
-            // update position
             if (Input.GetMouseButton(0))
             {
-                Debug.LogWarning("Dragging character");
+                // check if we're intersecting with a chair or table and we should drop
+                Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hitData, 100, LayerMask.NameToLayer("ItemIsHeldIgnoreRaycast")))
+                {
+                    GameObject collisionObj = hitData.collider.gameObject;
+                    if (collisionObj.tag == "Chair")
+                    {
+                        // put the character in the chair
+                        this.stopDraggingObject();
+                    }
+                }
+
+                // update the position of the character
                 Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
                 Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint); // + offset optional
                 curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
