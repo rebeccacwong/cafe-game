@@ -6,7 +6,8 @@ using UnityEngine;
 public enum AnimationState
 {
     WALKING = 0,
-    IDLE = 1
+    IDLE = 1,
+    SITTING = 2
 }
 
 [System.Serializable]

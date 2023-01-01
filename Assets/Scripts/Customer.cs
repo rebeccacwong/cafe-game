@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Customer : CharacterBase, IDraggableObject
 {
-    #region Static variables
-
-    #endregion
 
     #region Instance variables
     private Vector3 m_frontOfLinePos;
@@ -20,11 +17,12 @@ public class Customer : CharacterBase, IDraggableObject
     private SpawnController cc_spawnController;
     #endregion
 
-    public Customer(GameObject gameObject, float speed)
-    {
-        //npc.GetComponent<NPCMovementController>().NextMovementState();
-    }
+    [SerializeField]
+    [Tooltip("The number of frames for the character's sit animation")]
+    private int m_numFramesForSitAnim;
 
+
+    #region Overrides
     protected override void Awake()
     {
         base.Awake();
@@ -62,6 +60,11 @@ public class Customer : CharacterBase, IDraggableObject
         }
         this.onUpdateDragObject();
     }
+    #endregion
+
+
+
+
 
     private void removeCustomer()
     {
@@ -76,6 +79,59 @@ public class Customer : CharacterBase, IDraggableObject
             throw new Exception("Could not find object in spawn controller");
         }
         this.cc_spawnController.allCustomerObjs.RemoveAt(index);
+    }
+
+    /*
+     * Makes customer sit down in the given chair.
+     */
+    public void sitDown(GameObject chairGameObject)
+    {
+
+        this.m_isMoving = false;
+
+        Chair chairData = chairGameObject.GetComponent<Chair>();
+        Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
+
+        Vector3 chairWorldPos = transform.TransformPoint(chairGameObject.transform.position);
+        Vector3 characterPosition = new Vector3(chairWorldPos.x, chairData.heightOfSeat + gameObject.transform.position.y, chairWorldPos.z);
+        float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
+
+        Debug.LogWarningFormat("Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
+            gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle);
+        this.setState(AnimationState.SITTING);
+        StartCoroutine(sitCoroutine(characterPosition, angle));
+    }
+
+    /*
+     * Sit so that the character ultimately ends up in finalPosition 
+     */
+    private IEnumerator sitCoroutine(Vector3 finalPosition, float degreesToRotate)
+    {
+        Debug.Assert(this.m_numFramesForSitAnim > 0, "Must specify the number of frames for the sit animation");
+        Debug.LogWarningFormat("Starting coroutine across {0} frames", this.m_numFramesForSitAnim);
+
+        Vector3 startPosition = gameObject.transform.position;
+        Vector3 startRotation = gameObject.transform.rotation.eulerAngles;
+
+        for (int i = 0; i < this.m_numFramesForSitAnim; i++)
+        {
+            gameObject.transform.Rotate(0, startRotation.y + (degreesToRotate / this.m_numFramesForSitAnim), 0);
+            gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition, i / this.m_numFramesForSitAnim);
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        Vector3 finalEulerRotation = Quaternion.AngleAxis(degreesToRotate, Vector3.up) * this.m_direction;
+        Debug.AssertFormat(
+            finalPosition == gameObject.transform.position,
+            "Coroutine ended, expected final position {0}, got {1}",
+            finalPosition,
+            gameObject.transform.position);
+        Debug.AssertFormat(
+            finalEulerRotation == gameObject.transform.rotation.eulerAngles,
+            "Coroutine ended, expected final rotation {0}, got {1}",
+            finalEulerRotation,
+            gameObject.transform.rotation.eulerAngles);
+        yield break;
     }
 
 
@@ -101,11 +157,17 @@ public class Customer : CharacterBase, IDraggableObject
         this.isBeingDragged = false;
         this.cc_rigidBody.isKinematic = true;
         Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
-    }
 
-    public void sitDown()
-    {
-        this.m_isMoving = false;
+        // check if we're intersecting with a chair or table and we should it there
+        GameObject collisionObj = Utils.returnObjectMouseIsOn(LayerMask.GetMask("Chairs"));
+        if (collisionObj != null)
+        {
+            if (collisionObj.tag == "Chair")
+            {
+                Debug.LogWarning("collided with a chair");
+                this.sitDown(collisionObj);
+            }
+        }
     }
 
     public void onUpdateDragObject()
@@ -114,20 +176,7 @@ public class Customer : CharacterBase, IDraggableObject
         {
             if (Input.GetMouseButton(0))
             {
-                // check if we're intersecting with a chair or table and we should drop
-                GameObject collisionObj = Utils.returnObjectMouseIsOn(LayerMask.GetMask("Chairs"));
-                if (collisionObj != null)
-                {
-                    Debug.LogWarning("collision detected with: " + collisionObj);
-                    if (collisionObj.tag == "Chair")
-                    {
-                        Debug.LogWarning("collided with a chair");
-                        this.stopDraggingObject();
-                        this.sitDown();
-                    }
-                }
-
-                // TODO: edit so that we get more range of motion along x,z axis
+                // TODO: edit so that we get more range of motion along z axis
                 // update the position of the character
                 Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
                 Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint);

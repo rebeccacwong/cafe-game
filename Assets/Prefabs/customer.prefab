@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 4
+  m_numFramesForSitAnim: 9
 --- !u!95 &549393317
 Animator:
   serializedVersion: 4
