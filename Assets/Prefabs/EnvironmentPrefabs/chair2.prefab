@@ -13,11 +13,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.75
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.75
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_LocalScale.z
@@ -61,6 +61,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6733177361254619370, guid: 52be8c9310b2247a09f6f433ff10b4c7, type: 3}
@@ -167,5 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad461d499a4b941ffb19ece1fb8466d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightOfSeat: 2
-  facingDirection: {x: 0, y: 0, z: -1}
+  heightOfSeat: 1.85
+  facingDirection: {x: 0, y: 0, z: 1}
+  offset_z: 0.6
+  inUse: 0

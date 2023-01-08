@@ -142,6 +142,11 @@ public class CharacterBase : MonoBehaviour, IPausable
             return;
         }
 
+        if (this.getState() != AnimationState.WALKING)
+        {
+            this.setState(AnimationState.WALKING);
+        }
+
         Debug.LogFormat("[gameObject id: {2}] Target is {0}, currently at {1}",
                         this.m_target,
                         gameObject.transform.position,
@@ -157,6 +162,12 @@ public class CharacterBase : MonoBehaviour, IPausable
         {
             this.cc_animator.SetInteger("State", (int) state);
         }
+    }
+
+    // Returns the animation state the character is currently in
+    protected AnimationState getState()
+    {
+        return (AnimationState)this.cc_animator.GetInteger("State");
     }
 
     private IEnumerator updateRotation(float finalAngle)

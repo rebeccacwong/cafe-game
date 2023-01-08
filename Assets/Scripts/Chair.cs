@@ -13,11 +13,19 @@ public class Chair : MonoBehaviour
     [Tooltip("The distance from the bottom of the chair legs to the seat")]
     public float heightOfSeat;
 
+    [SerializeField]
+    [Tooltip("Input the default facing direction for the chair prefab")]
     public Vector3 facingDirection;
 
+    [SerializeField]
+    [Tooltip("The offset z position from the center of the chair, relative to the facing direction")]
+    public float offset_z;
+
+    public bool inUse = false;
+        
     private void Awake()
     {
         this.facingDirection =
-            Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(1, 0, 0);
+            Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * this.facingDirection;
     }
 }

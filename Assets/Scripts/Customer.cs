@@ -92,7 +92,12 @@ public class Customer : CharacterBase, IDraggableObject
         Chair chairData = chairGameObject.GetComponent<Chair>();
         Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
 
-        Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z);
+        if (chairData.inUse)
+        {
+            return;
+        }
+
+        Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
 
         Debug.LogWarningFormat("Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
@@ -100,6 +105,8 @@ public class Customer : CharacterBase, IDraggableObject
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);
         gameObject.transform.position = characterPosition;
+
+        chairData.inUse = true;
         //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
 

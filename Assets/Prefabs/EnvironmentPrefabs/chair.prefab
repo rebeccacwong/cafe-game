@@ -160,4 +160,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heightOfSeat: 1.45
-  facingDirection: {x: 0, y: 0, z: 0}
+  facingDirection: {x: 1, y: 0, z: 0}
