@@ -92,47 +92,48 @@ public class Customer : CharacterBase, IDraggableObject
         Chair chairData = chairGameObject.GetComponent<Chair>();
         Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
 
-        Vector3 chairWorldPos = transform.TransformPoint(chairGameObject.transform.position);
-        Vector3 characterPosition = new Vector3(chairWorldPos.x, chairData.heightOfSeat + gameObject.transform.position.y, chairWorldPos.z);
+        Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z);
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
 
         Debug.LogWarningFormat("Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
             gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle);
         this.setState(AnimationState.SITTING);
-        StartCoroutine(sitCoroutine(characterPosition, angle));
+        gameObject.transform.Rotate(0, angle, 0);
+        gameObject.transform.position = characterPosition;
+        //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
 
     /*
      * Sit so that the character ultimately ends up in finalPosition 
      */
-    private IEnumerator sitCoroutine(Vector3 finalPosition, float degreesToRotate)
-    {
-        Debug.Assert(this.m_numFramesForSitAnim > 0, "Must specify the number of frames for the sit animation");
-        Debug.LogWarningFormat("Starting coroutine across {0} frames", this.m_numFramesForSitAnim);
+    //private IEnumerator sitCoroutine(Vector3 finalPosition, float degreesToRotate)
+    //{
+    //    Debug.Assert(this.m_numFramesForSitAnim > 0, "Must specify the number of frames for the sit animation");
+    //    Debug.LogWarningFormat("Starting coroutine across {0} frames", this.m_numFramesForSitAnim);
 
-        Vector3 startPosition = gameObject.transform.position;
-        Vector3 startRotation = gameObject.transform.rotation.eulerAngles;
+    //    Vector3 startPosition = gameObject.transform.position;
+    //    Vector3 startRotation = gameObject.transform.rotation.eulerAngles;
 
-        for (int i = 0; i < this.m_numFramesForSitAnim; i++)
-        {
-            gameObject.transform.Rotate(0, startRotation.y + (degreesToRotate / this.m_numFramesForSitAnim), 0);
-            gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition, i / this.m_numFramesForSitAnim);
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+    //    for (int i = 0; i < this.m_numFramesForSitAnim; i++)
+    //    {
+    //        gameObject.transform.Rotate(0, startRotation.y + (degreesToRotate / this.m_numFramesForSitAnim), 0);
+    //        gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition, i / this.m_numFramesForSitAnim);
+    //        yield return new WaitForSeconds(Time.deltaTime);
+    //    }
 
-        Vector3 finalEulerRotation = Quaternion.AngleAxis(degreesToRotate, Vector3.up) * this.m_direction;
-        Debug.AssertFormat(
-            finalPosition == gameObject.transform.position,
-            "Coroutine ended, expected final position {0}, got {1}",
-            finalPosition,
-            gameObject.transform.position);
-        Debug.AssertFormat(
-            finalEulerRotation == gameObject.transform.rotation.eulerAngles,
-            "Coroutine ended, expected final rotation {0}, got {1}",
-            finalEulerRotation,
-            gameObject.transform.rotation.eulerAngles);
-        yield break;
-    }
+    //    Vector3 finalEulerRotation = Quaternion.AngleAxis(degreesToRotate, Vector3.up) * this.m_direction;
+    //    Debug.AssertFormat(
+    //        finalPosition == gameObject.transform.position,
+    //        "Coroutine ended, expected final position {0}, got {1}",
+    //        finalPosition,
+    //        gameObject.transform.position);
+    //    Debug.AssertFormat(
+    //        finalEulerRotation == gameObject.transform.rotation.eulerAngles,
+    //        "Coroutine ended, expected final rotation {0}, got {1}",
+    //        finalEulerRotation,
+    //        gameObject.transform.rotation.eulerAngles);
+    //    yield break;
+    //}
 
 
 

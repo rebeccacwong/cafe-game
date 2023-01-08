@@ -159,5 +159,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad461d499a4b941ffb19ece1fb8466d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightOfSeat: 1.98
-  facingDirection: {x: 0, y: 0, z: 1}
+  heightOfSeat: 1.45
+  facingDirection: {x: 0, y: 0, z: 0}
