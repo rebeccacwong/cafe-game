@@ -10,7 +10,8 @@ public class Customer : CharacterBase, IDraggableObject
     private Vector3 m_frontOfLinePos;
     private Vector3 m_screenPointOfCharacter;
     private bool m_isBeingDragged;
-    private bool m_isMoving;
+    private bool m_isSeated;
+    private Vector3 m_lastPositionBeforeDragging;
     #endregion
 
     #region Cached components
@@ -30,7 +31,7 @@ public class Customer : CharacterBase, IDraggableObject
         cc_spawnController = customerSpawner.GetComponent<SpawnController>();
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.m_isMoving = true;
+        this.m_isSeated = false;
     }
 
     // Start is called before the first frame update
@@ -49,16 +50,23 @@ public class Customer : CharacterBase, IDraggableObject
     // Update is called once per frame
     protected override void Update()
     {
-        if (base.isPaused)
+        if (this.isPaused)
         {
             return;
         }
 
-        if (this.m_isMoving)
+        if (!this.m_isSeated)
         {
             this.onUpdateMoveTowardsTarget();
+
+            /* 
+             * Once the character is no longer moving (sitting), 
+             * we disable dragging. The character can no longer
+             * be moved by the player and must leave at its
+             * own choice.
+             */
+            this.onUpdateDragObject();
         }
-        this.onUpdateDragObject();
     }
     #endregion
 
@@ -82,31 +90,23 @@ public class Customer : CharacterBase, IDraggableObject
     }
 
     /*
-     * Makes customer sit down in the given chair.
+     * Makes customer sit down in the given chair, with the assumption that
+     * it's a valid sit action.
      */
-    public void sitDown(GameObject chairGameObject)
+    public void sitDown(GameObject chairGameObject, Chair chairData)
     {
-
-        this.m_isMoving = false;
-
-        Chair chairData = chairGameObject.GetComponent<Chair>();
-        Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
-
-        if (chairData.inUse)
-        {
-            return;
-        }
+        this.m_isSeated = true;
+        chairData.inUse = true;
 
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
 
         Debug.LogWarningFormat("Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
             gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle);
+
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);
         gameObject.transform.position = characterPosition;
-
-        chairData.inUse = true;
         //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
 
@@ -151,17 +151,34 @@ public class Customer : CharacterBase, IDraggableObject
         set { m_isBeingDragged = value; }
     }
 
-    public void startDraggingObject()
+    public bool startDraggingObject()
     {
+        // Only drag characters that are not seated
+        if (this.m_isSeated)
+        {
+            return false;
+        }
+
+        this.pauseAnimation();
         this.isBeingDragged = true;
+        this.m_lastPositionBeforeDragging = gameObject.transform.position;
         Debug.LogWarningFormat("Start dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
 
         this.cc_rigidBody.isKinematic = false;
         this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
+        return true;
     }
 
     public void stopDraggingObject()
     {
+        this.unpauseAnimation();
+
+        // do nothing if character is already seated
+        if (this.m_isSeated)
+        {
+            return;
+        }
+
         this.isBeingDragged = false;
         this.cc_rigidBody.isKinematic = true;
         Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
@@ -173,8 +190,21 @@ public class Customer : CharacterBase, IDraggableObject
             if (collisionObj.tag == "Chair")
             {
                 Debug.LogWarning("collided with a chair");
-                this.sitDown(collisionObj);
+                Chair chairData = collisionObj.GetComponent<Chair>();
+                Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
+
+                if (chairData.inUse)
+                {
+                    gameObject.transform.position = this.m_lastPositionBeforeDragging;
+                } else
+                {
+                    this.sitDown(collisionObj, chairData);
+                }
             }
+        } else
+        {
+            // we didn't collide with a chair. abort the drag.
+            gameObject.transform.position = this.m_lastPositionBeforeDragging;
         }
     }
 

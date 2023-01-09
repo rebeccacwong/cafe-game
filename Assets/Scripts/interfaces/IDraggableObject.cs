@@ -10,8 +10,17 @@ public interface IDraggableObject
         set;
     }
 
-    public void startDraggingObject();
+     /*
+     * Enables dragging of the character. Returns true
+     * if character can be dragged. Returns false if
+     * the character cannot be dragged.
+     */
+    public bool startDraggingObject();
 
+    /*
+     * Stops dragging character and enables appropriate
+     * follow through action. 
+     */
     public void stopDraggingObject();
 
     /*

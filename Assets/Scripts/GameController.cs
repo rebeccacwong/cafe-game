@@ -34,35 +34,63 @@ public class GameController : MonoBehaviour
             if (obj != null)
             {
                 IDraggableObject draggableObject = obj.GetComponent<IDraggableObject>();
-                IPausable[] pausableObjects = getAllPausableObjects();
+                m_currentlyCarrying = draggableObject;
+
                 if (draggableObject != null)
                 {
-                    if (obj.tag == "Customer")
+                    bool isDraggable = draggableObject.startDraggingObject();
+                    if (isDraggable)
                     {
-                        // TODO: ensure that pausing succeeds
-                        // Pause all movement except for the customer
-                        
-                        Debug.LogWarning("Found " + pausableObjects.Length + " pausable objects");
-
-                        foreach (IPausable pausableObj in pausableObjects)
+                        if (obj.tag == "Customer")
                         {
-                            if (pausableObj.GetPausableGameObject() != obj)
+                            Debug.LogWarning("Pausing all pausable objects");
+
+                            foreach (IPausable pausableObj in getAllPausableObjects())
                             {
-                                pausableObj.Pause();
+                                // Pause every object except for the customer
+                                if (pausableObj.GetPausableGameObject() != obj)
+                                {
+                                    pausableObj.Pause();
+                                }
                             }
+
+                            cc_spawnController.PauseCustomerSpawning();
                         }
-
-                        obj.GetComponent<IPausable>().pauseAnimation();
-                        cc_spawnController.PauseCustomerSpawning();
                     }
-
-                    m_currentlyCarrying = draggableObject;
-                    draggableObject.startDraggingObject();
                 }
             }
         }
+        //if (Input.GetMouseButtonUp(0) && m_currentlyCarrying != null)
+        //{
+        //    // TODO: Fix problem where you drag a customer in line
+        //    // to an invalid location so it goes back to line.
+        //    // Currently the customer next in line steps on top
+        //    // of the customer that you let go of
+        //    m_currentlyCarrying.stopDraggingObject();
+        //    m_currentlyCarrying = null;
+
+        //    cc_spawnController.ResumeCustomerSpawning();
+
+        //    Debug.LogWarning("Unpausing all pausable objects");
+        //    foreach (IPausable pausableObj in getAllPausableObjects())
+        //    {
+        //        if (pausableObj.isPaused)
+        //        {
+        //            pausableObj.Unpause();
+        //        }
+        //    }
+
+        //}
+    }
+
+    void LateUpdate()
+    {
         if (Input.GetMouseButtonUp(0) && m_currentlyCarrying != null)
         {
+            // TODO: Fix problem where you drag a customer in line
+            // to an invalid location so it goes back to line.
+            // Currently the customer next in line steps on top
+            // of the customer that you let go of
             m_currentlyCarrying.stopDraggingObject();
             m_currentlyCarrying = null;
 
@@ -71,7 +99,10 @@ public class GameController : MonoBehaviour
             Debug.LogWarning("Unpausing all pausable objects");
             foreach (IPausable pausableObj in getAllPausableObjects())
             {
-                pausableObj.Unpause();
+                if (pausableObj.isPaused)
+                {
+                    pausableObj.Unpause();
+                }
             }
 
         }
