@@ -14,6 +14,11 @@ public class Customer : CharacterBase, IDraggableObject
     private Vector3 m_lastPositionBeforeDragging;
     #endregion
 
+    #region Customer experience variables
+    private float m_Satisfaction = 1;
+    private int itemsToOrder;
+    #endregion
+
     #region Cached components
     private SpawnController cc_spawnController;
     #endregion
@@ -32,6 +37,7 @@ public class Customer : CharacterBase, IDraggableObject
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
         this.m_isSeated = false;
+        this.itemsToOrder = UnityEngine.Random.Range(1, 5);
     }
 
     // Start is called before the first frame update
@@ -70,10 +76,6 @@ public class Customer : CharacterBase, IDraggableObject
     }
     #endregion
 
-
-
-
-
     private void removeCustomer()
     {
         Destroy(this);
@@ -109,40 +111,6 @@ public class Customer : CharacterBase, IDraggableObject
         gameObject.transform.position = characterPosition;
         //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
-
-    /*
-     * Sit so that the character ultimately ends up in finalPosition 
-     */
-    //private IEnumerator sitCoroutine(Vector3 finalPosition, float degreesToRotate)
-    //{
-    //    Debug.Assert(this.m_numFramesForSitAnim > 0, "Must specify the number of frames for the sit animation");
-    //    Debug.LogWarningFormat("Starting coroutine across {0} frames", this.m_numFramesForSitAnim);
-
-    //    Vector3 startPosition = gameObject.transform.position;
-    //    Vector3 startRotation = gameObject.transform.rotation.eulerAngles;
-
-    //    for (int i = 0; i < this.m_numFramesForSitAnim; i++)
-    //    {
-    //        gameObject.transform.Rotate(0, startRotation.y + (degreesToRotate / this.m_numFramesForSitAnim), 0);
-    //        gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition, i / this.m_numFramesForSitAnim);
-    //        yield return new WaitForSeconds(Time.deltaTime);
-    //    }
-
-    //    Vector3 finalEulerRotation = Quaternion.AngleAxis(degreesToRotate, Vector3.up) * this.m_direction;
-    //    Debug.AssertFormat(
-    //        finalPosition == gameObject.transform.position,
-    //        "Coroutine ended, expected final position {0}, got {1}",
-    //        finalPosition,
-    //        gameObject.transform.position);
-    //    Debug.AssertFormat(
-    //        finalEulerRotation == gameObject.transform.rotation.eulerAngles,
-    //        "Coroutine ended, expected final rotation {0}, got {1}",
-    //        finalEulerRotation,
-    //        gameObject.transform.rotation.eulerAngles);
-    //    yield break;
-    //}
-
-
 
     #region IDraggableObject override
     public bool isBeingDragged
@@ -224,5 +192,25 @@ public class Customer : CharacterBase, IDraggableObject
             }
         }
     }
+    #endregion
+
+
+    #region Customer methods
+    /*
+     * Make a request to order an item
+     */
+    public void orderItem()
+    {
+        // Pick a random menu item
+        // Put the item in the speech bubble
+    }
+
+    public void requestWaiter()
+    {
+        // Make a speech bubble that indicates that customer is ready to order
+        // start timer
+        // decrease satisfaction as time goes on
+    }
+
     #endregion
 }

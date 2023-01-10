@@ -60,27 +60,6 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        //if (Input.GetMouseButtonUp(0) && m_currentlyCarrying != null)
-        //{
-        //    // TODO: Fix problem where you drag a customer in line
-        //    // to an invalid location so it goes back to line.
-        //    // Currently the customer next in line steps on top
-        //    // of the customer that you let go of
-        //    m_currentlyCarrying.stopDraggingObject();
-        //    m_currentlyCarrying = null;
-
-        //    cc_spawnController.ResumeCustomerSpawning();
-
-        //    Debug.LogWarning("Unpausing all pausable objects");
-        //    foreach (IPausable pausableObj in getAllPausableObjects())
-        //    {
-        //        if (pausableObj.isPaused)
-        //        {
-        //            pausableObj.Unpause();
-        //        }
-        //    }
-
-        //}
     }
 
     void LateUpdate()
