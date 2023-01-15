@@ -17,10 +17,17 @@ public class Customer : CharacterBase, IDraggableObject
     #region Customer experience variables
     private float m_Satisfaction = 1;
     private int itemsToOrder;
+    private float runningBill = 0;
+    private FoodItem foodItemOrdered;
+    private float timeInstantiated;
+
+    // the longest time the customer will wait before leaving
+    private float maxWaitTime;
     #endregion
 
     #region Cached components
     private SpawnController cc_spawnController;
+    private Menu cc_menu;
     #endregion
 
     [SerializeField]
@@ -32,12 +39,18 @@ public class Customer : CharacterBase, IDraggableObject
     protected override void Awake()
     {
         base.Awake();
-        GameObject customerSpawner = GameObject.Find("CustomerSpawner");
-        cc_spawnController = customerSpawner.GetComponent<SpawnController>();
+
+        // get cached components
+        cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
+        cc_menu = GameObject.Find("menu").GetComponent<Menu>();
+
+        // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
         this.m_isSeated = false;
         this.itemsToOrder = UnityEngine.Random.Range(1, 5);
+        this.maxWaitTime = 5 * 60; // currently set at 5 min
+        this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
 
     // Start is called before the first frame update
@@ -56,6 +69,11 @@ public class Customer : CharacterBase, IDraggableObject
     // Update is called once per frame
     protected override void Update()
     {
+        if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTime)
+        {
+            this.exitCafe();
+        }
+
         if (this.isPaused)
         {
             return;
@@ -76,19 +94,40 @@ public class Customer : CharacterBase, IDraggableObject
     }
     #endregion
 
-    private void removeCustomer()
+
+    #region Customer methods
+    /*
+     * Make a request to order an item
+     */
+    public void orderItem()
     {
-        Destroy(this);
+        // Pick a random menu item
+        if (this.itemsToOrder <= 0)
+        {
+            return;
+        }
+
+        this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
+        if (this.foodItemOrdered)
+        {
+            // TODO: put the item in the speech bubble
+            this.itemsToOrder -= 1;
+        }
     }
 
-    private void OnDestroy()
+    /*
+     * This is called after the main character
+     * serves the ordered item.
+     */
+    public void acceptItem(FoodItem servedItem)
     {
-        int index = this.cc_spawnController.allCustomerObjs.IndexOf(gameObject);
-        if (index == -1)
+        if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
-            throw new Exception("Could not find object in spawn controller");
+            this.runningBill += this.foodItemOrdered.itemPrice;
+            this.foodItemOrdered = null;
+
+            // clear speech bubble
         }
-        this.cc_spawnController.allCustomerObjs.RemoveAt(index);
     }
 
     /*
@@ -111,6 +150,14 @@ public class Customer : CharacterBase, IDraggableObject
         gameObject.transform.position = characterPosition;
         //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
+
+    public void exitCafe()
+    {
+        // add the payment so far to the money bank
+        Destroy(this);
+    }
+    #endregion
+
 
     #region IDraggableObject override
     public bool isBeingDragged
@@ -192,25 +239,5 @@ public class Customer : CharacterBase, IDraggableObject
             }
         }
     }
-    #endregion
-
-
-    #region Customer methods
-    /*
-     * Make a request to order an item
-     */
-    public void orderItem()
-    {
-        // Pick a random menu item
-        // Put the item in the speech bubble
-    }
-
-    public void requestWaiter()
-    {
-        // Make a speech bubble that indicates that customer is ready to order
-        // start timer
-        // decrease satisfaction as time goes on
-    }
-
     #endregion
 }

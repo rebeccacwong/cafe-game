@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
+
+    [SerializeField]
+    [Tooltip("The prefab of the item on the menu. It must have a foodItem script on it.")]
+    GameObject[] menuGameObjects;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +19,10 @@ public class Menu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public FoodItem returnRandomItemFromMenu()
+    {
+        return menuGameObjects[Random.Range(0, menuGameObjects.Length)].GetComponent<FoodItem>();
     }
 }
