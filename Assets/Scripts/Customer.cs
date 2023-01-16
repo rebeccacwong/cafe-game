@@ -16,18 +16,19 @@ public class Customer : CharacterBase, IDraggableObject
 
     #region Customer experience variables
     private float m_Satisfaction = 1;
-    private int itemsToOrder;
     private float runningBill = 0;
     private FoodItem foodItemOrdered;
     private float timeInstantiated;
 
     // the longest time the customer will wait before leaving
     private float maxWaitTime;
+    private float maxWaitTimeForOrder = 3 * 60;
     #endregion
 
     #region Cached components
     private SpawnController cc_spawnController;
     private Menu cc_menu;
+    private UI cc_uiController;
     #endregion
 
     [SerializeField]
@@ -42,14 +43,14 @@ public class Customer : CharacterBase, IDraggableObject
 
         // get cached components
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
+        cc_uiController = GameObject.Find("UIController").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
 
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
         this.m_isSeated = false;
-        this.itemsToOrder = UnityEngine.Random.Range(1, 5);
-        this.maxWaitTime = 5 * 60; // currently set at 5 min
+        this.maxWaitTime = 3 * 60; // currently set at 5 min
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
 
@@ -79,8 +80,17 @@ public class Customer : CharacterBase, IDraggableObject
             return;
         }
 
-        if (!this.m_isSeated)
+        if (this.m_isSeated)
         {
+            if (this.shouldOrderItem())
+            {
+                orderItem();
+            } else
+            {
+                // done ordering, leave the cafe
+                this.exitCafe();
+            }
+        } else {
             this.onUpdateMoveTowardsTarget();
 
             /* 
@@ -101,18 +111,15 @@ public class Customer : CharacterBase, IDraggableObject
      */
     public void orderItem()
     {
-        // Pick a random menu item
-        if (this.itemsToOrder <= 0)
-        {
-            return;
-        }
-
+        Debug.LogWarning("Ordered item");
         this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
         if (this.foodItemOrdered)
         {
-            // TODO: put the item in the speech bubble
-            this.itemsToOrder -= 1;
+            cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.2f, 0), this.foodItemOrdered.itemImage);
         }
+
+        // when we create a new order, we are willing to wait for it up to maxWaitTimeForOrder time.
+        this.maxWaitTime += this.maxWaitTimeForOrder;
     }
 
     /*
@@ -148,6 +155,7 @@ public class Customer : CharacterBase, IDraggableObject
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);
         gameObject.transform.position = characterPosition;
+        this.orderItem();
         //StartCoroutine(sitCoroutine(characterPosition, angle));
     }
 
@@ -155,6 +163,19 @@ public class Customer : CharacterBase, IDraggableObject
     {
         // add the payment so far to the money bank
         Destroy(this);
+    }
+
+    private bool shouldOrderItem()
+    {
+        if (this.foodItemOrdered)
+        {
+            // only order if we haven't already ordered
+            return false;
+        }
+
+        // order a new item with 33% probability
+        bool[] probabilityList = { true, false, false };
+        return probabilityList[UnityEngine.Random.Range(0, probabilityList.Length)];
     }
     #endregion
 

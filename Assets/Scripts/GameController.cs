@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
                     {
                         if (obj.tag == "Customer")
                         {
-                            Debug.LogWarning("Pausing all pausable objects");
+                            Debug.Log("Pausing all pausable objects");
 
                             foreach (IPausable pausableObj in getAllPausableObjects())
                             {
@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
 
             cc_spawnController.ResumeCustomerSpawning();
 
-            Debug.LogWarning("Unpausing all pausable objects");
+            Debug.Log("Unpausing all pausable objects");
             foreach (IPausable pausableObj in getAllPausableObjects())
             {
                 if (pausableObj.isPaused)

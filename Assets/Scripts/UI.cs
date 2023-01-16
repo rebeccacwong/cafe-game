@@ -12,6 +12,10 @@ public class UI : MonoBehaviour
     private SpawnController cc_spawnController;
     #endregion
 
+    [SerializeField]
+    [Tooltip("The chatBubble prefab")]
+    public GameObject chatBubbleGameObj;
+
     public void Awake()
     {
         GameObject sceneController = GameObject.Find("SceneController");
@@ -49,6 +53,13 @@ public class UI : MonoBehaviour
         cc_spawnController.minSpawnInterval = 5f;
         cc_spawnController.maxSpawnInterval = 5f;
         cc_spawnController.StartSpawningCustomers();
+    }
+
+    public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img)
+    {
+        GameObject newChatBubble = Instantiate(chatBubbleGameObj, parent);
+        newChatBubble.transform.localPosition = localPosition;
+        newChatBubble.GetComponent<ChatBubble>().updateSprite(img);
     }
 
 
