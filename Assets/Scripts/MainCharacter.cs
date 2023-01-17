@@ -30,6 +30,26 @@ public class MainCharacter : CharacterBase
         if (!this.isPaused)
         {
             onUpdatefollowKeyDirections();
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                float interactRange = 2f;
+                Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+                if (colliderArray.Length > 0)
+                {
+                    Debug.LogWarning("Found a collision with something nearby");
+                }
+                foreach (Collider collider in colliderArray)
+                {
+                    IInteractable interactableObj = collider.GetComponent<IInteractable>();
+                    if (interactableObj == null || !interactableObj.canInteract())
+                    {
+                        Debug.LogWarning("Found an interactable object");
+                        return;
+                    }
+                    interactableObj.interactWithObject();
+                }
+            }
         }
     }
 
