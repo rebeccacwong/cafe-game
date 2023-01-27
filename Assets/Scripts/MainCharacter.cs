@@ -6,6 +6,8 @@ using UnityEngine;
 public class MainCharacter : CharacterBase
 {
     private float m_turnSmoothVelocity;
+    private bool m_interacting;
+    private GameObject m_currentlyCarrying;
 
     #region Initialization
     protected override void Awake()
@@ -42,20 +44,23 @@ public class MainCharacter : CharacterBase
                 foreach (Collider collider in colliderArray)
                 {
                     IInteractable interactableObj = collider.GetComponent<IInteractable>();
-                    if (interactableObj == null || !interactableObj.canInteract())
+                    if (interactableObj != null && interactableObj.canInteract())
                     {
                         Debug.LogWarning("Found an interactable object");
-                        return;
+                        if (this.m_interacting)
+                        {
+                            interactableObj.stopInteractingWithObject();
+                            this.m_interacting = false;
+                        } else
+                        {
+                            this.m_interacting = true;
+                            interactableObj.interactWithObject();
+                        }
+                        break;
                     }
-                    interactableObj.interactWithObject();
                 }
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-
     }
 
     protected void onUpdatefollowKeyDirections()
@@ -89,6 +94,29 @@ public class MainCharacter : CharacterBase
                 this.setState(AnimationState.IDLE);
             }
         }
+    }
+
+    /*
+     * Once the food item has been selected, instantiate
+     * it so that it's being held in main character's
+     * hands
+     */
+    public void carryItem(GameObject foodPrefab)
+    {
+        Debug.LogWarning("Going to carry the item");
+        // Add animation
+        // place the object under the main character prefab
+        return;
+    }
+
+    public bool isCarryingItem()
+    {
+        return (this.m_currentlyCarrying != null);
+    }
+
+    public void dropItem()
+    {
+        // if the 
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)

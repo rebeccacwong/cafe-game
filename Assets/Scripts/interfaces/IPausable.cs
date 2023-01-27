@@ -22,7 +22,7 @@ public interface IPausable
 
     public void Unpause();
 
-
+    
     /*
      * Only pauses the character animation cycle. The transforms can 
      * continue to change.

@@ -17,6 +17,11 @@ public interface IInteractable
     public void interactWithObject();
 
     /*
+     * Stop interacting with the IInteractable object
+     */
+    public void stopInteractingWithObject();
+
+    /*
      * Returns whether or not the main character
      * is allowed to interact with this
      * IInteractable object at this time.
