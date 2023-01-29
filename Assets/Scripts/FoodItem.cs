@@ -19,16 +19,4 @@ public class FoodItem : MonoBehaviour
     [SerializeField]
     [Tooltip("The location that the main character must go to in order to prepare item")]
     public string prepLocation;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

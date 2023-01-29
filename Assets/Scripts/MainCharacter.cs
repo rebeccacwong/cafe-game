@@ -9,6 +9,8 @@ public class MainCharacter : CharacterBase
     private bool m_interacting;
     private GameObject m_currentlyCarrying;
 
+    private static Vector3 handLocalPosition = new Vector3(1.17f, 1.23f, 0.06f);
+
     #region Initialization
     protected override void Awake()
     {
@@ -103,8 +105,34 @@ public class MainCharacter : CharacterBase
      */
     public void carryItem(GameObject foodPrefab)
     {
+        GameObject prefabToClone = null;
+
         Debug.LogWarning("Going to carry the item");
+
+        if (foodPrefab.GetComponent<pastryCaseItem>())
+        {
+            prefabToClone = foodPrefab.GetComponent<pastryCaseItem>().prefab;
+        }
+
+        if (!prefabToClone)
+        {
+            prefabToClone = foodPrefab;
+        }
+
         this.setState(AnimationState.CARRYING_POSE);
+        GameObject newFoodItem = Instantiate(prefabToClone, gameObject.transform);
+        Quaternion rotation = gameObject.transform.rotation;
+        gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
+        Debug.Assert(
+            newFoodItem.GetComponent<BoxCollider>() != null,
+            "FoodItem prefab must have an associated box collider.");
+
+        Vector3 foodItemPos = handLocalPosition;
+        foodItemPos.y += newFoodItem.GetComponent<BoxCollider>().bounds.size.y / 2;
+        Debug.LogWarning(foodItemPos);
+
+        newFoodItem.transform.localPosition = foodItemPos;
+        gameObject.transform.rotation = rotation;
         // Add animation
         // place the object under the main character prefab
         return;

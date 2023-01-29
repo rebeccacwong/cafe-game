@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6018650079640744522}
   - component: {fileID: -8457314459531023555}
+  - component: {fileID: 1882093533775842930}
   m_Layer: 9
   m_Name: croissant2
   m_TagString: Untagged
@@ -46,6 +47,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.76, y: 0.48, z: 1.39}
   m_Center: {x: 0, y: 0.24, z: -0.06}
+--- !u!114 &1882093533775842930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4555924692550001125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba92d4bd8fc1f4b5f89924421884a4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7442116341142579431, guid: 6d528c0b1613e42f3ae6670e65c11f0f, type: 3}
 --- !u!1001 &7859797694904792830
 PrefabInstance:
   m_ObjectHideFlags: 0
