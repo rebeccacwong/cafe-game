@@ -7,7 +7,8 @@ public enum AnimationState
 {
     WALKING = 0,
     IDLE = 1,
-    SITTING = 2
+    SITTING = 2,
+    CARRYING_POSE = 3
 }
 
 [System.Serializable]

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1075401877793327252}
   - component: {fileID: -8395403387506402591}
+  - component: {fileID: -2518805163156438512}
   m_Layer: 9
   m_Name: croissant
   m_TagString: Untagged
@@ -49,6 +50,19 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: d75695d6a24bd45cf9618e529f8664f1, type: 3}
   itemPrice: 4
   prepLocation: pastryCase
+--- !u!65 &-2518805163156438512
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7442116341142579431}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.85, y: 0.53, z: 1.7}
+  m_Center: {x: 0, y: -0.37, z: 0}
 --- !u!1001 &8001970374103886968
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -31,8 +31,9 @@ public class pastryCase : MonoBehaviour, IInteractable
         if (Input.GetMouseButtonDown(0))
         {
             GameObject foodItem = Utils.returnObjectMouseIsOn(LayerMask.GetMask("FoodItems"));
-            if (gameObject)
+            if (foodItem)
             {
+                Debug.LogWarning(foodItem);
                 this.cc_mainCharacter.carryItem(foodItem);
                 closeCase();
             }

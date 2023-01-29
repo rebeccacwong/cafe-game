@@ -104,6 +104,7 @@ public class MainCharacter : CharacterBase
     public void carryItem(GameObject foodPrefab)
     {
         Debug.LogWarning("Going to carry the item");
+        this.setState(AnimationState.CARRYING_POSE);
         // Add animation
         // place the object under the main character prefab
         return;
