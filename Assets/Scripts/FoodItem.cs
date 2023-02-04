@@ -27,6 +27,7 @@ public class FoodItem : MonoBehaviour
      */
     public void InstantiateFoodItem(Chair chairSeatedIn)
     {
+        Table table = chairSeatedIn.getTable();
 
     }
 }

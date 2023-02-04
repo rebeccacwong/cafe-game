@@ -28,4 +28,20 @@ public class Chair : MonoBehaviour
         this.facingDirection =
             Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * this.facingDirection;
     }
+
+    // Returns the table that the chair is at
+    public Table getTable()
+    {
+        if (Physics.Raycast(
+                gameObject.transform.position,
+                this.facingDirection,
+                out RaycastHit hitData,
+                5f,
+                LayerMask.GetMask("Tables")))
+        {
+            GameObject hitObj = hitData.collider.gameObject;
+            return hitObj.GetComponent<Table>();
+        }
+        return null;
+    }
 }
