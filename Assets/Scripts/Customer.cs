@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Customer : CharacterBase, IDraggableObject
+public class Customer : CharacterBase, IDraggableObject, IInteractable
 {
 
     #region Instance variables
     private Vector3 m_frontOfLinePos;
     private Vector3 m_screenPointOfCharacter;
     private bool m_isBeingDragged;
-    private bool m_isSeated;
+    private Chair m_chairSeatedIn;
     private Vector3 m_lastPositionBeforeDragging;
     #endregion
 
@@ -29,6 +29,7 @@ public class Customer : CharacterBase, IDraggableObject
     private SpawnController cc_spawnController;
     private Menu cc_menu;
     private UI cc_uiController;
+    private MainCharacter cc_mainCharacter;
     #endregion
 
     [SerializeField]
@@ -45,11 +46,12 @@ public class Customer : CharacterBase, IDraggableObject
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("UIController").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
+        cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
 
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.m_isSeated = false;
+        this.m_chairSeatedIn = null;
         this.maxWaitTime = 3 * 60; // currently set at 5 min
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
@@ -80,7 +82,7 @@ public class Customer : CharacterBase, IDraggableObject
             return;
         }
 
-        if (this.m_isSeated)
+        if (this.m_chairSeatedIn)
         {
             if (this.shouldOrderItem())
             {
@@ -124,17 +126,20 @@ public class Customer : CharacterBase, IDraggableObject
 
     /*
      * This is called after the main character
-     * serves the ordered item.
+     * serves the ordered item. Returns true
+     * if the customer accepted the item.
      */
-    public void acceptItem(FoodItem servedItem)
+    public bool acceptItem(FoodItem servedItem)
     {
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
             this.runningBill += this.foodItemOrdered.itemPrice;
             this.foodItemOrdered = null;
-
-            // clear speech bubble
+            cc_uiController.clearChatBubble(gameObject.transform);
+            servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
+            return true;
         }
+        return false;
     }
 
     /*
@@ -143,7 +148,7 @@ public class Customer : CharacterBase, IDraggableObject
      */
     public void sitDown(GameObject chairGameObject, Chair chairData)
     {
-        this.m_isSeated = true;
+        this.m_chairSeatedIn = chairData;
         chairData.inUse = true;
 
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
@@ -190,7 +195,7 @@ public class Customer : CharacterBase, IDraggableObject
     public bool startDraggingObject()
     {
         // Only drag characters that are not seated
-        if (this.m_isSeated)
+        if (this.m_chairSeatedIn)
         {
             return false;
         }
@@ -210,7 +215,7 @@ public class Customer : CharacterBase, IDraggableObject
         this.unpauseAnimation();
 
         // do nothing if character is already seated
-        if (this.m_isSeated)
+        if (this.m_chairSeatedIn)
         {
             return;
         }
@@ -259,6 +264,24 @@ public class Customer : CharacterBase, IDraggableObject
                 gameObject.transform.position = curPosition;
             }
         }
+    }
+    #endregion
+
+    #region IInteractable methods
+    public void interactWithObject()
+    {
+        bool accepted = this.acceptItem(this.cc_mainCharacter.itemBeingCarried());
+    }
+
+    public void stopInteractingWithObject()
+    {
+        // unused, this is a no-op
+        return;
+    }
+
+    public bool canInteract()
+    {
+        return (this.foodItemOrdered != null && this.cc_mainCharacter.isCarryingItem());
     }
     #endregion
 }

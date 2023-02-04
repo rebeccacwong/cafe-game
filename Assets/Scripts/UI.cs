@@ -62,5 +62,11 @@ public class UI : MonoBehaviour
         newChatBubble.GetComponent<ChatBubble>().updateSprite(img);
     }
 
+    public void clearChatBubble(Transform parent)
+    {
+        Transform chatBubble = parent.Find("ChatBubble");
+        Destroy(chatBubble.gameObject);
+    }
+
 
 }

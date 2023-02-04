@@ -19,4 +19,14 @@ public class FoodItem : MonoBehaviour
     [SerializeField]
     [Tooltip("The location that the main character must go to in order to prepare item")]
     public string prepLocation;
+
+    /*
+     * Spawns an instance of the food item.
+     * Takes in the chair that the customer is seated in
+     * to calculate where the food item should spawn.
+     */
+    public void InstantiateFoodItem(Chair chairSeatedIn)
+    {
+
+    }
 }

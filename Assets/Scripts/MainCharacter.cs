@@ -7,7 +7,7 @@ public class MainCharacter : CharacterBase
 {
     private float m_turnSmoothVelocity;
     private bool m_interacting;
-    private GameObject m_currentlyCarrying;
+    private FoodItem m_currentlyCarrying = null;
 
     private static Vector3 handLocalPosition = new Vector3(1.17f, 1.23f, 0.06f);
 
@@ -133,14 +133,18 @@ public class MainCharacter : CharacterBase
 
         newFoodItem.transform.localPosition = foodItemPos;
         gameObject.transform.rotation = rotation;
-        // Add animation
-        // place the object under the main character prefab
-        return;
+
+        this.m_currentlyCarrying = newFoodItem.GetComponent<FoodItem>();
     }
 
     public bool isCarryingItem()
     {
         return (this.m_currentlyCarrying != null);
+    }
+
+    public FoodItem itemBeingCarried()
+    {
+        return this.m_currentlyCarrying;
     }
 
     public void dropItem()
