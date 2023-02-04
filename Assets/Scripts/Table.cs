@@ -33,22 +33,8 @@ public class Table : MonoBehaviour
         return this.cc_boxCollider.size.x;
     }
 
-    private float getHeight()
+    public float getHeight()
     {
         return this.cc_boxCollider.size.y;
-    }
-
-    /*
-     * Returns the world-space y value that the 
-     * surface of the table is at
-     */
-    public float getSurfacePointY()
-    {
-        float height = this.getHeight();
-        Vector3 localPos = gameObject.transform.localPosition;
-
-        // assumes that the gameObject's local position is in the center of the obj
-        localPos.y += height / 2;
-        return (gameObject.transform.localToWorldMatrix * localPos).y;
     }
 }

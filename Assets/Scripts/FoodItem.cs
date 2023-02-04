@@ -28,6 +28,24 @@ public class FoodItem : MonoBehaviour
     public void InstantiateFoodItem(Chair chairSeatedIn)
     {
         Table table = chairSeatedIn.getTable();
+        Vector3 pos = Vector3.zero;
 
+        pos.y = table.getHeight() / 2;
+
+        if (chairSeatedIn.facingDirection.x != 0)
+        {
+            // need to verify whether this is the right calculation
+            pos.x = (table.getWidthOnXAxis() / 4f) - chairSeatedIn.facingDirection.x;
+        } else if (chairSeatedIn.facingDirection.z != 0)
+        {
+            pos.z = (table.getWidthOnZAxis() / 4f) - chairSeatedIn.facingDirection.z;
+        } else
+        {
+            Debug.LogWarning("Should never get here. Some chair needs to fix its facingDirection");
+        }
+
+        // Instantiate a new food item as a child of the table
+        Instantiate(this, table.transform);
+        
     }
 }

@@ -149,7 +149,7 @@ public class MainCharacter : CharacterBase
 
     public void dropItem()
     {
-        // if the 
+        Destroy(this.m_currentlyCarrying.gameObject);
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)

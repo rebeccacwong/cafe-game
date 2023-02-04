@@ -270,13 +270,15 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     #region IInteractable methods
     public void interactWithObject()
     {
-        bool accepted = this.acceptItem(this.cc_mainCharacter.itemBeingCarried());
+        if (this.acceptItem(this.cc_mainCharacter.itemBeingCarried()))
+        {
+            this.stopInteractingWithObject();
+        }
     }
 
     public void stopInteractingWithObject()
     {
-        // unused, this is a no-op
-        return;
+        this.cc_mainCharacter.dropItem();
     }
 
     public bool canInteract()
