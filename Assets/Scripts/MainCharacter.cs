@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class MainCharacter : CharacterBase
 {
     private float m_turnSmoothVelocity;
@@ -37,15 +38,17 @@ public class MainCharacter : CharacterBase
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                float interactRange = 2f;
-                Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+                float interactRange = 3f;
+
+                // Find all nearby interactables
+                Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange, LayerMask.GetMask("IInteractables"));
                 if (colliderArray.Length > 0)
                 {
                     Debug.LogWarning("Found a collision with something nearby");
                 }
                 foreach (Collider collider in colliderArray)
                 {
-                    IInteractable interactableObj = collider.GetComponent<IInteractable>();
+                    var interactableObj = collider.gameObject.GetComponent<IInteractable>();
                     if (interactableObj != null && interactableObj.canInteract())
                     {
                         Debug.LogWarning("Found an interactable object");

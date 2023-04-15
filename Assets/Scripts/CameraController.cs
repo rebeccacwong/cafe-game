@@ -21,11 +21,13 @@ public class CameraController : MonoBehaviour
     #endregion
 
     private Camera m_ActiveCamera;
-
-    public bool followingCharacter = false;
     private Vector3 m_characterStartPos;
     private Vector3 m_camStartPos;
 
+    [HideInInspector]
+    public bool followingCharacter = false;
+
+    [HideInInspector]
     GameObject cc_mainCharacter;
 
     // Start is called before the first frame update

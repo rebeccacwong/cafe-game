@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Customer : CharacterBase, IDraggableObject, IInteractable
 {
 
@@ -10,8 +11,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private Vector3 m_frontOfLinePos;
     private Vector3 m_screenPointOfCharacter;
     private bool m_isBeingDragged;
-    private Chair m_chairSeatedIn;
     private Vector3 m_lastPositionBeforeDragging;
+    private Chair m_chairSeatedIn;
+
     #endregion
 
     #region Customer experience variables
@@ -29,7 +31,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private SpawnController cc_spawnController;
     private Menu cc_menu;
     private UI cc_uiController;
-    private MainCharacter cc_mainCharacter;
     #endregion
 
     [SerializeField]
@@ -46,12 +47,10 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("UIController").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
-        cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
 
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.m_chairSeatedIn = null;
         this.maxWaitTime = 3 * 60; // currently set at 5 min
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
@@ -87,11 +86,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             if (this.shouldOrderItem())
             {
                 orderItem();
-            } else
-            {
-                // done ordering, leave the cafe
-                this.exitCafe();
             }
+            //} else
+            //{
+            //    // done ordering, leave the cafe
+            //    this.exitCafe();
+            //}
         } else {
             this.onUpdateMoveTowardsTarget();
 
@@ -108,6 +108,10 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
 
     #region Customer methods
+    private MainCharacter getMainCharacter()
+    {
+        return GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
+    }
     /*
      * Make a request to order an item
      */
@@ -131,12 +135,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public bool acceptItem(FoodItem servedItem)
     {
+        Debug.Assert(this.foodItemOrdered != null);
+        Debug.Assert(servedItem != null);
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
             this.runningBill += this.foodItemOrdered.itemPrice;
             this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
-            servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
+            //return servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
             return true;
         }
         return false;
@@ -149,7 +155,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     public void sitDown(GameObject chairGameObject, Chair chairData)
     {
         this.m_chairSeatedIn = chairData;
-        chairData.inUse = true;
+        chairData.useChair();
 
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
@@ -160,14 +166,20 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);
         gameObject.transform.position = characterPosition;
-        this.orderItem();
+        //this.orderItem();
         //StartCoroutine(sitCoroutine(characterPosition, angle));
+    }
+
+    public bool shouldExitCafe()
+    {
+        // TODO: implement
+        return false;
     }
 
     public void exitCafe()
     {
         // add the payment so far to the money bank
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 
     private bool shouldOrderItem()
@@ -234,7 +246,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
                 Chair chairData = collisionObj.GetComponent<Chair>();
                 Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
 
-                if (chairData.inUse)
+                if (chairData.inUse())
                 {
                     gameObject.transform.position = this.m_lastPositionBeforeDragging;
                 } else
@@ -270,7 +282,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     #region IInteractable methods
     public void interactWithObject()
     {
-        if (this.acceptItem(this.cc_mainCharacter.itemBeingCarried()))
+        if (this.acceptItem(this.getMainCharacter().itemBeingCarried()))
         {
             this.stopInteractingWithObject();
         }
@@ -278,12 +290,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     public void stopInteractingWithObject()
     {
-        this.cc_mainCharacter.dropItem();
+        this.getMainCharacter().dropItem();
     }
 
     public bool canInteract()
     {
-        return (this.foodItemOrdered != null && this.cc_mainCharacter.isCarryingItem());
+        return (this.foodItemOrdered != null && this.getMainCharacter().isCarryingItem());
     }
     #endregion
 }

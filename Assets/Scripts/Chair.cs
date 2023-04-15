@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Chair : MonoBehaviour
 {
     /*
@@ -21,7 +22,7 @@ public class Chair : MonoBehaviour
     [Tooltip("The offset z position from the center of the chair, relative to the facing direction")]
     public float offset_z;
 
-    public bool inUse = false;
+    private bool m_inUse;
         
     private void Awake()
     {
@@ -43,5 +44,15 @@ public class Chair : MonoBehaviour
             return hitObj.GetComponent<Table>();
         }
         return null;
+    }
+
+    public void useChair()
+    {
+        this.m_inUse = true;
+    }
+
+    public bool inUse()
+    {
+        return this.m_inUse;
     }
 }

@@ -11,7 +11,6 @@ public enum AnimationState
     CARRYING_POSE = 3
 }
 
-[System.Serializable]
 public class CharacterBase : MonoBehaviour, IPausable
 {
     #region Cached Components
