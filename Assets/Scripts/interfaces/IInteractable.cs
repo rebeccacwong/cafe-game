@@ -14,12 +14,7 @@ public interface IInteractable
      * Allow the main character to interact with
      * this IInteractable object
      */
-    public void interactWithObject();
-
-    /*
-     * Stop interacting with the IInteractable object
-     */
-    public void stopInteractingWithObject();
+    public void interactWithObject(GameObject optionalParam = null);
 
     /*
      * Returns whether or not the main character

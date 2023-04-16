@@ -64,9 +64,9 @@ public class UI : MonoBehaviour
 
     public void clearChatBubble(Transform parent)
     {
-        Transform chatBubble = parent.Find("ChatBubble");
+        Transform chatBubble = parent.Find("ChatBubble(Clone)");
+        Debug.Assert(chatBubble != null, "Could not find chat bubble in parent.");
         Destroy(chatBubble.gameObject);
     }
-
 
 }

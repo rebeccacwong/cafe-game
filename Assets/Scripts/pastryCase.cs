@@ -33,25 +33,20 @@ public class pastryCase : MonoBehaviour, IInteractable
             GameObject foodItem = Utils.returnObjectMouseIsOn(LayerMask.GetMask("FoodItems"));
             if (foodItem)
             {
-                Debug.LogWarning(foodItem);
+                Debug.LogFormat("Received food item {0} from pastry case", foodItem);
                 this.cc_mainCharacter.carryItem(foodItem);
+                this.m_CurrentlyInteracting = false;
                 closeCase();
             }
         }
     }
 
     #region IInteractable Methods
-    public void interactWithObject()
+    public void interactWithObject(GameObject optionalParam = null)
     {
+        _ = optionalParam;
         openCase();
         this.m_CurrentlyInteracting = true;
-    }
-
-    public void stopInteractingWithObject()
-    {
-        Debug.LogWarning("Stop interacting");
-        this.m_CurrentlyInteracting = false;
-        closeCase();
     }
 
     public bool canInteract()
@@ -63,15 +58,13 @@ public class pastryCase : MonoBehaviour, IInteractable
 
     private void openCase()
     {
-        // TODO: Make put the camera to view the pastry case
-        Debug.LogWarning("Opened pastry case");
+        Debug.Log("Opened pastry case");
         this.m_oldCamera = cc_CameraController.getActiveCamera();
         cc_CameraController.changeActiveCamera("pastryCamera");
     }
 
     private void closeCase()
     {
-        // TODO: change the camera back to the old view
         if (this.m_oldCamera)
         {
             Debug.LogWarning(this.m_oldCamera.name);

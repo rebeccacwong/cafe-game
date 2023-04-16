@@ -23,8 +23,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private float timeInstantiated;
 
     // the longest time the customer will wait before leaving
-    private float maxWaitTime;
-    private float maxWaitTimeForOrder = 3 * 60;
+    private float maxWaitTimeSeconds;
+    private float maxWaitTimeSecondsForOrder = 3 * 60;
     #endregion
 
     #region Cached components
@@ -51,7 +51,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.maxWaitTime = 3 * 60; // currently set at 5 min
+        this.maxWaitTimeSeconds = 3 * 60; // currently set at 5 min
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
 
@@ -71,7 +71,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     // Update is called once per frame
     protected override void Update()
     {
-        if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTime)
+        if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTimeSeconds)
         {
             this.exitCafe();
         }
@@ -117,15 +117,16 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public void orderItem()
     {
-        Debug.LogWarning("Ordered item");
         this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
         if (this.foodItemOrdered)
         {
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.2f, 0), this.foodItemOrdered.itemImage);
         }
 
-        // when we create a new order, we are willing to wait for it up to maxWaitTimeForOrder time.
-        this.maxWaitTime += this.maxWaitTimeForOrder;
+        // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
+        this.maxWaitTimeSeconds += this.maxWaitTimeSecondsForOrder;
+
+        Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.maxWaitTimeSeconds);
     }
 
     /*
@@ -137,13 +138,18 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     {
         Debug.Assert(this.foodItemOrdered != null);
         Debug.Assert(servedItem != null);
+
+        Debug.LogWarningFormat(
+            "Customer {0:X} is expecting to receive {1} and got served {2}",
+            gameObject.GetInstanceID(),
+            servedItem.itemName,
+            this.foodItemOrdered.itemName);
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
             this.runningBill += this.foodItemOrdered.itemPrice;
             this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
-            //return servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
-            return true;
+            return servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
         }
         return false;
     }
@@ -215,7 +221,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         this.pauseAnimation();
         this.isBeingDragged = true;
         this.m_lastPositionBeforeDragging = gameObject.transform.position;
-        Debug.LogWarningFormat("Start dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
+        Debug.LogFormat("Start dragging customer {0} with id {1:X}", gameObject, gameObject.GetInstanceID());
 
         this.cc_rigidBody.isKinematic = false;
         this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
@@ -234,7 +240,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         this.isBeingDragged = false;
         this.cc_rigidBody.isKinematic = true;
-        Debug.LogWarningFormat("Stop dragging customer {0} with id {1}", gameObject, gameObject.GetInstanceID());
+        Debug.LogFormat("Stop dragging customer {0} with id {1:X}", gameObject, gameObject.GetInstanceID());
 
         // check if we're intersecting with a chair or table and we should it there
         GameObject collisionObj = Utils.returnObjectMouseIsOn(LayerMask.GetMask("Chairs"));
@@ -242,7 +248,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         {
             if (collisionObj.tag == "Chair")
             {
-                Debug.LogWarning("collided with a chair");
+                Debug.LogFormat("Collided with a chair while dragging customer {0:X}", gameObject.GetInstanceID());
                 Chair chairData = collisionObj.GetComponent<Chair>();
                 Debug.Assert(chairData != null, "All chair gameObjects must have a Chair script");
 
@@ -280,17 +286,18 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     #endregion
 
     #region IInteractable methods
-    public void interactWithObject()
+    public void interactWithObject(GameObject optionalParam = null)
     {
-        if (this.acceptItem(this.getMainCharacter().itemBeingCarried()))
+        FoodItem foodItem = optionalParam.GetComponent<FoodItem>();
+        if (foodItem == null)
         {
-            this.stopInteractingWithObject();
+            throw new Exception("Customer interactWithObject received a parameter that is not a FoodItem.");
         }
-    }
-
-    public void stopInteractingWithObject()
-    {
-        this.getMainCharacter().dropItem();
+        Debug.LogWarningFormat("Attempting to serve customer the food item:", foodItem);
+        if (this.acceptItem(foodItem))
+        {
+            this.getMainCharacter().dropItem();
+        }
     }
 
     public bool canInteract()

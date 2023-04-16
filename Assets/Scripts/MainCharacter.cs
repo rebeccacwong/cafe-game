@@ -7,9 +7,9 @@ using UnityEngine;
 public class MainCharacter : CharacterBase
 {
     private float m_turnSmoothVelocity;
-    private bool m_interacting;
     private FoodItem m_currentlyCarrying = null;
 
+    private static float interactRange = 3f;
     private static Vector3 handLocalPosition = new Vector3(1.17f, 1.23f, 0.06f);
 
     #region Initialization
@@ -38,27 +38,20 @@ public class MainCharacter : CharacterBase
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                float interactRange = 3f;
-
                 // Find all nearby interactables
                 Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange, LayerMask.GetMask("IInteractables"));
-                if (colliderArray.Length > 0)
-                {
-                    Debug.LogWarning("Found a collision with something nearby");
-                }
                 foreach (Collider collider in colliderArray)
                 {
                     var interactableObj = collider.gameObject.GetComponent<IInteractable>();
                     if (interactableObj != null && interactableObj.canInteract())
                     {
-                        Debug.LogWarning("Found an interactable object");
-                        if (this.m_interacting)
+                        // Interact with the first IInteractable we find close to us
+                        Debug.LogWarningFormat("Found interactable object: {0}", interactableObj);
+                        if (this.itemBeingCarried())
                         {
-                            interactableObj.stopInteractingWithObject();
-                            this.m_interacting = false;
+                            interactableObj.interactWithObject(this.itemBeingCarried().gameObject);
                         } else
                         {
-                            this.m_interacting = true;
                             interactableObj.interactWithObject();
                         }
                         break;
