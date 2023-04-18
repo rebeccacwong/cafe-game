@@ -25,6 +25,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     // the longest time the customer will wait before leaving
     private float maxWaitTimeSeconds;
     private float maxWaitTimeSecondsForOrder = 3 * 60;
+    private float waitBetweenOrders = 3 * 60;
+    private float waitBetweenOrdersTimer = 0;
     #endregion
 
     #region Cached components
@@ -51,7 +53,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.maxWaitTimeSeconds = 3 * 60; // currently set at 5 min
+        this.maxWaitTimeSeconds = 3 * 60;
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
 
@@ -71,6 +73,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     // Update is called once per frame
     protected override void Update()
     {
+        waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
+
         if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTimeSeconds)
         {
             this.exitCafe();
@@ -87,11 +91,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             {
                 orderItem();
             }
-            //} else
-            //{
-            //    // done ordering, leave the cafe
-            //    this.exitCafe();
-            //}
         } else {
             this.onUpdateMoveTowardsTarget();
 
@@ -136,6 +135,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public bool acceptItem(FoodItem servedItem)
     {
+        bool Result = false;
+
         Debug.Assert(this.foodItemOrdered != null);
         Debug.Assert(servedItem != null);
 
@@ -149,9 +150,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.runningBill += this.foodItemOrdered.itemPrice;
             this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
-            return servedItem.InstantiateFoodItem(this.m_chairSeatedIn);
+            if (Result = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
+            {
+                this.waitBetweenOrdersTimer = this.waitBetweenOrders;
+            }
         }
-        return false;
+        return Result;
     }
 
     /*
@@ -190,9 +194,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     private bool shouldOrderItem()
     {
-        if (this.foodItemOrdered)
+        if (this.foodItemOrdered || waitBetweenOrdersTimer > 0)
         {
-            // only order if we haven't already ordered
+            // only order if we haven't already ordered and aren't waiting between orders
             return false;
         }
 

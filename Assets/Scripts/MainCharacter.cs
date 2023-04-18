@@ -9,7 +9,7 @@ public class MainCharacter : CharacterBase
     private float m_turnSmoothVelocity;
     private FoodItem m_currentlyCarrying = null;
 
-    private static float interactRange = 3f;
+    private static float interactRange = 2.5f;
     private static Vector3 handLocalPosition = new Vector3(1.17f, 1.23f, 0.06f);
 
     #region Initialization
