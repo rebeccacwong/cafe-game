@@ -23,16 +23,26 @@ public class Table : MonoBehaviour
         
     }
 
+    /*
+     * Gets the width of the object along the z-axis measured in local space
+     */
     public float getWidthOnZAxis()
     {
         return this.cc_boxCollider.size.z;
     }
 
+    /*
+     * Gets the width of the object along the x-axis measured in local space
+     */
     public float getWidthOnXAxis()
     {
         return this.cc_boxCollider.size.x;
     }
 
+    /*
+     * Gets the height of the object measured in 
+     * local space 
+     */
     public float getHeight()
     {
         return this.cc_boxCollider.size.y;

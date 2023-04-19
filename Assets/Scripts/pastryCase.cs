@@ -52,7 +52,7 @@ public class pastryCase : MonoBehaviour, IInteractable
     public bool canInteract()
     {
         // we cannot pick up a new item if we're already carrying something
-        return !this.cc_mainCharacter.isCarryingItem();
+        return !this.cc_mainCharacter.isCarryingItem() && !this.m_CurrentlyInteracting;
     }
     #endregion
 

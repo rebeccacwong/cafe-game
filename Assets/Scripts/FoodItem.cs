@@ -52,22 +52,25 @@ public class FoodItem : MonoBehaviour
 
         Debug.LogWarningFormat("Chair position in local table space is {0}", chairPosInLocalTableSpace);
 
+        //Vector3 tableRelativeSize = table.getRelativeSize(table.transform);
+
         pos.y = (table.getHeight() / 2);
 
         Debug.LogWarningFormat("Chair facing direction vector is: {0}", chairSeatedIn.facingDirection);
 
-        if (chairSeatedIn.facingDirection.x == 0)
+        if (chairSeatedIn.facingDirection.z != 0)
         {
-            Debug.LogWarning(chairSeatedIn.facingDirection.x);
-            // need to edit this calculation
-            pos.x = (table.getWidthOnXAxis() * 4f) * -chairSeatedIn.facingDirection.z;
-        } else if (chairSeatedIn.facingDirection.z != 0)
-        {
-            Debug.LogWarning(chairSeatedIn.facingDirection.z);
-            pos.z = (table.getWidthOnZAxis() / 4f) * chairSeatedIn.facingDirection.x;
+            // chair is pointing in z direction
+            Debug.LogWarning("Table width on x axis: " + table.getWidthOnXAxis());
+            pos.x = (table.getWidthOnXAxis() / 4f) * chairSeatedIn.facingDirection.z;
+        //} else if (chairSeatedIn.facingDirection.x != 0)
+        //{
+        //    // chair is pointing in x direction
+        //    Debug.LogWarning("Table width on z axis: " + table.getWidthOnZAxis());
+        //    pos.z = (table.getWidthOnZAxis() / 4f) * chairSeatedIn.facingDirection.x;
         } else
         {
-            Debug.LogWarning("Should never get here. Some chair needs to fix its facingDirection");
+            Debug.LogError("Cannot instantiate food item. Some chair needs to fix its facingDirection");
             return false;
         }
 
@@ -79,7 +82,7 @@ public class FoodItem : MonoBehaviour
             newFoodItem.transform.localScale = new Vector3(1, 1, 1) * newFoodItem.tableScaleFactor;
         }
 
-        pos.y += (this.getHeight() / 2); // offset so base of object is at bottom of table
+        pos.y += (this.getHeight() / 2) - (this.getCenter().y); // offset so base of object is at bottom of table
         Debug.LogWarningFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
 
@@ -89,5 +92,10 @@ public class FoodItem : MonoBehaviour
     private float getHeight()
     {
         return this.cc_boxCollider.size.y;
+    }
+
+    private Vector3 getCenter()
+    {
+        return this.cc_boxCollider.center;
     }
 }
