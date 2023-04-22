@@ -18,6 +18,10 @@ public class Chair : MonoBehaviour
     [Tooltip("The offset z position from the center of the chair, relative to the facing direction")]
     public float offset_z;
 
+    [SerializeField]
+    [Tooltip("The default facing direction vector of the prefab.")]
+    private Vector3 prefabFacingDirection;
+
     public Vector3Int facingDirection;
 
     private bool m_inUse;
@@ -25,7 +29,7 @@ public class Chair : MonoBehaviour
     private void Awake()
     {
         this.facingDirection =
-            Vector3Int.RoundToInt(Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(1, 0, 0));
+            Vector3Int.RoundToInt(Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * prefabFacingDirection);
     }
 
     // Returns the table that the chair is at

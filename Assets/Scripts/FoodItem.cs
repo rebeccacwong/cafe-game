@@ -58,17 +58,21 @@ public class FoodItem : MonoBehaviour
 
         Debug.LogWarningFormat("Chair facing direction vector is: {0}", chairSeatedIn.facingDirection);
 
+        Debug.LogWarning("Table width on x axis: " + table.getWidthOnXAxis());
+
         if (chairSeatedIn.facingDirection.z != 0)
         {
             // chair is pointing in z direction
             Debug.LogWarning("Table width on x axis: " + table.getWidthOnXAxis());
             pos.x = (table.getWidthOnXAxis() / 4f) * chairSeatedIn.facingDirection.z;
-        //} else if (chairSeatedIn.facingDirection.x != 0)
-        //{
-        //    // chair is pointing in x direction
-        //    Debug.LogWarning("Table width on z axis: " + table.getWidthOnZAxis());
-        //    pos.z = (table.getWidthOnZAxis() / 4f) * chairSeatedIn.facingDirection.x;
-        } else
+        }
+        else if (chairSeatedIn.facingDirection.x != 0)
+        {
+            //    // chair is pointing in x direction
+            //    Debug.LogWarning("Table width on z axis: " + table.getWidthOnZAxis());
+            pos.x = (table.getWidthOnXAxis() / 4f) * -chairSeatedIn.facingDirection.x;
+        }
+        else
         {
             Debug.LogError("Cannot instantiate food item. Some chair needs to fix its facingDirection");
             return false;

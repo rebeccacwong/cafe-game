@@ -172,6 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heightOfSeat: 1.85
-  facingDirection: {x: 0, y: 0, z: 1}
   offset_z: 0.6
-  inUse: 0
+  prefabFacingDirection: {x: 0, y: 0, z: 1}
+  facingDirection: {x: 0, y: 0, z: 1}
