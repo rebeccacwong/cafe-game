@@ -10,7 +10,7 @@ public class MainCharacter : CharacterBase
     private FoodItem m_currentlyCarrying = null;
 
     private static float interactRange = 3f;
-    private static Vector3 handLocalPosition = new Vector3(1.17f, 1.23f, 0.06f);
+    private static Vector3 handLocalPosition = new Vector3(-1.17f, 1.23f, 0.06f);
 
     #region Initialization
     protected override void Awake()
@@ -105,32 +105,35 @@ public class MainCharacter : CharacterBase
 
         Debug.LogWarning("Going to carry the item");
 
+        // Map the pastry case item to the associated food item if necessary, otherwise just use the received one
         if (foodPrefab.GetComponent<pastryCaseItem>())
         {
             prefabToClone = foodPrefab.GetComponent<pastryCaseItem>().prefab;
-        }
-
-        if (!prefabToClone)
-        {
+        } else {
             prefabToClone = foodPrefab;
         }
 
         this.setState(AnimationState.CARRYING_POSE);
-        GameObject newFoodItem = Instantiate(prefabToClone, gameObject.transform);
+        GameObject newFoodItemObj = Instantiate(prefabToClone, gameObject.transform);
+
+        // Reset the rotation of the main character
         Quaternion rotation = gameObject.transform.rotation;
         gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
-        Debug.Assert(
-            newFoodItem.GetComponent<BoxCollider>() != null,
-            "FoodItem prefab must have an associated box collider.");
+
+        FoodItem newFoodItem = newFoodItemObj.GetComponent<FoodItem>();
 
         Vector3 foodItemPos = handLocalPosition;
-        foodItemPos.y += newFoodItem.GetComponent<BoxCollider>().bounds.size.y / 2;
+        foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y;
         Debug.LogWarning(foodItemPos);
 
         newFoodItem.transform.localPosition = foodItemPos;
+        newFoodItem.transform.localRotation = Quaternion.Euler(0, 180, 0);
+
+        // retore the rotation of the main character with the food item added,
+        // this will ensure that the food item is rotated properly 
         gameObject.transform.rotation = rotation;
 
-        this.m_currentlyCarrying = newFoodItem.GetComponent<FoodItem>();
+        this.m_currentlyCarrying = newFoodItem;
     }
 
     public bool isCarryingItem()

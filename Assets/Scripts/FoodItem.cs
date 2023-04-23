@@ -68,8 +68,6 @@ public class FoodItem : MonoBehaviour
         }
         else if (chairSeatedIn.facingDirection.x != 0)
         {
-            //    // chair is pointing in x direction
-            //    Debug.LogWarning("Table width on z axis: " + table.getWidthOnZAxis());
             pos.x = (table.getWidthOnXAxis() / 4f) * -chairSeatedIn.facingDirection.x;
         }
         else
@@ -93,12 +91,12 @@ public class FoodItem : MonoBehaviour
         return true;
     }
 
-    private float getHeight()
+    public float getHeight()
     {
         return this.cc_boxCollider.size.y;
     }
 
-    private Vector3 getCenter()
+    public Vector3 getCenter()
     {
         return this.cc_boxCollider.center;
     }
