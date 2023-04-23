@@ -39,22 +39,46 @@ public class MainCharacter : CharacterBase
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 // Find all nearby interactables
-                Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange, LayerMask.GetMask("IInteractables"));
-                foreach (Collider collider in colliderArray)
+                //Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange, LayerMask.GetMask("IInteractables"));
+                //foreach (Collider collider in colliderArray)
+                //{
+                //    var interactableObj = collider.gameObject.GetComponent<IInteractable>();
+                //    if (interactableObj != null && interactableObj.canInteract())
+                //    {
+                //        // Interact with the first IInteractable we find close to us
+                //        Debug.LogWarningFormat("Found interactable object: {0}", interactableObj);
+                //        if (this.itemBeingCarried())
+                //        {
+                //            interactableObj.interactWithObject(this.itemBeingCarried().gameObject);
+                //        } else
+                //        {
+                //            interactableObj.interactWithObject();
+                //        }
+                //        break;
+                //    }
+                //}
+
+                // Find interactable using sphereCast
+                RaycastHit hitInfo;
+                float maxDistanceOfRay = 10f;
+                float sphereRadius = 1.5f;
+                Debug.LogWarning(LayerMask.GetMask("IInteractables"));
+
+                if (Physics.SphereCast(transform.position, sphereRadius, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
                 {
-                    var interactableObj = collider.gameObject.GetComponent<IInteractable>();
+                    Debug.LogWarningFormat("hit {0}", hitInfo.collider.gameObject);
+                    var interactableObj = hitInfo.collider.gameObject.GetComponent<IInteractable>();
                     if (interactableObj != null && interactableObj.canInteract())
                     {
-                        // Interact with the first IInteractable we find close to us
                         Debug.LogWarningFormat("Found interactable object: {0}", interactableObj);
                         if (this.itemBeingCarried())
                         {
                             interactableObj.interactWithObject(this.itemBeingCarried().gameObject);
-                        } else
+                        }
+                        else
                         {
                             interactableObj.interactWithObject();
                         }
-                        break;
                     }
                 }
             }
@@ -149,6 +173,7 @@ public class MainCharacter : CharacterBase
     public void dropItem()
     {
         Destroy(this.m_currentlyCarrying.gameObject);
+        this.setState(AnimationState.IDLE);
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)
