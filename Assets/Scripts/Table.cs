@@ -11,17 +11,6 @@ public class Table : MonoBehaviour
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
         Debug.Assert(this.cc_boxCollider != null, "All tables must have an associated collider.");
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     /*
      * Gets the width of the object along the z-axis measured in local space
