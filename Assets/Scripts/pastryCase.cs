@@ -33,6 +33,7 @@ public class pastryCase : MonoBehaviour, IInteractable
             GameObject foodItem = Utils.returnObjectMouseIsOn(LayerMask.GetMask("FoodItems"));
             if (foodItem)
             {
+                this.cc_mainCharacter.gameObject.SetActive(true);
                 Debug.LogFormat("Received food item {0} from pastry case", foodItem);
                 this.cc_mainCharacter.carryItem(foodItem);
                 this.m_CurrentlyInteracting = false;
@@ -58,6 +59,7 @@ public class pastryCase : MonoBehaviour, IInteractable
 
     private void openCase()
     {
+        this.cc_mainCharacter.gameObject.SetActive(false);
         Debug.Log("Opened pastry case");
         this.m_oldCamera = cc_CameraController.getActiveCamera();
         cc_CameraController.changeActiveCamera("pastryCamera");

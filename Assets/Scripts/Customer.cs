@@ -279,11 +279,22 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             {
                 // TODO: edit so that we get more range of motion along z axis
                 // update the position of the character
-                Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
-                Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint);
-                curPosition.y -= gameObject.GetComponent<BoxCollider>().size.y / 2;
-                curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
-                gameObject.transform.position = curPosition;
+                //Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, this.m_screenPointOfCharacter.z);
+                //Vector3 curPosition = this.cc_CameraController.getActiveCamera().ScreenToWorldPoint(curScreenPoint);
+                //curPosition.y -= gameObject.GetComponent<BoxCollider>().size.y / 2;
+                //curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
+                //gameObject.transform.position = curPosition;
+
+                Vector3 curPosition;
+                Plane plane = new Plane(Vector3.up, 0);
+                Ray ray = this.cc_CameraController.getActiveCamera().ScreenPointToRay(Input.mousePosition);
+                float distance;
+                if (plane.Raycast(ray, out distance))
+                {
+                    curPosition = ray.GetPoint(distance);
+                    gameObject.transform.position = curPosition;
+                    curPosition.y = Math.Max(curPosition.y, 0); // don't let character go through the floor
+                }
             }
         }
     }

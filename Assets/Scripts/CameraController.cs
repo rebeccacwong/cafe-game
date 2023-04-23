@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
             // swap cameras
             this.swapCameras();
         }
-        this.followCharacter();
+        //this.followCharacter();
     }
 
     private void followCharacter()
