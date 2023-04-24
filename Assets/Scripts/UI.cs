@@ -10,7 +10,7 @@ public class UI : MonoBehaviour
     #region
     private SceneController cc_sceneController;
     private CameraController cc_cameraController;
-    private SpawnController cc_spawnController;
+    private GameController cc_gameController;
     private GameManager cc_gameManager;
     #endregion
 
@@ -28,8 +28,11 @@ public class UI : MonoBehaviour
         GameObject cameraController = GameObject.Find("CameraController");
         cc_cameraController = cameraController.GetComponent<CameraController>();
 
-        GameObject customerSpawner = GameObject.Find("CustomerSpawner");
-        cc_spawnController = customerSpawner.GetComponent<SpawnController>();
+        //GameObject customerSpawner = GameObject.Find("CustomerSpawner");
+        //cc_spawnController = customerSpawner.GetComponent<SpawnController>();
+
+        GameObject gameController = GameObject.Find("GameController");
+        cc_gameController = gameController.GetComponent<GameController>();
 
         GameObject gameManager = GameObject.Find("GameManager");
         cc_gameManager = gameManager.GetComponent<GameManager>();
@@ -58,11 +61,7 @@ public class UI : MonoBehaviour
         cc_cameraController.changeActiveCamera("far camera");
         GameObject.Find("Canvas/StartDayButton").GetComponent<Button>().gameObject.SetActive(false);
 
-        cc_spawnController.minNumCustomers = 4;
-        cc_spawnController.maxNumCustomers = 4;
-        cc_spawnController.minSpawnInterval = 5f;
-        cc_spawnController.maxSpawnInterval = 5f;
-        cc_spawnController.StartSpawningCustomers();
+        this.cc_gameController.openCafe();
     }
 
     public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img)

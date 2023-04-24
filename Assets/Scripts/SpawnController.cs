@@ -10,7 +10,7 @@ public class SpawnController : MonoBehaviour
 	private float m_respawnTimer;
 	private float m_numCustomers;
 	private float m_remainingCustomers;
-	public List<GameObject> allCustomerObjs = new List<GameObject>();
+	private List<GameObject> allCustomerObjs = new List<GameObject>();
 	#endregion
 
 	#region Variabes used by other classes
@@ -148,7 +148,7 @@ public class SpawnController : MonoBehaviour
         {
 			if (customer != null)
             {
-				Destroy(customer);
+				Destroy(customer.gameObject);
 			}
         }
 	}

@@ -19,12 +19,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     #region Customer experience variables
     private float m_Satisfaction = 1;
     private FoodItem foodItemOrdered;
+    private FoodItem foodItemConsuming;
     private float timeInstantiated;
 
     // the longest time the customer will wait before leaving
     private float maxWaitTimeSeconds;
-    private float maxWaitTimeSecondsForOrder = 3 * 60;
-    private float waitBetweenOrders = 3 * 60;
+    private float maxWaitTimeSecondsForOrder = 2.5f * 60;
+    private float waitBetweenOrders = 2 * 60;
     private float waitBetweenOrdersTimer = 0;
     #endregion
 
@@ -39,6 +40,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     [Tooltip("The number of frames for the character's sit animation")]
     private int m_numFramesForSitAnim;
 
+    [SerializeField]
+    [Tooltip("The explosion that occurs when customer gameobject is destroyed")]
+    private ParticleSystem m_destroyExplosion;
 
     #region Overrides
     protected override void Awake()
@@ -119,6 +123,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     public void orderItem()
     {
         this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
+
+        // if we're already eating something, destroy it
+        if (this.foodItemConsuming)
+        {
+            Destroy(this.foodItemConsuming.gameObject);
+        }
         if (this.foodItemOrdered)
         {
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.2f, 0), this.foodItemOrdered.itemImage);
@@ -137,7 +147,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public bool acceptItem(FoodItem servedItem)
     {
-        bool Result = false;
+        FoodItem newFoodItem = null;
 
         Debug.Assert(this.foodItemOrdered != null);
         Debug.Assert(servedItem != null);
@@ -152,12 +162,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.cc_gameManager.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
             this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
-            if (Result = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
+            if (newFoodItem = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
             {
                 this.waitBetweenOrdersTimer = this.waitBetweenOrders;
+                this.foodItemConsuming = newFoodItem;
             }
         }
-        return Result;
+        return (newFoodItem != null);
     }
 
     /*
@@ -190,7 +201,15 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     public void exitCafe()
     {
-        // add the payment so far to the money bank
+        if (this.foodItemConsuming)
+        {
+            Destroy(this.foodItemConsuming.gameObject);
+        }
+
+        if (m_destroyExplosion)
+        {
+            Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
+        }
         Destroy(this.gameObject);
     }
 

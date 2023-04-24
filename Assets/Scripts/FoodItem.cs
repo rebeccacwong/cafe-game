@@ -36,11 +36,11 @@ public class FoodItem : MonoBehaviour
      * Takes in the chair that the customer is seated in
      * to calculate where the food item should spawn.
      */
-    public bool InstantiateFoodItem(Chair chairSeatedIn)
+    public FoodItem InstantiateFoodItem(Chair chairSeatedIn)
     {
         if (!chairSeatedIn)
         {
-            return false;
+            return null;
         }
 
         Table table = chairSeatedIn.getTable();
@@ -73,7 +73,7 @@ public class FoodItem : MonoBehaviour
         else
         {
             Debug.LogError("Cannot instantiate food item. Some chair needs to fix its facingDirection");
-            return false;
+            return null;
         }
 
         // Instantiate a new food item as a child of the table
@@ -88,7 +88,7 @@ public class FoodItem : MonoBehaviour
         Debug.LogWarningFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
 
-        return true;
+        return newFoodItem;
     }
 
     public float getHeight()
