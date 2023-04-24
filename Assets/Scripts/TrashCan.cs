@@ -5,12 +5,16 @@ using UnityEngine;
 public class TrashCan : MonoBehaviour, IInteractable
 {
     private MainCharacter cc_mainCharacter;
+    private Animator cc_animator;
 
     // Start is called before the first frame update
     void Start()
     {
         this.cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
         Debug.Assert(this.cc_mainCharacter != null, "TrashCan must find a main character object!");
+
+        this.cc_animator = GetComponent<Animator>();
+        Debug.Assert(this.cc_animator != null, "Trash can must have an animator attribute");
     }
 
     #region IInteractable Methods
@@ -19,6 +23,7 @@ public class TrashCan : MonoBehaviour, IInteractable
         _ = optionalParam;
         if (this.cc_mainCharacter.isCarryingItem())
         {
+            this.cc_animator.SetTrigger("showAnimation");
             this.cc_mainCharacter.dropItem();
         }
     }

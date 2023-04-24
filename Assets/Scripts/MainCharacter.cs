@@ -62,9 +62,10 @@ public class MainCharacter : CharacterBase
                 RaycastHit hitInfo;
                 float maxDistanceOfRay = 10f;
                 float sphereRadius = 1.5f;
+                Vector3 heightOffset = new Vector3(0, 3f, 0);
                 Debug.LogWarning(LayerMask.GetMask("IInteractables"));
 
-                if (Physics.SphereCast(transform.position, sphereRadius, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
+                if (Physics.CapsuleCast(transform.position - heightOffset, transform.position + heightOffset, sphereRadius, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
                 {
                     Debug.LogWarningFormat("hit {0}", hitInfo.collider.gameObject);
                     var interactableObj = hitInfo.collider.gameObject.GetComponent<IInteractable>();
