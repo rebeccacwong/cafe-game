@@ -8,7 +8,8 @@ public enum AnimationState
     WALKING = 0,
     IDLE = 1,
     SITTING = 2,
-    CARRYING_POSE = 3
+    CARRYING_POSE = 3,
+    EXIT_CARRYING_POSE = 4
 }
 
 public class CharacterBase : MonoBehaviour, IPausable

@@ -174,7 +174,7 @@ public class MainCharacter : CharacterBase
     public void dropItem()
     {
         Destroy(this.m_currentlyCarrying.gameObject);
-        this.setState(AnimationState.IDLE);
+        this.setState(AnimationState.EXIT_CARRYING_POSE);
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)

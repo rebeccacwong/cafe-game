@@ -18,7 +18,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     #region Customer experience variables
     private float m_Satisfaction = 1;
-    private float runningBill = 0;
     private FoodItem foodItemOrdered;
     private float timeInstantiated;
 
@@ -33,6 +32,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private SpawnController cc_spawnController;
     private Menu cc_menu;
     private UI cc_uiController;
+    private GameManager cc_gameManager;
     #endregion
 
     [SerializeField]
@@ -47,8 +47,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         // get cached components
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
-        cc_uiController = GameObject.Find("UIController").GetComponent<UI>();
+        cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
+        cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
@@ -77,6 +78,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTimeSeconds)
         {
+            Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
         }
 
@@ -147,7 +149,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.foodItemOrdered.itemName);
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
-            this.runningBill += this.foodItemOrdered.itemPrice;
+            this.cc_gameManager.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
             this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
             if (Result = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))

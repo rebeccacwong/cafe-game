@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class UI : MonoBehaviour
     private SceneController cc_sceneController;
     private CameraController cc_cameraController;
     private SpawnController cc_spawnController;
+    private GameManager cc_gameManager;
     #endregion
 
     [SerializeField]
     [Tooltip("The chatBubble prefab")]
     public GameObject chatBubbleGameObj;
+
+    private TextMeshProUGUI moneyTextMesh;
 
     public void Awake()
     {
@@ -27,7 +31,13 @@ public class UI : MonoBehaviour
         GameObject customerSpawner = GameObject.Find("CustomerSpawner");
         cc_spawnController = customerSpawner.GetComponent<SpawnController>();
 
-        GameObject.Find("Canvas/StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
+        GameObject gameManager = GameObject.Find("GameManager");
+        cc_gameManager = gameManager.GetComponent<GameManager>();
+
+        transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
+        this.moneyTextMesh = transform.Find("MoneyUI").GetComponent<TextMeshProUGUI>();
+
+        Debug.Assert(this.moneyTextMesh != null, "Must find textmesh to represent money");
     }
 
     // Start is called before the first frame update
@@ -67,6 +77,11 @@ public class UI : MonoBehaviour
         Transform chatBubble = parent.Find("ChatBubble(Clone)");
         Debug.Assert(chatBubble != null, "Could not find chat bubble in parent.");
         Destroy(chatBubble.gameObject);
+    }
+
+    public void updateMoneyUI()
+    {
+        this.moneyTextMesh.text = "$" + cc_gameManager.getPlayerMoneyAmount().ToString();
     }
 
 }
