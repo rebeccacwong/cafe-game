@@ -166,6 +166,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             {
                 this.waitBetweenOrdersTimer = this.waitBetweenOrders;
                 this.foodItemConsuming = newFoodItem;
+                this.cc_audioManager.PlaySoundEffect("cashRegister");
             }
         }
         return (newFoodItem != null);

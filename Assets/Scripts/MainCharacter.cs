@@ -80,7 +80,13 @@ public class MainCharacter : CharacterBase
                         {
                             interactableObj.interactWithObject();
                         }
+                    } else
+                    {
+                        this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
                     }
+                } else
+                {
+                    this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
                 }
             }
         }

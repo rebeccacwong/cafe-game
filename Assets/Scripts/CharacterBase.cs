@@ -19,6 +19,7 @@ public class CharacterBase : MonoBehaviour, IPausable
     protected Rigidbody cc_rigidBody;
     protected Animator cc_animator;
     private GameObject cc_mainCharacter;
+    protected AudioManager cc_audioManager;
     #endregion
 
     protected Vector3 m_target;
@@ -38,6 +39,7 @@ public class CharacterBase : MonoBehaviour, IPausable
         this.m_target = gameObject.transform.position;
         this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
         this.cc_mainCharacter = GameObject.Find("MainCharacter");
+        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         if (this.cc_CameraController == null)
         {
             throw new Exception("Could not find CameraController object.");
