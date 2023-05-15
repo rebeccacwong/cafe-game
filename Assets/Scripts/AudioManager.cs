@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Audio;
 
+[DisallowMultipleComponent]
 public class AudioManager : MonoBehaviour
 {
     #region Editor Variables

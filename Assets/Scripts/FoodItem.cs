@@ -50,20 +50,17 @@ public class FoodItem : MonoBehaviour
         Vector3 chairPosInLocalTableSpace = table.transform.InverseTransformPoint(chairSeatedIn.transform.position);
         Vector3 pos = chairPosInLocalTableSpace;
 
-        Debug.LogWarningFormat("Chair position in local table space is {0}", chairPosInLocalTableSpace);
-
-        //Vector3 tableRelativeSize = table.getRelativeSize(table.transform);
+        Debug.LogFormat("Chair position in local table space is {0}", chairPosInLocalTableSpace);
 
         pos.y = (table.getHeight() / 2);
 
-        Debug.LogWarningFormat("Chair facing direction vector is: {0}", chairSeatedIn.facingDirection);
+        Debug.LogFormat("Chair facing direction vector is: {0}", chairSeatedIn.facingDirection);
 
-        Debug.LogWarning("Table width on x axis: " + table.getWidthOnXAxis());
+        Debug.Log("Table width on x axis: " + table.getWidthOnXAxis());
 
         if (chairSeatedIn.facingDirection.z != 0)
         {
             // chair is pointing in z direction
-            Debug.LogWarning("Table width on x axis: " + table.getWidthOnXAxis());
             pos.x = (table.getWidthOnXAxis() / 4f) * chairSeatedIn.facingDirection.z;
         }
         else if (chairSeatedIn.facingDirection.x != 0)
@@ -85,7 +82,7 @@ public class FoodItem : MonoBehaviour
         }
 
         pos.y += (this.getHeight() / 2) - (this.getCenter().y); // offset so base of object is at bottom of table
-        Debug.LogWarningFormat("FoodItem position relative to table parent is: {0}", pos);
+        Debug.LogFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
 
         return newFoodItem;

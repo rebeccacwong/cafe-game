@@ -39,7 +39,7 @@ public class UI : MonoBehaviour
         cc_gameManager = gameManager.GetComponent<GameManager>();
 
         transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
-        this.moneyTextMesh = transform.Find("MoneyUI").GetComponent<TextMeshProUGUI>();
+        this.moneyTextMesh = transform.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.moneyTextMesh != null, "Must find textmesh to represent money");
 
         this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();

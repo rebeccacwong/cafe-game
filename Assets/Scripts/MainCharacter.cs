@@ -6,12 +6,10 @@ using UnityEngine;
 [System.Serializable]
 public class MainCharacter : CharacterBase
 {
-    private float m_turnSmoothVelocity;
     private FoodItem m_currentlyCarrying = null;
 
     private UI cc_UI;
 
-    private static float interactRange = 3f;
     private static Vector3 handLocalPosition = new Vector3(-1.17f, 1.23f, 0.06f);
 
     #region Initialization
@@ -62,15 +60,28 @@ public class MainCharacter : CharacterBase
                 //}
 
                 // Find interactable using sphereCast
-                RaycastHit hitInfo;
+                Collider hitCollider = null;
                 float maxDistanceOfRay = 10f;
-                float sphereRadius = 1.5f;
                 Vector3 heightOffset = new Vector3(0, 3f, 0);
 
-                if (Physics.CapsuleCast(transform.position - heightOffset, transform.position + heightOffset, sphereRadius, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
+                Collider[] colliders = Physics.OverlapCapsule(transform.position - heightOffset, transform.position + heightOffset, 3f, LayerMask.GetMask("IInteractables"));
+
+                if (colliders.Length > 1)
                 {
-                    Debug.LogWarningFormat("hit {0}", hitInfo.collider.gameObject);
-                    var interactableObj = hitInfo.collider.gameObject.GetComponent<IInteractable>();
+                    RaycastHit hitInfo;
+                    if (Physics.CapsuleCast(transform.position - heightOffset, transform.position + heightOffset, 1.5f, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
+                    {
+                        hitCollider = hitInfo.collider;
+                    }
+                } else if (colliders.Length == 1)
+                {
+                    hitCollider = colliders[0];
+                }
+
+                if (hitCollider != null)
+                {
+                    Debug.LogWarningFormat("hit {0}", hitCollider.gameObject);
+                    var interactableObj = hitCollider.gameObject.GetComponent<IInteractable>();
                     string errorString = "";
                     if (interactableObj != null && interactableObj.canInteract(out errorString))
                     {
