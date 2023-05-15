@@ -28,6 +28,12 @@ public class pastryCase : MonoBehaviour, IInteractable
             return;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            cc_CameraController.changeActiveCamera("far camera");
+            this.cc_mainCharacter.gameObject.SetActive(true);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             GameObject foodItem = Utils.returnObjectMouseIsOn(LayerMask.GetMask("FoodItems"));
@@ -39,6 +45,7 @@ public class pastryCase : MonoBehaviour, IInteractable
                 this.m_CurrentlyInteracting = false;
                 closeCase();
             }
+            //TODO: add error sound effect
         }
     }
 
@@ -50,8 +57,9 @@ public class pastryCase : MonoBehaviour, IInteractable
         this.m_CurrentlyInteracting = true;
     }
 
-    public bool canInteract()
+    public bool canInteract(out string errorString)
     {
+        errorString = "Already carrying an item! Serve it to a customer or throw it away.";
         // we cannot pick up a new item if we're already carrying something
         return !this.cc_mainCharacter.isCarryingItem() && !this.m_CurrentlyInteracting;
     }
@@ -65,7 +73,7 @@ public class pastryCase : MonoBehaviour, IInteractable
         cc_CameraController.changeActiveCamera("pastryCamera");
     }
 
-    private void closeCase()
+    public void closeCase()
     {
         if (this.m_oldCamera)
         {

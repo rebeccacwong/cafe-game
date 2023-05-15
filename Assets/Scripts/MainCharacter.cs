@@ -9,6 +9,8 @@ public class MainCharacter : CharacterBase
     private float m_turnSmoothVelocity;
     private FoodItem m_currentlyCarrying = null;
 
+    private UI cc_UI;
+
     private static float interactRange = 3f;
     private static Vector3 handLocalPosition = new Vector3(-1.17f, 1.23f, 0.06f);
 
@@ -17,6 +19,7 @@ public class MainCharacter : CharacterBase
     {
         base.Awake();
         this.cc_animator = gameObject.GetComponent<Animator>();
+        this.cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
     }
     #endregion
 
@@ -63,13 +66,13 @@ public class MainCharacter : CharacterBase
                 float maxDistanceOfRay = 10f;
                 float sphereRadius = 1.5f;
                 Vector3 heightOffset = new Vector3(0, 3f, 0);
-                Debug.LogWarning(LayerMask.GetMask("IInteractables"));
 
                 if (Physics.CapsuleCast(transform.position - heightOffset, transform.position + heightOffset, sphereRadius, this.m_direction, out hitInfo, maxDistanceOfRay, LayerMask.GetMask("IInteractables")))
                 {
                     Debug.LogWarningFormat("hit {0}", hitInfo.collider.gameObject);
                     var interactableObj = hitInfo.collider.gameObject.GetComponent<IInteractable>();
-                    if (interactableObj != null && interactableObj.canInteract())
+                    string errorString = "";
+                    if (interactableObj != null && interactableObj.canInteract(out errorString))
                     {
                         Debug.LogWarningFormat("Found interactable object: {0}", interactableObj);
                         if (this.itemBeingCarried())
@@ -83,6 +86,7 @@ public class MainCharacter : CharacterBase
                     } else
                     {
                         this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
+                        this.cc_UI.flashHintText(errorString);
                     }
                 } else
                 {

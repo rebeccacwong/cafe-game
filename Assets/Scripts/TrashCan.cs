@@ -28,8 +28,9 @@ public class TrashCan : MonoBehaviour, IInteractable
         }
     }
 
-    public bool canInteract()
+    public bool canInteract(out string errorString)
     {
+        errorString = "";
         return this.cc_mainCharacter.isCarryingItem();
     }
     #endregion

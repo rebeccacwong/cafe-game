@@ -19,6 +19,7 @@ public class UI : MonoBehaviour
     public GameObject chatBubbleGameObj;
 
     private TextMeshProUGUI moneyTextMesh;
+    private TextMeshProUGUI hintTextMesh;
 
     public void Awake()
     {
@@ -39,8 +40,11 @@ public class UI : MonoBehaviour
 
         transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
         this.moneyTextMesh = transform.Find("MoneyUI").GetComponent<TextMeshProUGUI>();
-
         Debug.Assert(this.moneyTextMesh != null, "Must find textmesh to represent money");
+
+        this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();
+        Debug.Assert(this.hintTextMesh != null, "Must find textmesh to represent hint text");
+        this.hintTextMesh.gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -81,6 +85,22 @@ public class UI : MonoBehaviour
     public void updateMoneyUI()
     {
         this.moneyTextMesh.text = "$" + cc_gameManager.getPlayerMoneyAmount().ToString();
+    }
+
+    public void flashHintText(string hintText)
+    {
+        if (hintText != "")
+        {
+            this.hintTextMesh.text = hintText;
+            this.hintTextMesh.gameObject.SetActive(true);
+            StartCoroutine(removeTextAfterXTime(this.hintTextMesh, 5f));
+        }
+    }
+
+    private IEnumerator removeTextAfterXTime(TextMeshProUGUI TmpObj, float waitTimeInSeconds)
+    {
+        yield return new WaitForSeconds(waitTimeInSeconds);
+        TmpObj.gameObject.SetActive(false);
     }
 
 }

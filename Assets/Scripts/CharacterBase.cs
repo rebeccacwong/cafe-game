@@ -70,13 +70,13 @@ public class CharacterBase : MonoBehaviour, IPausable
         this.m_direction = this.m_direction.normalized;
 
         RaycastHit hit;
-        if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance))
+        if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance) && hit.point != null)
         {
             Vector3 modified = hit.point - (2 * this.m_direction);
-
+              
             // if sufficiently close or we collided with main character, don't move
             if (Vector3.Distance(gameObject.transform.position, modified) <= 1 ||
-                hit.collider == cc_mainCharacter.GetComponent<Collider>())
+                (cc_mainCharacter != null && hit.collider == cc_mainCharacter.GetComponent<Collider>()))
             {
                 this.m_target = gameObject.transform.position;
                 return;

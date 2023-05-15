@@ -20,6 +20,11 @@ public interface IInteractable
      * Returns whether or not the main character
      * is allowed to interact with this
      * IInteractable object at this time.
-     * */
-    public bool canInteract();
+     * 
+     * Returns the reason for why the character
+     * cannot interact with the object in
+     * ERROR STRING, if applicable.
+     */
+    public bool canInteract(out string errorString);
+
 }

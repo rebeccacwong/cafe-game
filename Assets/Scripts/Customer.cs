@@ -207,8 +207,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Destroy(this.foodItemConsuming.gameObject);
         }
 
+        // TODO: push all customer info to stats
+        // push the number of items ordered
+        // push satisfaction
+
         if (m_destroyExplosion)
         {
+            // TODO: Finish this particle sim
             Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
         }
         Destroy(this.gameObject);
@@ -337,9 +342,25 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
     }
 
-    public bool canInteract()
+    public bool canInteract(out string errorString)
     {
-        return (this.foodItemOrdered != null && this.getMainCharacter().isCarryingItem());
+        errorString = "";
+        if (!this.getMainCharacter().isCarryingItem())
+        {
+            errorString = "Pick up some food/coffee to serve customers!";
+        } else if (this.foodItemOrdered == null)
+        {
+            errorString = "Cannot serve a customer that has not ordered yet.";
+        } else if (this.foodItemOrdered.itemName != this.getMainCharacter().itemBeingCarried().itemName)
+        {
+            Debug.LogWarningFormat("Customer ordered: {}, carrying: {}", foodItemOrdered.itemName, this.getMainCharacter().itemBeingCarried().itemName);
+            errorString = "Wrong item! Customer has ordered a " + foodItemOrdered.itemName + ". Throw it away or serve to another customer.";
+        } else
+        {
+            return true;
+        }
+        return false;
+        //return (this.foodItemOrdered != null && this.getMainCharacter().isCarryingItem());
     }
     #endregion
 }
