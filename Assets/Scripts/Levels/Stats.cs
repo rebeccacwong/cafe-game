@@ -9,10 +9,16 @@ using UnityEngine;
  * player.
  */
 
-public readonly struct CustomerStats
+public struct CustomerStats
 {
     public readonly float customerSatisfactionScore;
     public readonly int itemsOrdered;
+
+    public CustomerStats(float score, int numItems)
+    {
+        customerSatisfactionScore = score;
+        itemsOrdered = numItems;
+    }
 }
 
 public struct DayStats

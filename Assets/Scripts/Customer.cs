@@ -17,15 +17,24 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     #endregion
 
     #region Customer experience variables
-    private float m_Satisfaction = 1;
     private FoodItem foodItemOrdered;
     private FoodItem foodItemConsuming;
     private float timeInstantiated;
+    private int totalItemsOrdered = 0;
 
-    // the longest time the customer will wait before leaving
-    private float maxWaitTimeSeconds;
+    // the longest time the customer will wait before leaving. when this reaches
+    // 0, the customer will leave.
+    private float timeUntilLeavingCafe;
+
+    // the max time that customer will wait for any singular order, this is a const.
     private float maxWaitTimeSecondsForOrder = 2.5f * 60;
+
+    // the max time that customer will "eat" before potentially ordering another 
+    // item, this is a const.
     private float waitBetweenOrders = 2 * 60;
+
+    // this timer represents a countdown until the customer can order another item.
+    // when it's 0, the customer potentially order another item.
     private float waitBetweenOrdersTimer = 0;
     #endregion
 
@@ -49,20 +58,17 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     {
         base.Awake();
 
-        // get cached components
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
         cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        // populate other instance variables
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
-        this.maxWaitTimeSeconds = 3 * 60;
+        this.timeUntilLeavingCafe = maxWaitTimeSecondsForOrder;
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
     }
 
-    // Start is called before the first frame update
     protected override void Start()
     {
         this.m_frontOfLinePos = cc_spawnController.spawnPosition;
@@ -75,12 +81,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         this.setNewTarget(this.m_frontOfLinePos, true, true);
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
 
-        if (Time.realtimeSinceStartup - this.timeInstantiated > this.maxWaitTimeSeconds)
+        if (Time.realtimeSinceStartup - this.timeInstantiated > this.timeUntilLeavingCafe)
         {
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
@@ -117,11 +122,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     {
         return GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
     }
+
     /*
      * Make a request to order an item
      */
     public void orderItem()
     {
+        this.totalItemsOrdered++;
         this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
 
         // if we're already eating something, destroy it
@@ -135,9 +142,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
 
         // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
-        this.maxWaitTimeSeconds += this.maxWaitTimeSecondsForOrder;
+        this.timeUntilLeavingCafe += this.maxWaitTimeSecondsForOrder;
 
-        Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.maxWaitTimeSeconds);
+        Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
     }
 
     /*
@@ -164,7 +171,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             cc_uiController.clearChatBubble(gameObject.transform);
             if (newFoodItem = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
             {
+                // reset the time to "eat"
                 this.waitBetweenOrdersTimer = this.waitBetweenOrders;
+
+                // extend the time that the customer will stay in the cafe
+                this.timeUntilLeavingCafe += this.waitBetweenOrdersTimer;
+
                 this.foodItemConsuming = newFoodItem;
                 this.cc_audioManager.PlaySoundEffect("cashRegister");
             }
@@ -200,6 +212,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return false;
     }
 
+    private float calculateCustomerSatisfaction()
+    {
+        float avgTimeRemainingSpentOnEachOrder = (this.timeUntilLeavingCafe / this.totalItemsOrdered);
+        float bestTime = maxWaitTimeSecondsForOrder * this.totalItemsOrdered + ((this.totalItemsOrdered - 1) * this.maxWaitTimeSecondsForOrder);
+
+        return Mathf.Lerp(0, 1, (avgTimeRemainingSpentOnEachOrder / (bestTime * 0.65f)));
+    }
+
     public void exitCafe()
     {
         if (this.foodItemConsuming)
@@ -207,9 +227,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Destroy(this.foodItemConsuming.gameObject);
         }
 
-        // TODO: push all customer info to stats
-        // push the number of items ordered
-        // push satisfaction
+        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), this.totalItemsOrdered));
 
         if (m_destroyExplosion)
         {
