@@ -21,8 +21,12 @@ public class FoodItem : MonoBehaviour
     public string prepLocation;
 
     [SerializeField]
-    [Tooltip("The scale that the food item should be at after being put on table")]
+    [Tooltip("Optional parameter, The scale that the food item should be at after being put on table")]
     public float tableScaleFactor;
+
+    [SerializeField]
+    [Tooltip("Optional parameter, the offset that the transform should be so it's in the center of model")]
+    public Vector3 offsetPosition;
 
     private BoxCollider cc_boxCollider;
 

@@ -371,7 +371,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             errorString = "Cannot serve a customer that has not ordered yet.";
         } else if (this.foodItemOrdered.itemName != this.getMainCharacter().itemBeingCarried().itemName)
         {
-            Debug.LogWarningFormat("Customer ordered: {}, carrying: {}", foodItemOrdered.itemName, this.getMainCharacter().itemBeingCarried().itemName);
             errorString = "Wrong item! Customer has ordered a " + foodItemOrdered.itemName + ". Throw it away or serve to another customer.";
         } else
         {

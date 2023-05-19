@@ -169,7 +169,7 @@ public class MainCharacter : CharacterBase
         FoodItem newFoodItem = newFoodItemObj.GetComponent<FoodItem>();
 
         Vector3 foodItemPos = handLocalPosition;
-        foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y;
+        foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y + newFoodItem.offsetPosition.y;
         Debug.LogWarning(foodItemPos);
 
         newFoodItem.transform.localPosition = foodItemPos;
