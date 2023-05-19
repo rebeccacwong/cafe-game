@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
         {
             changeActiveCamera("far camera");
             followingCharacter = false;
-        } else
+        } else if (activeCameraName == "far camera")
         {
             changeActiveCamera(m_followCharacterCamera.name);
             followingCharacter = true;

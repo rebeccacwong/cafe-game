@@ -145,7 +145,7 @@ public class MainCharacter : CharacterBase
      * it so that it's being held in main character's
      * hands
      */
-    public void carryItem(GameObject foodPrefab)
+    public FoodItem carryItem(GameObject foodPrefab)
     {
         GameObject prefabToClone = null;
 
@@ -180,6 +180,7 @@ public class MainCharacter : CharacterBase
         gameObject.transform.rotation = rotation;
 
         this.m_currentlyCarrying = newFoodItem;
+        return newFoodItem;
     }
 
     public bool isCarryingItem()

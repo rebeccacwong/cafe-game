@@ -85,9 +85,9 @@ public class GameController : MonoBehaviour
     public void openCafe()
     {
         cc_spawnController.minNumCustomers = 4;
-        cc_spawnController.maxNumCustomers = 4;
+        cc_spawnController.maxNumCustomers = 8;
         cc_spawnController.minSpawnInterval = 5f;
-        cc_spawnController.maxSpawnInterval = 5f;
+        cc_spawnController.maxSpawnInterval = 10f;
         cc_spawnController.StartSpawningCustomers();
     }
 }

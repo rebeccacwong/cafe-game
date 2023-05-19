@@ -78,7 +78,6 @@ public static class Stats
     private static DayStats yesterdayStats;
     private static DayStats todayStats;
 
-
     public static void clearStatsForDay()
     {
         yesterdayStats = todayStats;
