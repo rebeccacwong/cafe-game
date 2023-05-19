@@ -27,7 +27,6 @@ public class MainCharacter : CharacterBase
         this.cc_rigidBody = GetComponent<Rigidbody>();
         this.m_forwards = new Vector3(0, 0, -1);
         this.m_direction = this.m_forwards;
-        this.setState(AnimationState.IDLE);
     }
 
     // Update is called once per frame

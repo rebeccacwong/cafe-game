@@ -43,6 +43,7 @@ public class pastryCase : MonoBehaviour, IInteractable
             {
                 this.cc_audioManager.PlaySoundEffect("softBeep");
                 this.cc_mainCharacter.gameObject.SetActive(true);
+
                 Debug.LogFormat("Received food item {0} from pastry case", foodItem);
                 this.cc_mainCharacter.carryItem(foodItem);
                 this.m_CurrentlyInteracting = false;
