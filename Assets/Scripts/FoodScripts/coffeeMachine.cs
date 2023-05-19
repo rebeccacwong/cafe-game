@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class coffeeMachine : MonoBehaviour, IInteractable
 {
+    [SerializeField]
     [Tooltip("Coffee prefabs")]
     public GameObject[] m_coffeePrefabs;
 
@@ -59,7 +60,7 @@ public class coffeeMachine : MonoBehaviour, IInteractable
             animator.SetBool("animate", true);
         }
 
-        StartCoroutine(waitOutAnimationThenExitCoffeeCam(5, newCoffee));
+        StartCoroutine(waitOutAnimationThenExitCoffeeCam(4.5f, newCoffee));
     }
 
     private IEnumerator waitOutAnimationThenExitCoffeeCam(float waitTimeInSeconds, FoodItem coffeeItem)
