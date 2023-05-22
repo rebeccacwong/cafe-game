@@ -85,7 +85,7 @@ public class FoodItem : MonoBehaviour
             newFoodItem.transform.localScale = new Vector3(1, 1, 1) * newFoodItem.tableScaleFactor;
         }
 
-        pos.y += (this.getHeight() / 2) - (this.getCenter().y); // offset so base of object is at bottom of table
+        pos.y += (this.getHeight() / 2) - (this.getCenter().y) + offsetPosition.y; // offset so base of object is at bottom of table
         Debug.LogFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
 

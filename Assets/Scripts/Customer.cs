@@ -43,6 +43,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private Menu cc_menu;
     private UI cc_uiController;
     private GameManager cc_gameManager;
+    private coffeeMachine cc_coffeeMachine;
     #endregion
 
     [SerializeField]
@@ -62,6 +63,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
         cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        cc_coffeeMachine = GameObject.Find("coffee machine").GetComponent<coffeeMachine>();
 
         this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
@@ -141,6 +143,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.2f, 0), this.foodItemOrdered.itemImage);
         }
 
+        if (this.foodItemOrdered.prepLocation == "coffeeMachine")
+        {
+            this.cc_coffeeMachine.updateCoffeeMachinePrefabList(this.foodItemOrdered, true);
+        }
+
         // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
         this.timeUntilLeavingCafe += this.maxWaitTimeSecondsForOrder;
 
@@ -167,8 +174,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
             this.cc_gameManager.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
-            this.foodItemOrdered = null;
             cc_uiController.clearChatBubble(gameObject.transform);
+
+            if (this.foodItemOrdered.prepLocation == "coffeeMachine")
+            {
+                this.cc_coffeeMachine.updateCoffeeMachinePrefabList(this.foodItemOrdered, false);
+            }
+            this.foodItemOrdered = null;
+
             if (newFoodItem = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
             {
                 // reset the time to "eat"
@@ -196,8 +209,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
 
-        Debug.LogWarningFormat("Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
-            gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle);
+        Debug.LogFormat("Customer {4:X} Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
+            gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle, gameObject.GetInstanceID());
 
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);

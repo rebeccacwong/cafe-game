@@ -115,7 +115,7 @@ public class SpawnController : MonoBehaviour
 	}
 
 	/*
-	 * Temporarily stos spawning customers.
+	 * Temporarily stops spawning customers.
 	 * Will maintain the knowledge of the
 	 * customers remaining for the day.
 	 */

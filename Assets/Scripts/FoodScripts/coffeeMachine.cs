@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class coffeeMachine : MonoBehaviour, IInteractable
 {
+    // Contains a mapping of active coffee orders from customers so it will
+    // only spawn the prefabs that customers ordered.
+    private Dictionary<string, (GameObject, int)> m_coffeePrefabs = new Dictionary<string, (GameObject, int)>();
+
     [SerializeField]
-    [Tooltip("Coffee prefabs")]
-    public GameObject[] m_coffeePrefabs;
+    [Tooltip("The default prefab we will spawn if no customer has ordered coffee yet")]
+    GameObject m_defaultCoffeePrefab;
 
     #region Cached components
     private CameraController cc_CameraController;
@@ -30,7 +34,21 @@ public class coffeeMachine : MonoBehaviour, IInteractable
     public void interactWithObject(GameObject optionalParam = null)
     {
         _ = optionalParam;
-        FoodItem foodItem = this.m_coffeePrefabs[Random.Range(0, m_coffeePrefabs.Length)].GetComponent<FoodItem>();
+        FoodItem foodItem;
+        foodItem = this.m_defaultCoffeePrefab.GetComponent<FoodItem>();
+        if (this.m_coffeePrefabs.Count == 0)
+        {
+            foodItem = this.m_defaultCoffeePrefab.GetComponent<FoodItem>();
+        }
+        else
+        {
+            foreach (string key in m_coffeePrefabs.Keys)
+            {
+                Debug.LogWarningFormat("Getting key {0} from coffee machine dictionary", key);
+                foodItem = this.m_coffeePrefabs[key].Item1.GetComponent<FoodItem>();
+                break;
+            }
+        }
         Debug.Assert(foodItem != null, "CoffeeMachine interactWithObject should receive an item that is a FoodItem.");
 
         makeCoffee(foodItem);
@@ -59,6 +77,7 @@ public class coffeeMachine : MonoBehaviour, IInteractable
         {
             animator.SetBool("animate", true);
         }
+        this.cc_audioManager.PlaySoundEffect("coffeePour");
 
         StartCoroutine(waitOutAnimationThenExitCoffeeCam(4.5f, newCoffee));
     }
@@ -80,5 +99,41 @@ public class coffeeMachine : MonoBehaviour, IInteractable
 
         // destroy the one on the coffee machine
         Destroy(coffeeItem.gameObject);
+    }
+
+    /*
+     * Allows the coffee machine to make coffee prefab. if ADDTOLIST is false, 
+     * removes the prefab from the list of things to potentially make if no 
+     * other customers will potentially order (the count value for that prefab
+     * in the dictionary is 0).
+     */
+    public void updateCoffeeMachinePrefabList(FoodItem coffeePrefab, bool AddToList)
+    {
+        Debug.Assert(coffeePrefab.prepLocation == "coffeeMachine");
+        if (AddToList)
+        {
+            if (!m_coffeePrefabs.ContainsKey(coffeePrefab.name))
+            {
+                m_coffeePrefabs.Add(coffeePrefab.name, (coffeePrefab.gameObject, 0));
+            } else
+            {
+                GameObject prefab = m_coffeePrefabs[coffeePrefab.name].Item1;
+                int count = m_coffeePrefabs[coffeePrefab.name].Item2;
+                m_coffeePrefabs[coffeePrefab.name] = (prefab, count + 1);
+            }
+        } else
+        {
+            Debug.Assert(m_coffeePrefabs.ContainsKey(coffeePrefab.name));
+            int count = m_coffeePrefabs[coffeePrefab.name].Item2;
+            if (count - 1 == 0)
+            {
+                m_coffeePrefabs.Remove(coffeePrefab.name);
+            } else
+            {
+                GameObject prefab = m_coffeePrefabs[coffeePrefab.name].Item1;
+                m_coffeePrefabs[coffeePrefab.name] = (prefab, count - 1);
+            }
+        }
+
     }
 }

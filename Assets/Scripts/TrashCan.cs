@@ -6,6 +6,7 @@ public class TrashCan : MonoBehaviour, IInteractable
 {
     private MainCharacter cc_mainCharacter;
     private Animator cc_animator;
+    private AudioManager cc_audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,9 @@ public class TrashCan : MonoBehaviour, IInteractable
 
         this.cc_animator = GetComponent<Animator>();
         Debug.Assert(this.cc_animator != null, "Trash can must have an animator attribute");
+
+        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        Debug.Assert(this.cc_audioManager != null, "Must find an audio manager");
     }
 
     #region IInteractable Methods
@@ -25,6 +29,7 @@ public class TrashCan : MonoBehaviour, IInteractable
         {
             this.cc_animator.SetTrigger("showAnimation");
             this.cc_mainCharacter.dropItem();
+            this.cc_audioManager.PlaySoundEffect("trash");
         }
     }
 
