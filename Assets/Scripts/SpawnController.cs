@@ -11,10 +11,14 @@ public class SpawnController : MonoBehaviour
 	private float m_numCustomers;
 	private float m_remainingCustomers;
 	private List<GameObject> allCustomerObjs = new List<GameObject>();
-	#endregion
+    #endregion
 
-	#region Variabes used by other classes
-	private bool m_moreCustomers;
+    #region Cached components
+	private MainCharacter cc_mainCharacter;
+    #endregion
+
+    #region Variabes used by other classes
+    private bool m_moreCustomers;
 	public bool moreCustomers
 	{
 		get { return m_moreCustomers; }
@@ -68,6 +72,9 @@ public class SpawnController : MonoBehaviour
 		//GameObject pm = GameObject.Find("PersistenceManager");
 		//cr_audioManager = pm.GetComponent<AudioManager>();
 		//GameObject.Find("/Canvas/Start Selling Button").GetComponent<Button>().onClick.AddListener(StartSell);
+
+		this.cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
+		Debug.Assert(this.cc_mainCharacter != null, "SpawnController must find a main character object!");
 	}
 	#endregion
 
@@ -83,7 +90,7 @@ public class SpawnController : MonoBehaviour
 		if (moreCustomers && m_remainingCustomers > 0)
 		{
 			m_respawnTimer -= Time.deltaTime;
-			if (m_respawnTimer <= 0)
+			if (this.shouldSpawn())
 			{
 				// reset timer
 				m_respawnTimer = Random.Range(m_minSpawnInterval, m_maxSpawnInterval);
@@ -93,6 +100,12 @@ public class SpawnController : MonoBehaviour
 				this.NextCustomer();
 			}
 		}
+	}
+
+	private bool shouldSpawn()
+    {
+		return ((Vector3.Distance(this.cc_mainCharacter.transform.position, this.spawnPosition) > 3f)
+			 && m_respawnTimer <= 0);
 	}
 
 	public void StartSpawningCustomers()
