@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [DisallowMultipleComponent]
+[ExecuteAlways]
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +16,9 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     [Tooltip("Camera objects")]
     public Camera[] m_cameras;
+
+    [SerializeField]
+    public GameObject[] m_walls;
 
     [SerializeField]
     [Tooltip("FollowCharacterCamera")]
@@ -30,6 +35,8 @@ public class CameraController : MonoBehaviour
     [HideInInspector]
     GameObject cc_mainCharacter;
 
+    private bool m_updateWallRendering = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +47,64 @@ public class CameraController : MonoBehaviour
 
         this.m_characterStartPos = cc_mainCharacter.transform.position;
         this.m_camStartPos = this.m_followCharacterCamera.transform.position;
+    }
+
+    private void Update()
+    {
+        if (ShouldUpdateRendering())
+        {
+            foreach (GameObject wall in m_walls)
+            {
+                // Set all the walls active by default, then update not to render if necessary
+                Utils.SetActiveParentAndChildren(wall, true);
+            }
+
+            if (this.isActiveCameraStatic())
+            {
+                this.UpdateRenderingForStaticCams();
+
+                // for static cameras, only need to update rendering once.
+                this.m_updateWallRendering = false;
+                return;
+            }
+
+            if (!Physics.Raycast(this.m_ActiveCamera.transform.position, Vector3.down, Mathf.Infinity, LayerMask.GetMask("Floor")))
+            {
+                // the camera is in not in the cafe
+                RaycastHit hit;
+                Debug.LogWarning("Camera is out of bounds, need to fix render of wall(s).");
+                List<GameObject> wallsToUpdate = new List<GameObject>();
+
+                foreach (GameObject wall in m_walls)
+                {
+                    Plane[] cameraFrustrum = GeometryUtility.CalculateFrustumPlanes(this.m_ActiveCamera);
+                    Bounds bounds = wall.GetComponent<Collider>().bounds;
+                    Collider wallCollider = wall.GetComponent<Collider>();
+
+                    //Vector3 closestWallPoint = Physics.ClosestPoint(this.m_ActiveCamera.transform.position, wallCollider, wallCollider.transform.position, wallCollider.transform.rotation);
+                    Vector3 camToWallVect = (wall.transform.position - this.m_ActiveCamera.transform.position).normalized;
+
+                    if (GeometryUtility.TestPlanesAABB(cameraFrustrum, bounds))
+                    {
+                        if (Physics.SphereCast(this.m_ActiveCamera.transform.position, 6f, camToWallVect, out hit, 3f, LayerMask.GetMask("Walls"))
+                            && hit.collider.gameObject == wall.gameObject)
+                        {
+                            wallsToUpdate.Add(wall);
+                        }
+                        else if (Physics.OverlapSphere(this.m_ActiveCamera.transform.position, 6f, LayerMask.GetMask("Walls")).Contains<Collider>(wallCollider))
+                        {
+                            wallsToUpdate.Add(wall);
+                        }
+                    }
+                }
+                // only update visibility after to ensure occlusions are handled properly
+                foreach (GameObject wall in wallsToUpdate)
+                {
+                    Utils.SetActiveParentAndChildren(wall, false);
+                }
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -108,6 +173,8 @@ public class CameraController : MonoBehaviour
             camera.gameObject.SetActive(false);
         }
         newActiveCamera.gameObject.SetActive(true);
+        this.m_updateWallRendering = true;
+
         Debug.LogFormat("Changed from camera {0} to camera {1}", this.m_ActiveCamera.gameObject.name, cameraName);
         this.m_ActiveCamera = newActiveCamera;
     }
@@ -120,5 +187,33 @@ public class CameraController : MonoBehaviour
             Camera.main.enabled = true;
         }
         return this.m_ActiveCamera;
+    }
+
+    private bool ShouldUpdateRendering()
+    {
+        return this.m_updateWallRendering;
+    }
+
+    /*
+     * Assuming the active camera is static, don't render the walls
+     * that would be blocking the static cam.
+     */
+    private void UpdateRenderingForStaticCams()
+    {
+        foreach(GameObject wall in this.m_walls)
+        {
+            if (wall.name == "wallentrance" || wall.name == "windowwall")
+            {
+                Utils.SetActiveParentAndChildren(wall, false);
+            }
+        }
+    }
+
+    /*
+     * Returns true if the camera currently active is a static camera.
+     */
+    private bool isActiveCameraStatic()
+    {
+        return (this.m_ActiveCamera.name != "mainCharacterCamera");
     }
 }

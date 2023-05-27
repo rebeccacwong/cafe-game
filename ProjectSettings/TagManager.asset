@@ -13,12 +13,12 @@ TagManager:
   - Glow
   - Water
   - UI
-  - Raycast
+  - Floor
   - Tables
   - Chairs
   - FoodItems
   - IInteractables
-  - 
+  - Walls
   - 
   - 
   - 

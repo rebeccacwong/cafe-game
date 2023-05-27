@@ -51,4 +51,13 @@ public static class Utils
     {
 
     }
+
+    public static void SetActiveParentAndChildren(GameObject parent, bool setActive)
+    {
+        parent.SetActive(setActive);
+        for (int i = 0; i < parent.transform.childCount; i++)
+        {
+            parent.transform.GetChild(i).gameObject.SetActive(setActive);
+        }
+    }
 }
