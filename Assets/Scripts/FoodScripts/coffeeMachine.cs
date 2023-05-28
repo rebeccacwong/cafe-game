@@ -20,7 +20,7 @@ public class coffeeMachine : MonoBehaviour, IInteractable
 
     private Camera m_oldCamera = null;
     private bool m_CurrentlyInteracting;
-    private Vector3 m_spawnPos = new Vector3(11.97f, 3.112f, 24.216f);
+    private Vector3 m_spawnPos = new Vector3(12.022f, 3.112f, 24.216f);
 
     // Start is called before the first frame update
     void Start()

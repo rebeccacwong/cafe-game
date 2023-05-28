@@ -11,17 +11,21 @@ public class GameController : MonoBehaviour
 
     #region Cached components
     private SpawnController cc_spawnController;
+    private UI cc_uiController;
     #endregion
 
     [SerializeField, Range(0, 24)]
     public float timeOfDay;
 
+    private static float startDayTime = 5f;
+    private static float endDayTime = 20f;
     private bool m_timePaused = false;
 
     private void Awake()
     {
-        this.timeOfDay = 5f;
+        this.timeOfDay = startDayTime;
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
+        cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
     }
 
     // Update is called once per frame
@@ -31,9 +35,10 @@ public class GameController : MonoBehaviour
         if (!m_timePaused)
         {
             timeOfDay += Time.deltaTime * 0.15f;
+            cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 
-        if (timeOfDay >= 20f)
+        if (timeOfDay >= endDayTime)
         {
             closeCafe();
         }
@@ -41,7 +46,7 @@ public class GameController : MonoBehaviour
         // Poll for clicks
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject obj = Utils.returnObjectMouseIsOn();
+            GameObject obj = Utils.returnObjectMouseIsOn(LayerMask.GetMask("IInteractables"));
             Debug.LogWarning(obj);
             if (obj != null)
             {

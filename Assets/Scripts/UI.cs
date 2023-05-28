@@ -20,6 +20,7 @@ public class UI : MonoBehaviour
 
     private TextMeshProUGUI moneyTextMesh;
     private TextMeshProUGUI hintTextMesh;
+    private Slider timeSlider;
 
     public void Awake()
     {
@@ -39,8 +40,13 @@ public class UI : MonoBehaviour
         cc_gameManager = gameManager.GetComponent<GameManager>();
 
         transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
-        this.moneyTextMesh = transform.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
+
+        Transform topbar = transform.Find("topbar");
+        this.moneyTextMesh = topbar.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.moneyTextMesh != null, "Must find textmesh to represent money");
+
+        this.timeSlider = topbar.Find("Slider").GetComponent<Slider>();
+        Debug.Assert(this.timeSlider != null, "Must find timeSlider");
 
         this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.hintTextMesh != null, "Must find textmesh to represent hint text");
@@ -101,6 +107,16 @@ public class UI : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTimeInSeconds);
         TmpObj.gameObject.SetActive(false);
+    }
+
+    /*
+     * Slider val must be between 0 and 1. 1 Indicates
+     * full slider, 0 is empty.
+     */
+    public void updateTimeSlider(float sliderVal)
+    {
+        Debug.Assert(sliderVal >= 0);
+        this.timeSlider.value = Mathf.Min(1, sliderVal);
     }
 
 }

@@ -26,14 +26,18 @@ public struct DayStats
     int customersServed;
     float runningTotalSatisfactionScore;
     float runningTotalItemsOrdered;
-    int moneyMade;
+    float moneyMade;
+    float lostMoney;
+    int itemsTrashed;
 
-    public DayStats(int a, float b, int c, int d)
+    public DayStats(int a, float b, float c, float d, float e, int f)
     {
         customersServed = a;
         runningTotalSatisfactionScore = b;
         runningTotalItemsOrdered = c;
         moneyMade = d;
+        lostMoney = e;
+        itemsTrashed = f;
     }
 
     public double getAverageSatisfactionScore()
@@ -48,10 +52,10 @@ public struct DayStats
 
     public int getMoneyMade()
     {
-        return moneyMade;
+        return Mathf.RoundToInt(moneyMade);
     }
 
-    public void setMoneyMade(int money)
+    public void setMoneyMade(float money)
     {
         moneyMade = money;
     }
@@ -71,6 +75,12 @@ public struct DayStats
         runningTotalSatisfactionScore += customerStats.customerSatisfactionScore;
         runningTotalItemsOrdered += customerStats.itemsOrdered;
     }
+
+    public void pushTrashStats(int itemsTrashed, float lostMoney)
+    {
+        this.itemsTrashed = itemsTrashed;
+        this.lostMoney = lostMoney;
+    }
 }
 
 public static class Stats
@@ -87,6 +97,11 @@ public static class Stats
     public static void addCustomerStats(CustomerStats statsObj)
     {
         todayStats.pushCustomerStats(statsObj);
+    }
+
+    public static void addTrashStats(int itemsTrashed, float lostMoney)
+    {
+        todayStats.pushTrashStats(itemsTrashed, lostMoney);
     }
 
     public static Dictionary<string, string> queryTodayStats()

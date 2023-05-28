@@ -8,6 +8,9 @@ public class TrashCan : MonoBehaviour, IInteractable
     private Animator cc_animator;
     private AudioManager cc_audioManager;
 
+    private int m_numItemsTrashed = 0;
+    private float m_numLostMoney = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,9 @@ public class TrashCan : MonoBehaviour, IInteractable
         _ = optionalParam;
         if (this.cc_mainCharacter.isCarryingItem())
         {
+            m_numItemsTrashed++;
+            m_numLostMoney += this.cc_mainCharacter.itemBeingCarried().itemPrice;
+
             this.cc_animator.SetTrigger("showAnimation");
             this.cc_mainCharacter.dropItem();
             this.cc_audioManager.PlaySoundEffect("trash");

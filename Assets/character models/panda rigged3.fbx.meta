@@ -3,7 +3,37 @@ guid: 360b861faf0634e34a9094b62d30e478
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: f49ab7c2c3b9b4d73a1ccf63ab2497ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Panda texture
+    second: {fileID: 2100000, guid: 14005c3a4ccc04cba82a62b2e5879649, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: button
+    second: {fileID: 2100000, guid: a1443c6149b984c2899d7d7d0b5e8bcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: button.001
+    second: {fileID: 2100000, guid: a0cb52af2d2614174a585139d9440e19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: button.002
+    second: {fileID: 2100000, guid: 48a9e50c9d0f545f7802b69ef4b3b2ef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eye
+    second: {fileID: 2100000, guid: 7928b62dc4b604342a825b292dbc1083, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
