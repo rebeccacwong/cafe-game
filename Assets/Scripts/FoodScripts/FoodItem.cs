@@ -65,7 +65,8 @@ public class FoodItem : MonoBehaviour
         if (chairSeatedIn.facingDirection.z != 0)
         {
             // chair is pointing in z direction
-            pos.x = (table.getWidthOnXAxis() / 4f) * chairSeatedIn.facingDirection.z;
+            Debug.LogWarning("z direction chair");
+            pos.z = (table.getWidthOnZAxis() / 4f) * -chairSeatedIn.facingDirection.z;
         }
         else if (chairSeatedIn.facingDirection.x != 0)
         {
@@ -89,7 +90,13 @@ public class FoodItem : MonoBehaviour
         Debug.LogFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
 
-        return newFoodItem;
+        // TODO: determine if this is needed. It may be needed for coffee items.
+        if (chairSeatedIn.facingDirection.z != 0)
+        {
+            newFoodItem.transform.rotation.SetEulerAngles(0, 90, 0);
+        }
+
+            return newFoodItem;
     }
 
     public float getHeight()
