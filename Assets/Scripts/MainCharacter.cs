@@ -116,7 +116,10 @@ public class MainCharacter : CharacterBase
             {
                 float delta = Time.deltaTime * this.m_speed;
                 Vector3 target = this.gameObject.transform.position + (delta * this.m_direction);
-                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, delta);
+                if (Utils.isPointInCafe(target))
+                {
+                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target, delta);
+                }
             }
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {

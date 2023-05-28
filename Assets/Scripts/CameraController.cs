@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Linq;
 
 [DisallowMultipleComponent]
-[ExecuteAlways]
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
@@ -68,11 +67,9 @@ public class CameraController : MonoBehaviour
                 return;
             }
 
-            if (!Physics.Raycast(this.m_ActiveCamera.transform.position, Vector3.down, Mathf.Infinity, LayerMask.GetMask("Floor")))
+            if (!Utils.isPointInCafe(this.m_ActiveCamera.transform.position))
             {
-                // the camera is in not in the cafe
                 RaycastHit hit;
-                Debug.LogWarning("Camera is out of bounds, need to fix render of wall(s).");
                 List<GameObject> wallsToUpdate = new List<GameObject>();
 
                 foreach (GameObject wall in m_walls)
@@ -86,12 +83,12 @@ public class CameraController : MonoBehaviour
 
                     if (GeometryUtility.TestPlanesAABB(cameraFrustrum, bounds))
                     {
-                        if (Physics.SphereCast(this.m_ActiveCamera.transform.position, 6f, camToWallVect, out hit, 3f, LayerMask.GetMask("Walls"))
+                        if (Physics.SphereCast(this.m_ActiveCamera.transform.position, 1f, camToWallVect, out hit, 1f, LayerMask.GetMask("Walls"))
                             && hit.collider.gameObject == wall.gameObject)
                         {
                             wallsToUpdate.Add(wall);
                         }
-                        else if (Physics.OverlapSphere(this.m_ActiveCamera.transform.position, 6f, LayerMask.GetMask("Walls")).Contains<Collider>(wallCollider))
+                        else if (Physics.OverlapSphere(this.m_ActiveCamera.transform.position, 2f, LayerMask.GetMask("Walls")).Contains<Collider>(wallCollider))
                         {
                             wallsToUpdate.Add(wall);
                         }

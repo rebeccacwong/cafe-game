@@ -3,11 +3,61 @@ guid: 8402494d7e2b54cd899eb68993c8f130
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.001
+    second: {fileID: 2100000, guid: cdc1db16caf074c25a81644c82794cb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.002
+    second: {fileID: 2100000, guid: cdc1db16caf074c25a81644c82794cb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.003
+    second: {fileID: 2100000, guid: ae3f3afd52b1d42d993bd9ad85d47ede, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.005
+    second: {fileID: 2100000, guid: bbb8940ce8f4b4aceb4e697be65d53c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.006
+    second: {fileID: 2100000, guid: 12dc08e89560148f3a23c494a4b05e36, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WINDOW.007
+    second: {fileID: 2100000, guid: 9df2eb43faec24d459f51981b1e0278c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: flatbrick
+    second: {fileID: 2100000, guid: dd1e7169d444e48d4a30e1050e5474ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: greenwall
+    second: {fileID: -6098171779765777426, guid: 76bca9a8073df43cf909607a5379774a, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tile.002
+    second: {fileID: 2100000, guid: dd1e7169d444e48d4a30e1050e5474ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall
+    second: {fileID: 2100000, guid: c84e5e5a1afe248c399c16254b509f08, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
-    materialSearch: 1
+    materialSearch: 2
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4

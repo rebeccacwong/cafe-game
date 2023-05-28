@@ -54,10 +54,27 @@ public static class Utils
 
     public static void SetActiveParentAndChildren(GameObject parent, bool setActive)
     {
-        parent.SetActive(setActive);
+        MeshRenderer parentRenderer = parent.GetComponent<MeshRenderer>();
+
+        if (parentRenderer)
+        {
+            parentRenderer.enabled = setActive;
+        }
         for (int i = 0; i < parent.transform.childCount; i++)
         {
-            parent.transform.GetChild(i).gameObject.SetActive(setActive);
+            MeshRenderer childRenderer = parent.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
+            if (childRenderer)
+            {
+                childRenderer.enabled = setActive;
+            }
         }
+    }
+
+    public static bool isPointInCafe(Vector3 point)
+    {
+        Debug.LogWarning(point);
+        Vector3 pointShifted = point;
+        pointShifted.y += 2;
+        return Physics.Raycast(pointShifted, Vector3.down, Mathf.Infinity, LayerMask.GetMask("Floor"));
     }
 }
