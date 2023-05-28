@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             GameObject obj = Utils.returnObjectMouseIsOn();
+            Debug.LogWarning(obj);
             if (obj != null)
             {
                 IDraggableObject draggableObject = obj.GetComponent<IDraggableObject>();

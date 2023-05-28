@@ -203,6 +203,10 @@ public class CameraController : MonoBehaviour
             {
                 Utils.SetActiveParentAndChildren(wall, false);
             }
+            if (wall.name == "ceiling" && this.m_ActiveCamera.name == "far camera")
+            {
+                Utils.SetActiveParentAndChildren(wall, false);
+            }
         }
     }
 
