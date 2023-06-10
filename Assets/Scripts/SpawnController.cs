@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public class SpawnController : MonoBehaviour
@@ -24,6 +25,13 @@ public class SpawnController : MonoBehaviour
 		get { return m_moreCustomers; }
 		set { m_moreCustomers = value; }
 	}
+
+	private int m_activeCustomers = 0;
+	public int activeCustomers
+    {
+		get { return this.m_activeCustomers; }
+		set { m_activeCustomers = value;  }
+    }
 
 	private float m_minSpawnInterval;
 	public float minSpawnInterval
@@ -50,6 +58,8 @@ public class SpawnController : MonoBehaviour
 	}
 	#endregion
 
+	public UnityEvent noMoreCustomersEvent;
+
 	#region Editor Variables
 	[SerializeField]
 	[Tooltip("NPC Prefabs")]
@@ -64,17 +74,16 @@ public class SpawnController : MonoBehaviour
     }
 	#endregion
 
-	private int numCustomers;
-
 	#region Initialization
 	private void Awake()
 	{
-		//GameObject pm = GameObject.Find("PersistenceManager");
-		//cr_audioManager = pm.GetComponent<AudioManager>();
-		//GameObject.Find("/Canvas/Start Selling Button").GetComponent<Button>().onClick.AddListener(StartSell);
-
 		this.cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
 		Debug.Assert(this.cc_mainCharacter != null, "SpawnController must find a main character object!");
+
+		if (this.noMoreCustomersEvent == null)
+        {
+			this.noMoreCustomersEvent = new UnityEvent();
+        }
 	}
 	#endregion
 
@@ -170,7 +179,7 @@ public class SpawnController : MonoBehaviour
 	{
 		Debug.Log("Next customer");
 		GameObject npc = Instantiate(NPCPrefabs[Random.Range(0, NPCPrefabs.Length)], startPos, Quaternion.identity);
-		allCustomerObjs.Add(npc.gameObject);
+		this.m_activeCustomers++;
 	}
 
 	#endregion

@@ -13,7 +13,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private bool m_isBeingDragged;
     private Vector3 m_lastPositionBeforeDragging;
     private Chair m_chairSeatedIn;
-
     #endregion
 
     #region Customer experience variables
@@ -246,6 +245,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         {
             // TODO: Finish this particle sim
             Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
+        }
+
+        if (this.cc_spawnController.activeCustomers > 0)
+        {
+            this.cc_spawnController.activeCustomers--;
+        } else
+        {
+            Debug.LogError("Should never get here! This means that the customer counters are wrong.");
         }
         Destroy(this.gameObject);
     }
