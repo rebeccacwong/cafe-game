@@ -52,21 +52,41 @@ public static class Utils
 
     }
 
-    public static void SetActiveParentAndChildren(GameObject parent, bool setActive)
+    /*
+     * If isVisible is true, renders the mesh for this parent item and all of its 
+     * children. Does not render parent or any of its children otherwise.
+     */
+    public static void SetVisibleParentAndChildren(GameObject parent, bool isVisible)
     {
         MeshRenderer parentRenderer = parent.GetComponent<MeshRenderer>();
 
         if (parentRenderer)
         {
-            parentRenderer.enabled = setActive;
+            parentRenderer.enabled = isVisible;
         }
         for (int i = 0; i < parent.transform.childCount; i++)
         {
             MeshRenderer childRenderer = parent.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
             if (childRenderer)
             {
-                childRenderer.enabled = setActive;
+                childRenderer.enabled = isVisible;
             }
+        }
+    }
+
+    /*
+     * Sets the gameObject obj and all of its descendants recurisvely 
+     * as as active/notactive depending on isActive.
+     */
+    public static void SetThisAndAllDescendantsActiveRecursive(GameObject obj, bool isActive)
+    {
+        if (obj)
+        {
+            obj.SetActive(isActive);
+        }
+        foreach (Transform child in obj.transform)
+        {
+            SetThisAndAllDescendantsActiveRecursive(child.gameObject, isActive);
         }
     }
 

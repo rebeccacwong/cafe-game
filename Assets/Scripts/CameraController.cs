@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
             foreach (GameObject wall in m_walls)
             {
                 // Set all the walls active by default, then update not to render if necessary
-                Utils.SetActiveParentAndChildren(wall, true);
+                Utils.SetVisibleParentAndChildren(wall, true);
             }
 
             if (this.isActiveCameraStatic())
@@ -97,7 +97,7 @@ public class CameraController : MonoBehaviour
                 // only update visibility after to ensure occlusions are handled properly
                 foreach (GameObject wall in wallsToUpdate)
                 {
-                    Utils.SetActiveParentAndChildren(wall, false);
+                    Utils.SetVisibleParentAndChildren(wall, false);
                 }
             }
         }
@@ -201,11 +201,11 @@ public class CameraController : MonoBehaviour
         {
             if (wall.name == "wallentrance" || wall.name == "windowwall")
             {
-                Utils.SetActiveParentAndChildren(wall, false);
+                Utils.SetVisibleParentAndChildren(wall, false);
             }
             if (wall.name == "ceiling" && this.m_ActiveCamera.name == "far camera")
             {
-                Utils.SetActiveParentAndChildren(wall, false);
+                Utils.SetVisibleParentAndChildren(wall, false);
             }
         }
     }

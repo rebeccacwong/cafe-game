@@ -139,5 +139,10 @@ public class AudioManager : MonoBehaviour
             soundEffects[soundEffectName].Source.Stop();
         }
     }
+
+    public void softBeep()
+    {
+        PlaySoundEffect("softBeep");
+    }
     #endregion
 }

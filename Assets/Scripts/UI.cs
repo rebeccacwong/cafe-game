@@ -39,7 +39,7 @@ public class UI : MonoBehaviour
         GameObject gameManager = GameObject.Find("GameManager");
         cc_gameManager = gameManager.GetComponent<GameManager>();
 
-        transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
+        //transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
 
         Transform topbar = transform.Find("topbar");
         this.moneyTextMesh = topbar.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
@@ -56,7 +56,7 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        showDayCompleteUI();
     }
 
     // Update is called once per frame
@@ -117,6 +117,62 @@ public class UI : MonoBehaviour
     {
         Debug.Assert(sliderVal >= 0);
         this.timeSlider.value = Mathf.Min(1, sliderVal);
+    }
+
+    public void showDayCompleteUI()
+    {
+        Debug.LogWarning("showing ui");
+        Transform Window = transform.Find("DayCompleteWindow");
+        Debug.Assert(Window != null);
+
+        Window.gameObject.SetActive(true);
+
+        Transform satisfactionSlide = Window.Find("Customer Satisfaction Slide");
+        Debug.Assert(satisfactionSlide != null);
+
+        this.showHidePopUpWindow(satisfactionSlide, true);
+
+        Transform Button = satisfactionSlide.Find("NextButton");
+        Button.GetComponent<Button>().onClick.AddListener(changeDayCompleteUItoMoneySlide);
+
+        StartCoroutine(customerSatisfactionHeartsAnimation(satisfactionSlide, Stats.queryTodayCustomerSatisfaction(), 2f));
+    }
+
+    private void changeDayCompleteUItoMoneySlide()
+    {
+        Debug.LogWarning("Changed to money slide");
+        return;
+    }
+
+    private IEnumerator customerSatisfactionHeartsAnimation(Transform Window, float customerSatisfaction, float timeInSecForWholeAnim)
+    {
+        Debug.Assert(customerSatisfaction >= 0 && customerSatisfaction <= 1);
+
+        Transform heartsMask = Window.Find("hearts mask");
+        Debug.Assert(heartsMask != null);
+
+        Transform gameFill = heartsMask.Find("satisfactionHeartsFill");
+        Debug.Assert(gameFill != null);
+
+        float tInterval = 0.1f;
+        for (float t = 0; t < 1; t += tInterval)
+        {
+            gameFill.localScale = new Vector3(Mathf.Lerp(0, customerSatisfaction, t), gameFill.localScale.y, gameFill.localScale.z);
+            yield return new WaitForSeconds((float)(timeInSecForWholeAnim * tInterval));
+        }
+    }
+
+    private void showHidePopUpWindow(Transform window, bool show)
+    {
+        if (window)
+        {
+            Utils.SetThisAndAllDescendantsActiveRecursive(window.gameObject, show);
+        }
+        Transform overlay = transform.Find("darkoverlay");
+        if (overlay)
+        {
+            overlay.gameObject.SetActive(show);
+        }
     }
 
 }

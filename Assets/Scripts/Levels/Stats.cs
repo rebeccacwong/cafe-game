@@ -40,9 +40,9 @@ public struct DayStats
         itemsTrashed = f;
     }
 
-    public double getAverageSatisfactionScore()
+    public float getAverageSatisfactionScore()
     {
-        return System.Math.Round(runningTotalSatisfactionScore / customersServed, 2);
+        return (float) System.Math.Round(runningTotalSatisfactionScore / customersServed, 2);
     }
 
     public double getAverageItemsOrderedPerCustomer()
@@ -86,12 +86,12 @@ public struct DayStats
 public static class Stats
 {
     private static DayStats yesterdayStats;
-    private static DayStats todayStats;
+    private static DayStats todayStats = new DayStats(0, 0, 0, 0, 0, 0);
 
     public static void clearStatsForDay()
     {
         yesterdayStats = todayStats;
-        todayStats = new DayStats { };
+        todayStats = new DayStats(0, 0, 0, 0, 0, 0);
     }
 
     public static void addCustomerStats(CustomerStats statsObj)
@@ -104,25 +104,43 @@ public static class Stats
         todayStats.pushTrashStats(itemsTrashed, lostMoney);
     }
 
-    public static Dictionary<string, string> queryTodayStats()
+    private static Dictionary<string, string> queryTodayStatsDict()
     {
         Dictionary<string, string> statsDictionary = new Dictionary<string, string>();
 
-        statsDictionary.Add("Money earned", todayStats.getMoneyMade().ToString());
-        statsDictionary.Add("Customers served", todayStats.getCustomersServed().ToString());
-        statsDictionary.Add("Average customer satisfaction",
+        statsDictionary.Add("MoneyEarned", todayStats.getMoneyMade().ToString());
+        statsDictionary.Add("CustomersServed", todayStats.getCustomersServed().ToString());
+        statsDictionary.Add("AvgCustomerSatisfaction",
             System.Math.Round(todayStats.getAverageSatisfactionScore() * 5, 1).ToString() + "/5");
 
         return statsDictionary;
+    }
+
+    public static int queryTodayMoneyMade()
+    {
+        int money = todayStats.getMoneyMade();
+        return float.IsNaN(money) ? 0 : money;
+    }
+
+    public static int queryTodayCustomersServed()
+    {
+        int customers = todayStats.getCustomersServed();
+        return float.IsNaN(customers) ? 0 : customers;
+    }
+
+    public static float queryTodayCustomerSatisfaction()
+    {
+        float score = todayStats.getAverageSatisfactionScore();
+        return float.IsNaN(score) ? 0 : score;
     }
 
     public static Dictionary<string, string> yesterdayTodayDiffStats()
     {
         Dictionary<string, string> statsDictionary = new Dictionary<string, string>();
 
-        statsDictionary.Add("Money earned", (todayStats.getMoneyMade() - yesterdayStats.getMoneyMade()).ToString());
-        statsDictionary.Add("Customers served", (todayStats.getCustomersServed() - yesterdayStats.getMoneyMade()).ToString());
-        statsDictionary.Add("Average customer satisfaction",
+        statsDictionary.Add("MoneyEarned", (todayStats.getMoneyMade() - yesterdayStats.getMoneyMade()).ToString());
+        statsDictionary.Add("CustomersServed", (todayStats.getCustomersServed() - yesterdayStats.getMoneyMade()).ToString());
+        statsDictionary.Add("AvgCustomerSatisfaction",
             System.Math.Round((todayStats.getAverageSatisfactionScore() - yesterdayStats.getAverageSatisfactionScore()) * 100).ToString() + "%");
 
         return statsDictionary;

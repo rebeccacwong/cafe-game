@@ -41,6 +41,8 @@ public class GameController : MonoBehaviour
         if (timeOfDay >= endDayTime)
         {
             closeCafe();
+            // change the sun UI to moon image
+            // TODO: wait until all customers have left before adding the close cafe UI
         }
 
         // Poll for clicks
@@ -114,7 +116,7 @@ public class GameController : MonoBehaviour
         cc_spawnController.minSpawnInterval = 5f;
         cc_spawnController.maxSpawnInterval = 10f;
         cc_spawnController.StartSpawningCustomers();
-}
+    }
 
     public void closeCafe()
     {
@@ -126,5 +128,7 @@ public class GameController : MonoBehaviour
         {
             pausableObj.Pause();
         }
+
+        cc_uiController.showDayCompleteUI();
     }
 }
