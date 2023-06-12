@@ -133,15 +133,62 @@ public class UI : MonoBehaviour
         this.showHidePopUpWindow(satisfactionSlide, true);
 
         Transform Button = satisfactionSlide.Find("NextButton");
+        Debug.Assert(Button != null);
         Button.GetComponent<Button>().onClick.AddListener(changeDayCompleteUItoMoneySlide);
 
+        // Change the customers served stats on UI
+        Transform customersServed = satisfactionSlide.Find("CustomersDynamic");
+        Debug.Assert(customersServed != null);
+        updateTextOnTMP(customersServed, Stats.queryTodayCustomersServed().ToString());
+
+        // Change the orders served stats on UI
+        Transform ordersCompleted = satisfactionSlide.Find("OrdersDynamic");
+        Debug.Assert(ordersCompleted != null);
+        updateTextOnTMP(ordersCompleted, Stats.queryTodayItemsServed().ToString());
+
         StartCoroutine(customerSatisfactionHeartsAnimation(satisfactionSlide, Stats.queryTodayCustomerSatisfaction(), 2f));
+    }
+
+    private void updateTextOnTMP(Transform textTransform, string text)
+    {
+        TextMeshProUGUI TMP = textTransform.GetComponent<TextMeshProUGUI>();
+        Debug.Assert(textTransform != null);
+        TMP.text = text;
     }
 
     private void changeDayCompleteUItoMoneySlide()
     {
         Debug.LogWarning("Changed to money slide");
-        return;
+        Transform Window = transform.Find("DayCompleteWindow");
+        Debug.Assert(Window != null);
+
+        Transform satisfactionSlide = Window.Find("Customer Satisfaction Slide");
+        Debug.LogWarning("Changed to money slide");
+
+        this.showHidePopUpWindow(satisfactionSlide, false);
+
+        Transform moneySlide = Window.Find("Money Window");
+        Debug.Assert(moneySlide != null);
+        this.showHidePopUpWindow(moneySlide, true);
+
+        Transform revenue = moneySlide.Find("RevenueDynamic");
+        Debug.Assert(revenue != null);
+        updateTextOnTMP(revenue, "$" + Stats.queryTodayMoneyMade().ToString());
+
+        Transform costs = moneySlide.Find("CostsDynamic");
+        Debug.Assert(costs != null);
+        updateTextOnTMP(costs, "$" + Stats.queryLostMoney().ToString());
+
+        Transform profit = moneySlide.Find("ProfitDynamic");
+        Debug.Assert(profit != null);
+        int profitInt = Stats.queryTodayMoneyMade() - Stats.queryLostMoney();
+        if (profitInt < 0)
+        {
+            updateTextOnTMP(profit, "-$" + profitInt.ToString());
+        } else
+        {
+            updateTextOnTMP(profit, "$" + profitInt.ToString());
+        }
     }
 
     private IEnumerator customerSatisfactionHeartsAnimation(Transform Window, float customerSatisfaction, float timeInSecForWholeAnim)

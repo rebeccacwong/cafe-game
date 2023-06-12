@@ -30,10 +30,6 @@ public class Chair : MonoBehaviour
     {
         this.facingDirection =
             Vector3Int.RoundToInt(Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.up) * prefabFacingDirection);
-        if (this.heightOfSeat == 1.85f)
-        {
-            Debug.LogWarning(facingDirection);
-        }
     }
 
     // Returns the table that the chair is at

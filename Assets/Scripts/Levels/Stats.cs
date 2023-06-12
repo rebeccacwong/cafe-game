@@ -25,12 +25,12 @@ public struct DayStats
 {
     int customersServed;
     float runningTotalSatisfactionScore;
-    float runningTotalItemsOrdered;
+    int runningTotalItemsOrdered;
     float moneyMade;
     float lostMoney;
     int itemsTrashed;
 
-    public DayStats(int a, float b, float c, float d, float e, int f)
+    public DayStats(int a, float b, int c, float d, float e, int f)
     {
         customersServed = a;
         runningTotalSatisfactionScore = b;
@@ -47,7 +47,7 @@ public struct DayStats
 
     public double getAverageItemsOrderedPerCustomer()
     {
-        return System.Math.Round(runningTotalItemsOrdered / customersServed, 1);
+        return System.Math.Round((double)(runningTotalItemsOrdered / customersServed), 1);
     }
 
     public int getMoneyMade()
@@ -70,6 +70,16 @@ public struct DayStats
         customersServed = numCustomers;
     }
 
+    public int getItemsServed()
+    {
+        return runningTotalItemsOrdered;
+    }
+
+    public int getLostMoney()
+    {
+        return Mathf.RoundToInt(lostMoney);
+    }
+
     public void pushCustomerStats(CustomerStats customerStats)
     {
         runningTotalSatisfactionScore += customerStats.customerSatisfactionScore;
@@ -79,7 +89,14 @@ public struct DayStats
     public void pushTrashStats(int itemsTrashed, float lostMoney)
     {
         this.itemsTrashed = itemsTrashed;
-        this.lostMoney = lostMoney;
+        if (float.IsNaN(lostMoney))
+        {
+            this.lostMoney = lostMoney;
+        } else
+        {
+            this.lostMoney += lostMoney;
+        }
+        
     }
 }
 
@@ -132,6 +149,18 @@ public static class Stats
     {
         float score = todayStats.getAverageSatisfactionScore();
         return float.IsNaN(score) ? 0 : score;
+    }
+
+    public static int queryTodayItemsServed()
+    {
+        int items = todayStats.getItemsServed();
+        return float.IsNaN(items) ? 0 : items;
+    }
+
+    public static int queryLostMoney()
+    {
+        int money = todayStats.getLostMoney();
+        return float.IsNaN(money) ? 0 : money;
     }
 
     public static Dictionary<string, string> yesterdayTodayDiffStats()
