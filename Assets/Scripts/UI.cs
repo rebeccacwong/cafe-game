@@ -22,6 +22,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI moneyTextMesh;
     private TextMeshProUGUI hintTextMesh;
     private Slider timeSlider;
+    private Slider satisfactionSlider;
 
     public void Awake()
     {
@@ -46,8 +47,11 @@ public class UI : MonoBehaviour
         this.moneyTextMesh = topbar.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.moneyTextMesh != null, "Must find textmesh to represent money");
 
-        this.timeSlider = topbar.Find("Slider").GetComponent<Slider>();
+        this.timeSlider = topbar.Find("TimeSlider").GetComponent<Slider>();
         Debug.Assert(this.timeSlider != null, "Must find timeSlider");
+
+        this.satisfactionSlider = topbar.Find("SatisfactionSlider").GetComponent<Slider>();
+        Debug.Assert(this.satisfactionSlider != null, "Must find satisfactionSlider");
 
         this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.hintTextMesh != null, "Must find textmesh to represent hint text");
@@ -235,6 +239,25 @@ public class UI : MonoBehaviour
         {
             overlay.gameObject.SetActive(show);
         }
+    }
+
+    public void updateSatisfactionSlider()
+    {
+        float satisfaction = Stats.queryTodayCustomerSatisfaction();
+        Debug.Assert(satisfaction >= 0 && satisfaction <= 1);
+
+        Transform fill = satisfactionSlider.gameObject.transform.Find("Fill Area").Find("Fill");
+        Image img = fill.GetComponent<Image>();
+
+        if (satisfaction < 0.3)
+        {
+            img.color = new Color(0.5566038f, 0.4069509f, 0.4069509f);
+
+        } else
+        {
+            img.color = Color.red;
+        }
+        satisfactionSlider.value = satisfaction;
     }
 
 }

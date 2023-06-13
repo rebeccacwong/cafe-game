@@ -46,6 +46,8 @@ public class GameController : MonoBehaviour
             // TODO: wait until all customers have left before adding the close cafe UI
         }
 
+        cc_uiController.updateSatisfactionSlider();
+
         // Poll for clicks
         if (Input.GetMouseButtonDown(0))
         {

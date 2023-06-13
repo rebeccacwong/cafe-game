@@ -83,6 +83,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     protected override void Update()
     {
+
+        if (this.isPaused)
+        {
+            return;
+        }
+
         waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
 
         if (Time.realtimeSinceStartup - this.timeInstantiated > this.timeUntilLeavingCafe)
@@ -91,10 +97,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.exitCafe();
         }
 
-        if (this.isPaused)
-        {
-            return;
-        }
+        // TODO: push customer stats so we have a real-time view of the customer satisfaction 
+        // don't have to wait until end of day to know how satisfied customers are
 
         if (this.m_chairSeatedIn)
         {

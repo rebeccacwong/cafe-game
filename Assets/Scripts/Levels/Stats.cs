@@ -84,6 +84,7 @@ public struct DayStats
     {
         runningTotalSatisfactionScore += customerStats.customerSatisfactionScore;
         runningTotalItemsOrdered += customerStats.itemsOrdered;
+        customersServed++;
     }
 
     public void pushTrashStats(int itemsTrashed, float lostMoney)
@@ -103,12 +104,12 @@ public struct DayStats
 public static class Stats
 {
     private static DayStats yesterdayStats;
-    private static DayStats todayStats = new DayStats(0, 0, 0, 0, 0, 0);
+    private static DayStats todayStats = new DayStats(0, 1f, 0, 0, 0, 0);
 
     public static void clearStatsForDay()
     {
         yesterdayStats = todayStats;
-        todayStats = new DayStats(0, 0, 0, 0, 0, 0);
+        todayStats = new DayStats(0, 1f, 0, 0, 0, 0);
     }
 
     public static void addCustomerStats(CustomerStats statsObj)
