@@ -64,7 +64,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         cc_coffeeMachine = GameObject.Find("coffee machine").GetComponent<coffeeMachine>();
 
-        this.cc_rigidBody = gameObject.GetComponent<Rigidbody>();
         this.cc_animator = gameObject.GetComponent<Animator>();
         this.timeUntilLeavingCafe = maxWaitTimeSecondsForOrder;
         this.timeInstantiated = Time.realtimeSinceStartup; // real time in seconds since game started
@@ -239,7 +238,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Destroy(this.foodItemConsuming.gameObject);
         }
 
-        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), this.totalItemsOrdered));
+        this.pushCustomerStats();
 
         if (m_destroyExplosion)
         {
@@ -255,6 +254,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Debug.LogError("Should never get here! This means that the customer counters are wrong.");
         }
         Destroy(this.gameObject);
+    }
+
+    public void pushCustomerStats()
+    {
+        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), this.totalItemsOrdered));
     }
 
     private bool shouldOrderItem()
@@ -292,7 +296,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         this.m_lastPositionBeforeDragging = gameObject.transform.position;
         Debug.LogFormat("Start dragging customer {0} with id {1:X}", gameObject, gameObject.GetInstanceID());
 
-        this.cc_rigidBody.isKinematic = false;
         this.m_screenPointOfCharacter = this.cc_CameraController.getActiveCamera().WorldToScreenPoint(gameObject.transform.position);
         return true;
     }
@@ -308,7 +311,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
 
         this.isBeingDragged = false;
-        this.cc_rigidBody.isKinematic = true;
         Debug.LogFormat("Stop dragging customer {0} with id {1:X}", gameObject, gameObject.GetInstanceID());
 
         // check if we're intersecting with a chair or table and we should it there

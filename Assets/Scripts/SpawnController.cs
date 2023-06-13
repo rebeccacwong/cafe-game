@@ -170,6 +170,12 @@ public class SpawnController : MonoBehaviour
         {
 			if (customer != null)
             {
+				Customer customerObj = customer.GetComponent<Customer>();
+				if (customerObj != null)
+                {
+					customerObj.pushCustomerStats();
+                }
+
 				Destroy(customer.gameObject);
 			}
         }
@@ -179,6 +185,7 @@ public class SpawnController : MonoBehaviour
 	{
 		Debug.Log("Next customer");
 		GameObject npc = Instantiate(NPCPrefabs[Random.Range(0, NPCPrefabs.Length)], startPos, Quaternion.identity);
+		this.allCustomerObjs.Add(npc);
 		this.m_activeCustomers++;
 	}
 

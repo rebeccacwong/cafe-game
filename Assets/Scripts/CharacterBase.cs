@@ -70,7 +70,7 @@ public class CharacterBase : MonoBehaviour, IPausable
         this.m_direction = this.m_direction.normalized;
 
         RaycastHit hit;
-        if (this.cc_rigidBody.SweepTest(this.m_direction, out hit, distance) && hit.point != null)
+        if (Physics.SphereCast(this.transform.position, 1f, this.m_direction, out hit) && hit.point != null)
         {
             Vector3 modified = hit.point - (2 * this.m_direction);
               

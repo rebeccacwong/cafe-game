@@ -132,7 +132,7 @@ public class GameController : MonoBehaviour
             pausableObj.Pause();
         }
 
-        // TODO: for each customer still in the store, push their stats
+        cc_spawnController.RemoveAllCustomers();
 
         cc_uiController.showDayCompleteUI();
     }
