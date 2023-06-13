@@ -12,6 +12,7 @@ public class UI : MonoBehaviour
     private CameraController cc_cameraController;
     private GameController cc_gameController;
     private GameManager cc_gameManager;
+    private AudioManager cc_audioManager;
     #endregion
 
     [SerializeField]
@@ -39,7 +40,7 @@ public class UI : MonoBehaviour
         GameObject gameManager = GameObject.Find("GameManager");
         cc_gameManager = gameManager.GetComponent<GameManager>();
 
-        //transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
+        transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
 
         Transform topbar = transform.Find("topbar");
         this.moneyTextMesh = topbar.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
@@ -51,12 +52,15 @@ public class UI : MonoBehaviour
         this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.hintTextMesh != null, "Must find textmesh to represent hint text");
         this.hintTextMesh.gameObject.SetActive(false);
+
+        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        Debug.Assert(this.cc_audioManager != null, "Must find an audio manager");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        showDayCompleteUI();
+
     }
 
     // Update is called once per frame
@@ -132,9 +136,12 @@ public class UI : MonoBehaviour
 
         this.showHidePopUpWindow(satisfactionSlide, true);
 
-        Transform Button = satisfactionSlide.Find("NextButton");
-        Debug.Assert(Button != null);
-        Button.GetComponent<Button>().onClick.AddListener(changeDayCompleteUItoMoneySlide);
+        this.cc_audioManager.PauseCurrentBackgroundSong();
+        this.cc_audioManager.PlaySoundEffect("dayEndMusic");
+
+        //Transform Button = satisfactionSlide.Find("NextButton");
+        //Debug.Assert(Button != null);
+        //Button.GetComponent<Button>().onClick.AddListener(this.changeDayCompleteUItoMoneySlide);
 
         // Change the customers served stats on UI
         Transform customersServed = satisfactionSlide.Find("CustomersDynamic");
@@ -156,8 +163,16 @@ public class UI : MonoBehaviour
         TMP.text = text;
     }
 
-    private void changeDayCompleteUItoMoneySlide()
+    public void test()
     {
+        Debug.LogWarning("test");
+        changeDayCompleteUItoMoneySlide();
+    }
+
+    public void changeDayCompleteUItoMoneySlide()
+    {
+        this.cc_audioManager.PlaySoundEffect("softBeep");
+
         Debug.LogWarning("Changed to money slide");
         Transform Window = transform.Find("DayCompleteWindow");
         Debug.Assert(Window != null);
@@ -175,7 +190,7 @@ public class UI : MonoBehaviour
         Debug.Assert(revenue != null);
         updateTextOnTMP(revenue, "$" + Stats.queryTodayMoneyMade().ToString());
 
-        Transform costs = moneySlide.Find("CostsDynamic");
+        Transform costs = moneySlide.Find("CostDynamic");
         Debug.Assert(costs != null);
         updateTextOnTMP(costs, "$" + Stats.queryLostMoney().ToString());
 

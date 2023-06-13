@@ -230,22 +230,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
   m_PrefabInstance: {fileID: 4325620572268829280}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &6189600357540669046
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3514735359109474097}
-  serializedVersion: 2
-  m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!65 &5333732545738005472
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -273,3 +257,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 4
   m_numFramesForSitAnim: 10
+  m_destroyExplosion: {fileID: 0}

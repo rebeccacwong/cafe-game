@@ -20,7 +20,7 @@ public class Chair : MonoBehaviour
 
     [SerializeField]
     [Tooltip("The default facing direction vector of the prefab.")]
-    private Vector3 prefabFacingDirection;
+    public Vector3 prefabFacingDirection;
 
     public Vector3Int facingDirection;
 

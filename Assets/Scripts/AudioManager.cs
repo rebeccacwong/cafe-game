@@ -29,6 +29,7 @@ public class AudioManager : MonoBehaviour
     private Dictionary<String, Sound> soundEffects;
     private List<Sound> songs;
     private int m_indexOfCurrentlyPlayingSong = 0;
+    private bool m_isMusicPaused = false;
     #endregion
 
     #region Initialization
@@ -68,7 +69,7 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if (!songs[m_indexOfCurrentlyPlayingSong].Source.isPlaying)
+        if (!m_isMusicPaused && !songs[m_indexOfCurrentlyPlayingSong].Source.isPlaying)
         {
             m_indexOfCurrentlyPlayingSong = (m_indexOfCurrentlyPlayingSong + 1) % songs.Count;
             songs[m_indexOfCurrentlyPlayingSong].Source.Play();
@@ -77,9 +78,10 @@ public class AudioManager : MonoBehaviour
     }
 
     #region Play Sound Methods
-    public void StopBackgroundSong(int index)
+    public void PauseCurrentBackgroundSong()
     {
-        songs[index % songs.Count].Source.Stop();
+        songs[m_indexOfCurrentlyPlayingSong].Source.Stop();
+        m_isMusicPaused = true;
     }
 
     public void NextBackgroundSong(int index)
@@ -138,11 +140,6 @@ public class AudioManager : MonoBehaviour
         {
             soundEffects[soundEffectName].Source.Stop();
         }
-    }
-
-    public void softBeep()
-    {
-        PlaySoundEffect("softBeep");
     }
     #endregion
 }

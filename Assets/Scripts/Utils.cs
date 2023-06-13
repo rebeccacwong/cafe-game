@@ -92,7 +92,6 @@ public static class Utils
 
     public static bool isPointInCafe(Vector3 point)
     {
-        Debug.LogWarning(point);
         Vector3 pointShifted = point;
         pointShifted.y += 2;
         return Physics.Raycast(pointShifted, Vector3.down, Mathf.Infinity, LayerMask.GetMask("Floor"));

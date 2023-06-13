@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     private static float startDayTime = 5f;
     private static float endDayTime = 20f;
     private bool m_timePaused = false;
+    private bool m_isCafeOpen = true;
 
     private void Awake()
     {
@@ -38,7 +39,7 @@ public class GameController : MonoBehaviour
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 
-        if (timeOfDay >= endDayTime)
+        if (timeOfDay >= endDayTime && this.m_isCafeOpen)
         {
             closeCafe();
             // change the sun UI to moon image
@@ -123,11 +124,15 @@ public class GameController : MonoBehaviour
         Debug.LogWarning("Ending day");
         cc_spawnController.StopSpawningCustomers();
 
+        this.m_isCafeOpen = false;
+
         // Pause everything
         foreach (IPausable pausableObj in getAllPausableObjects())
         {
             pausableObj.Pause();
         }
+
+        // TODO: for each customer still in the store, push their stats
 
         cc_uiController.showDayCompleteUI();
     }
