@@ -4,6 +4,15 @@ using UnityEngine;
 using System;
 using UnityEngine.Audio;
 
+/// <summary>
+/// The AudioManager handles audio for all scenes.
+/// There should only be one instance of this which
+/// should persist between scenes.
+///
+/// The class has 2 mixers, one for the background music
+/// and one for sound effects. 
+/// </summary>
+
 [DisallowMultipleComponent]
 public class AudioManager : MonoBehaviour
 {
