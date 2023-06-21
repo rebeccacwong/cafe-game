@@ -97,7 +97,6 @@ public struct DayStats
         {
             this.lostMoney += lostMoney;
         }
-        
     }
 }
 
@@ -105,6 +104,7 @@ public static class Stats
 {
     private static DayStats yesterdayStats;
     private static DayStats todayStats = new DayStats(0, 1f, 0, 0, 0, 0);
+    private static float currentRealtimeAvgCustomerSatisfaction = 1f;
 
     public static void clearStatsForDay()
     {
@@ -174,6 +174,16 @@ public static class Stats
             System.Math.Round((todayStats.getAverageSatisfactionScore() - yesterdayStats.getAverageSatisfactionScore()) * 100).ToString() + "%");
 
         return statsDictionary;
+    }
+
+    public static float queryRealTimeAvgCustomerSatisfaction()
+    {
+        return currentRealtimeAvgCustomerSatisfaction;
+    }
+
+    public static void pushRealTimeAvgCustomerSatisfaction(float value)
+    {
+        currentRealtimeAvgCustomerSatisfaction = value;
     }
 }
 

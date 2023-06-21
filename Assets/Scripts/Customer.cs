@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class Customer : CharacterBase, IDraggableObject, IInteractable
@@ -26,16 +27,19 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private float timeUntilLeavingCafe;
 
     // the max time that customer will wait for any singular order, this is a const.
-    private float maxWaitTimeSecondsForOrder = 2.5f * 60;
+    private float maxWaitTimeSecondsForOrder = 60f;
 
     // the max time that customer will "eat" before potentially ordering another 
     // item, this is a const.
-    private float waitBetweenOrders = 2 * 60;
+    private float waitBetweenOrders = 25f;
 
     // this timer represents a countdown until the customer can order another item.
     // when it's 0, the customer potentially order another item.
     private float waitBetweenOrdersTimer = 0;
     #endregion
+
+    // Event is invoked when customer is destroyed
+    public UnityEvent<GameObject> destroyEvent;
 
     #region Cached components
     private SpawnController cc_spawnController;
@@ -79,6 +83,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         // Move to the counter
         this.setNewTarget(this.m_frontOfLinePos, true, true);
+        Debug.LogFormat("Customer satisfaction: {0}", calculateCustomerSatisfaction());
     }
 
     protected override void Update()
@@ -91,7 +96,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
 
-        if (Time.realtimeSinceStartup - this.timeInstantiated > this.timeUntilLeavingCafe)
+        if (this.getTimeWaited() > this.timeUntilLeavingCafe)
         {
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
@@ -205,6 +210,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public void sitDown(GameObject chairGameObject, Chair chairData)
     {
+        Debug.LogWarningFormat("Customer satisfaction: {0}", calculateCustomerSatisfaction());
         this.m_chairSeatedIn = chairData;
         chairData.useChair();
 
@@ -227,16 +233,44 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return false;
     }
 
-    private float calculateCustomerSatisfaction()
+    public float calculateCustomerSatisfaction()
     {
-        float avgTimeRemainingSpentOnEachOrder = (this.timeUntilLeavingCafe / this.totalItemsOrdered);
-        float bestTime = maxWaitTimeSecondsForOrder * this.totalItemsOrdered + ((this.totalItemsOrdered - 1) * this.maxWaitTimeSecondsForOrder);
+        float avgTimeSpentOnEachOrder;
+        float worstTimeAvgTimeSpentOnEachOrder;
+        float satisfaction;
 
-        return Mathf.Lerp(0, 1, (avgTimeRemainingSpentOnEachOrder / (bestTime * 0.65f)));
+        // worst time is as if we waited max time for each order and max
+        // time in between each orders
+        float worstTime;
+
+        if (this.totalItemsOrdered != 0)
+        {
+            worstTime = maxWaitTimeSecondsForOrder * this.totalItemsOrdered + ((this.totalItemsOrdered - 1) * this.waitBetweenOrders);
+            avgTimeSpentOnEachOrder = (this.getTimeWaited() / this.totalItemsOrdered);
+            worstTimeAvgTimeSpentOnEachOrder = worstTime / this.totalItemsOrdered;
+
+            // we know that the average time waited will be between 0 and worstTimeAvgTimeSpentOnEachOrder
+            satisfaction = Mathf.InverseLerp(worstTimeAvgTimeSpentOnEachOrder, 0, avgTimeSpentOnEachOrder);
+        } else
+        {
+            worstTime = maxWaitTimeSecondsForOrder;
+            avgTimeSpentOnEachOrder = this.getTimeWaited();
+            satisfaction = Mathf.InverseLerp(worstTime, 0, avgTimeSpentOnEachOrder);
+        }
+
+        return satisfaction;
+        // lerp it again with some buffer, to account for the fact that there must be some amount of wait time
+        //return Mathf.Lerp(0, 1, Mathf.Min(satisfaction, 1f));
+    }
+
+    private float getTimeWaited()
+    {
+        return (Time.realtimeSinceStartup - this.timeInstantiated);
     }
 
     public void exitCafe()
     {
+        this.destroyEvent.Invoke(this.gameObject);
         if (this.foodItemConsuming)
         {
             Destroy(this.foodItemConsuming.gameObject);
@@ -257,6 +291,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         {
             Debug.LogError("Should never get here! This means that the customer counters are wrong.");
         }
+
         Destroy(this.gameObject);
     }
 

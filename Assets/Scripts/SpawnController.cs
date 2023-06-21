@@ -111,7 +111,12 @@ public class SpawnController : MonoBehaviour
 		}
 	}
 
-	private bool shouldSpawn()
+    private void LateUpdate()
+    {
+		Stats.pushRealTimeAvgCustomerSatisfaction(calculateRealtimeAvgCustomerSatisfaction());
+	}
+
+    private bool shouldSpawn()
     {
 		return ((Vector3.Distance(this.cc_mainCharacter.transform.position, this.spawnPosition) > 3f)
 			 && m_respawnTimer <= 0);
@@ -179,14 +184,40 @@ public class SpawnController : MonoBehaviour
 				Destroy(customer.gameObject);
 			}
         }
+		allCustomerObjs.Clear();
+	}
+
+	private void RemoveCustomer(GameObject obj)
+    {
+		this.allCustomerObjs.Remove(obj);
 	}
 
 	public void NextCustomer()
 	{
 		Debug.Log("Next customer");
 		GameObject npc = Instantiate(NPCPrefabs[Random.Range(0, NPCPrefabs.Length)], startPos, Quaternion.identity);
+		Customer CustomerObj = npc.GetComponent<Customer>();
+
+		CustomerObj.destroyEvent.AddListener(RemoveCustomer);
 		this.allCustomerObjs.Add(npc);
 		this.m_activeCustomers++;
+	}
+
+	public float calculateRealtimeAvgCustomerSatisfaction()
+	{
+		float sum = 0;
+		if (this.allCustomerObjs.Count == 0)
+        {
+			return 1f;
+        }
+		foreach (GameObject obj in this.allCustomerObjs)
+        {
+			Customer customer = obj.GetComponent<Customer>();
+			Debug.Assert(customer != null);
+			sum += customer.calculateCustomerSatisfaction();
+        }
+		Debug.LogWarning(sum / this.allCustomerObjs.Count);
+		return sum / this.allCustomerObjs.Count;
 	}
 
 	#endregion

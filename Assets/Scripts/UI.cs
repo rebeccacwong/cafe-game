@@ -32,9 +32,6 @@ public class UI : MonoBehaviour
         GameObject cameraController = GameObject.Find("CameraController");
         cc_cameraController = cameraController.GetComponent<CameraController>();
 
-        //GameObject customerSpawner = GameObject.Find("CustomerSpawner");
-        //cc_spawnController = customerSpawner.GetComponent<SpawnController>();
-
         GameObject gameController = GameObject.Find("GameController");
         cc_gameController = gameController.GetComponent<GameController>();
 
@@ -124,7 +121,7 @@ public class UI : MonoBehaviour
     public void updateTimeSlider(float sliderVal)
     {
         Debug.Assert(sliderVal >= 0);
-        this.timeSlider.value = Mathf.Min(1, sliderVal);
+        this.timeSlider.value = Mathf.Min(0.9f, Mathf.Lerp(0, 0.9f, sliderVal));
     }
 
     public void showDayCompleteUI()
@@ -157,6 +154,8 @@ public class UI : MonoBehaviour
         Debug.Assert(ordersCompleted != null);
         updateTextOnTMP(ordersCompleted, Stats.queryTodayItemsServed().ToString());
 
+
+        Debug.LogWarning(Stats.queryTodayCustomerSatisfaction());
         StartCoroutine(customerSatisfactionHeartsAnimation(satisfactionSlide, Stats.queryTodayCustomerSatisfaction(), 2f));
     }
 
@@ -165,12 +164,6 @@ public class UI : MonoBehaviour
         TextMeshProUGUI TMP = textTransform.GetComponent<TextMeshProUGUI>();
         Debug.Assert(textTransform != null);
         TMP.text = text;
-    }
-
-    public void test()
-    {
-        Debug.LogWarning("test");
-        changeDayCompleteUItoMoneySlide();
     }
 
     public void changeDayCompleteUItoMoneySlide()
@@ -243,13 +236,15 @@ public class UI : MonoBehaviour
 
     public void updateSatisfactionSlider()
     {
-        float satisfaction = Stats.queryTodayCustomerSatisfaction();
+        float satisfaction = Stats.queryRealTimeAvgCustomerSatisfaction();
+        satisfaction = Mathf.Lerp(0, 0.9f, satisfaction);
+
         Debug.Assert(satisfaction >= 0 && satisfaction <= 1);
 
         Transform fill = satisfactionSlider.gameObject.transform.Find("Fill Area").Find("Fill");
         Image img = fill.GetComponent<Image>();
 
-        if (satisfaction < 0.3)
+        if (satisfaction > 0.3)
         {
             img.color = new Color(0.5566038f, 0.4069509f, 0.4069509f);
 
