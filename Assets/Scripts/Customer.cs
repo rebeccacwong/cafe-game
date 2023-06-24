@@ -21,13 +21,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private FoodItem foodItemConsuming;
     private float timeInstantiated;
     private int totalItemsOrdered = 0;
+    private float customerSatisfactionBonus;
 
     // the longest time the customer will wait before leaving. when this reaches
     // 0, the customer will leave.
     private float timeUntilLeavingCafe;
 
     // the max time that customer will wait for any singular order, this is a const.
-    private float maxWaitTimeSecondsForOrder = 60f;
+    private float maxWaitTimeSecondsForOrder = 2 * 60f;
 
     // the max time that customer will "eat" before potentially ordering another 
     // item, this is a const.
@@ -258,9 +259,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             satisfaction = Mathf.InverseLerp(worstTime, 0, avgTimeSpentOnEachOrder);
         }
 
-        return satisfaction;
         // lerp it again with some buffer, to account for the fact that there must be some amount of wait time
-        //return Mathf.Lerp(0, 1, Mathf.Min(satisfaction, 1f));
+        return Mathf.Lerp(0, 1, Mathf.Min(satisfaction + 0.15f, 1f));
     }
 
     private float getTimeWaited()
@@ -297,7 +297,14 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     public void pushCustomerStats()
     {
-        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), this.totalItemsOrdered));
+        int totalItemsServed = this.totalItemsOrdered;
+        if (this.foodItemOrdered != null)
+        {
+            // we have ordered something that we have not received yet
+            totalItemsServed = this.totalItemsOrdered - 1;
+        }
+        bool served = (totalItemsServed == 0) ? false : true;
+        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), totalItemsServed, served));
     }
 
     private bool shouldOrderItem()

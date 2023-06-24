@@ -12,13 +12,14 @@ public class GameController : MonoBehaviour
     #region Cached components
     private SpawnController cc_spawnController;
     private UI cc_uiController;
+    private GameManager cc_gameManager;
     #endregion
 
     [SerializeField, Range(0, 24)]
     public float timeOfDay;
 
     private static float startDayTime = 5f;
-    private static float endDayTime = 20f;
+    private static float endDayTime = 24f;
     private bool m_timePaused = false;
     private bool m_isCafeOpen = true;
 
@@ -27,6 +28,7 @@ public class GameController : MonoBehaviour
         this.timeOfDay = startDayTime;
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
+        cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class GameController : MonoBehaviour
 
         if (!m_timePaused)
         {
-            timeOfDay += Time.deltaTime * 0.15f;
+            timeOfDay += Time.deltaTime * 0.12f;
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 
@@ -137,5 +139,7 @@ public class GameController : MonoBehaviour
         cc_spawnController.RemoveAllCustomers();
 
         cc_uiController.showDayCompleteUI();
+
+        Stats.pushTodayMoneyMade(this.cc_gameManager.getPlayerMoneyAmount());
     }
 }

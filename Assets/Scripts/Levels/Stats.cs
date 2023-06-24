@@ -13,17 +13,20 @@ public struct CustomerStats
 {
     public readonly float customerSatisfactionScore;
     public readonly int itemsOrdered;
+    public readonly bool served;
 
-    public CustomerStats(float score, int numItems)
+    public CustomerStats(float score, int numItems, bool wasServed)
     {
         customerSatisfactionScore = score;
         itemsOrdered = numItems;
+        served = wasServed;
     }
 }
 
 public struct DayStats
 {
     int customersServed;
+    int customersArrived;
     float runningTotalSatisfactionScore;
     int runningTotalItemsOrdered;
     float moneyMade;
@@ -32,6 +35,7 @@ public struct DayStats
 
     public DayStats(int a, float b, int c, float d, float e, int f)
     {
+        customersArrived = 0;
         customersServed = a;
         runningTotalSatisfactionScore = b;
         runningTotalItemsOrdered = c;
@@ -42,7 +46,7 @@ public struct DayStats
 
     public float getAverageSatisfactionScore()
     {
-        return (float) System.Math.Round(runningTotalSatisfactionScore / customersServed, 2);
+        return (float) System.Math.Round(runningTotalSatisfactionScore / customersArrived, 2);
     }
 
     public double getAverageItemsOrderedPerCustomer()
@@ -84,7 +88,12 @@ public struct DayStats
     {
         runningTotalSatisfactionScore += customerStats.customerSatisfactionScore;
         runningTotalItemsOrdered += customerStats.itemsOrdered;
-        customersServed++;
+
+        if (customerStats.served)
+        {
+            customersServed++;
+        }
+        customersArrived++;
     }
 
     public void pushTrashStats(int itemsTrashed, float lostMoney)
@@ -138,6 +147,11 @@ public static class Stats
     {
         int money = todayStats.getMoneyMade();
         return float.IsNaN(money) ? 0 : money;
+    }
+
+    public static void pushTodayMoneyMade(float money)
+    {
+        todayStats.setMoneyMade(Mathf.RoundToInt(money));
     }
 
     public static int queryTodayCustomersServed()

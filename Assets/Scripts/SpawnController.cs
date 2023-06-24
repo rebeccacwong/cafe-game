@@ -216,7 +216,6 @@ public class SpawnController : MonoBehaviour
 			Debug.Assert(customer != null);
 			sum += customer.calculateCustomerSatisfaction();
         }
-		Debug.LogWarning(sum / this.allCustomerObjs.Count);
 		return sum / this.allCustomerObjs.Count;
 	}
 
