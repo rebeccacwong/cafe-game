@@ -1,5 +1,5 @@
 # cafe-game
-This is a cozy cafe game where you play as Pandy, who is operating his cafe and hoping to grow his business by making money and making his customers happy.
+This is a cozy cafe game where you play as Pandy, who is operating his cafe and hoping to grow his business by making money and making his customers happy. Play the most recent release of the game [here](https://rebeccacw.itch.io/pandys-parlour).
 
 ## controls
 * **space bar** switches between fixed camera viewing the cafe and Pandy's pov
