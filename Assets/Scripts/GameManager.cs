@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The GameManager is a Singleton object that manages the game
+/// lifecycle, and information that needs to be retained
+/// across multiple days/rounds of the game.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     #region Game data

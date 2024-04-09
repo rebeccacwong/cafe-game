@@ -278,7 +278,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
 
         // lerp it again with some buffer, to account for the fact that there must be some amount of wait time
-        return Mathf.Lerp(0, 1, Mathf.Min(satisfaction + 0.15f, 1f));
+        return Mathf.Lerp(0, 1, Mathf.Min(satisfaction + 0.3f, 1f));
     }
 
     private float getTimeWaited()

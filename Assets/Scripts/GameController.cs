@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// The GameController manages the game behavior within the scope
+/// of one cafe day.
+///
+/// The GameController will start the day (open the cafe), manage
+/// aggregate satisfaction, time, and other day specific data,
+/// and ensure that at the end of the day the proper UI
+/// summarizing the day's data is presented.
+/// 
+/// </summary>
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
 {
@@ -37,7 +48,7 @@ public class GameController : MonoBehaviour
 
         if (!m_timePaused)
         {
-            timeOfDay += Time.deltaTime * 0.12f;
+            timeOfDay += Time.deltaTime * 0.1f;
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 
