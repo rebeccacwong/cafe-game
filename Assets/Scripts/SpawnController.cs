@@ -214,7 +214,7 @@ public class SpawnController : MonoBehaviour
         {
 			Customer customer = obj.GetComponent<Customer>();
 			Debug.Assert(customer != null);
-			sum += customer.calculateCustomerSatisfaction();
+			sum += customer.getCustomerSatisfaction();
         }
 		return sum / this.allCustomerObjs.Count;
 	}

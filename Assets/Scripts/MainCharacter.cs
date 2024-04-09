@@ -38,26 +38,6 @@ public class MainCharacter : CharacterBase
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                // Find all nearby interactables
-                //Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange, LayerMask.GetMask("IInteractables"));
-                //foreach (Collider collider in colliderArray)
-                //{
-                //    var interactableObj = collider.gameObject.GetComponent<IInteractable>();
-                //    if (interactableObj != null && interactableObj.canInteract())
-                //    {
-                //        // Interact with the first IInteractable we find close to us
-                //        Debug.LogWarningFormat("Found interactable object: {0}", interactableObj);
-                //        if (this.itemBeingCarried())
-                //        {
-                //            interactableObj.interactWithObject(this.itemBeingCarried().gameObject);
-                //        } else
-                //        {
-                //            interactableObj.interactWithObject();
-                //        }
-                //        break;
-                //    }
-                //}
-
                 // Find interactable using sphereCast
                 Collider hitCollider = null;
                 float maxDistanceOfRay = 10f;

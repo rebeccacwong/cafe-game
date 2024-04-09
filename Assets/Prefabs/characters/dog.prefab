@@ -256,6 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 4
+  isSocial: 1
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -21,7 +21,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private FoodItem foodItemConsuming;
     private float timeInstantiated;
     private int totalItemsOrdered = 0;
-    private float customerSatisfactionBonus;
+    private float customerSatisfactionBonus = 0;
 
     // the longest time the customer will wait before leaving. when this reaches
     // 0, the customer will leave.
@@ -37,6 +37,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     // this timer represents a countdown until the customer can order another item.
     // when it's 0, the customer potentially order another item.
     private float waitBetweenOrdersTimer = 0;
+    #endregion
+
+    #region Customer preferences
+    [SerializeField]
+    [Tooltip("True if customer enjoys sitting with others, false if they prefer to sit alone.")]
+    private bool isSocial;
     #endregion
 
     // Event is invoked when customer is destroyed
@@ -88,7 +94,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         // Move to the counter
         this.setNewTarget(this.m_frontOfLinePos, true, true);
-        Debug.LogFormat("Customer satisfaction: {0}", calculateCustomerSatisfaction());
     }
 
     protected override void Update()
@@ -106,9 +111,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
         }
-
-        // TODO: push customer stats so we have a real-time view of the customer satisfaction 
-        // don't have to wait until end of day to know how satisfied customers are
 
         if (this.m_chairSeatedIn)
         {
@@ -205,17 +207,29 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
                 this.foodItemConsuming = newFoodItem;
                 this.cc_audioManager.PlaySoundEffect("cashRegister");
             }
-            showReactionIfNecessaryCoroutine();
+
+            // can we change this to only show happy reaction if they're served fast enough?
+            showHappyReaction();
         }
         return (newFoodItem != null);
     }
 
-    private void showReactionIfNecessaryCoroutine()
+    private void handleReactionToSeating()
+    {
+        // TODO: If other customer(s) seated at that table like social seating, should the other customer also have reactions?
+        if (CustomerSatisfaction.isCustomerSatisfiedWithSeating(m_chairSeatedIn, isSocial))
+        {
+            showHappyReaction();
+            this.customerSatisfactionBonus += 0.1f;
+        }
+    }
+
+    private void showHappyReaction()
     {
         if (m_satisfactionParticleSystem)
         {
             Debug.LogWarning("Particle sim");
-            ParticleSystem particleSim = Instantiate(this.m_satisfactionParticleSystem, transform.position + new Vector3(0, 3.2f, 0), Quaternion.identity);
+            ParticleSystem particleSim = Instantiate(this.m_satisfactionParticleSystem, transform.position + new Vector3(0, 4.2f, 0), Quaternion.identity);
 
             // Destroy after particle sim duration + some buffer time
             Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
@@ -229,9 +243,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
      */
     public void sitDown(GameObject chairGameObject, Chair chairData)
     {
-        Debug.LogWarningFormat("Customer satisfaction: {0}", calculateCustomerSatisfaction());
         this.m_chairSeatedIn = chairData;
-        chairData.useChair();
+        chairData.useChair(isSocial);
 
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
@@ -242,8 +255,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         this.setState(AnimationState.SITTING);
         gameObject.transform.Rotate(0, angle, 0);
         gameObject.transform.position = characterPosition;
-        //this.orderItem();
-        //StartCoroutine(sitCoroutine(characterPosition, angle));
+
+        handleReactionToSeating();
+    }
+
+    public float getTimeWaited()
+    {
+        return (Time.realtimeSinceStartup - this.timeInstantiated);
     }
 
     public bool shouldExitCafe()
@@ -252,46 +270,17 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return false;
     }
 
-    public float calculateCustomerSatisfaction()
-    {
-        float avgTimeSpentOnEachOrder;
-        float worstTimeAvgTimeSpentOnEachOrder;
-        float satisfaction;
-
-        // worst time is as if we waited max time for each order and max
-        // time in between each orders
-        float worstTime;
-
-        if (this.totalItemsOrdered != 0)
-        {
-            worstTime = maxWaitTimeSecondsForOrder * this.totalItemsOrdered + ((this.totalItemsOrdered - 1) * this.waitBetweenOrders);
-            avgTimeSpentOnEachOrder = (this.getTimeWaited() / this.totalItemsOrdered);
-            worstTimeAvgTimeSpentOnEachOrder = worstTime / this.totalItemsOrdered;
-
-            // we know that the average time waited will be between 0 and worstTimeAvgTimeSpentOnEachOrder
-            satisfaction = Mathf.InverseLerp(worstTimeAvgTimeSpentOnEachOrder, 0, avgTimeSpentOnEachOrder);
-        } else
-        {
-            worstTime = maxWaitTimeSecondsForOrder;
-            avgTimeSpentOnEachOrder = this.getTimeWaited();
-            satisfaction = Mathf.InverseLerp(worstTime, 0, avgTimeSpentOnEachOrder);
-        }
-
-        // lerp it again with some buffer, to account for the fact that there must be some amount of wait time
-        return Mathf.Lerp(0, 1, Mathf.Min(satisfaction + 0.3f, 1f));
-    }
-
-    private float getTimeWaited()
-    {
-        return (Time.realtimeSinceStartup - this.timeInstantiated);
-    }
-
     public void exitCafe()
     {
         this.destroyEvent.Invoke(this.gameObject);
         if (this.foodItemConsuming)
         {
             Destroy(this.foodItemConsuming.gameObject);
+        }
+
+        if (this.m_chairSeatedIn)
+        {
+            this.m_chairSeatedIn.leaveChair(isSocial);
         }
 
         this.pushCustomerStats();
@@ -313,16 +302,31 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         Destroy(this.gameObject);
     }
 
+    public float getCustomerSatisfaction()
+    {
+        return CustomerSatisfaction.calculateCustomerSatisfaction(
+            this.totalItemsOrdered, this.waitBetweenOrders, this.maxWaitTimeSecondsForOrder, getTimeWaited(), this.customerSatisfactionBonus);
+    }
+
     public void pushCustomerStats()
     {
+        int totalItemsServed = getTotalItemsServed();
+        bool served = (totalItemsServed == 0) ? false : true;
+
+        
+        Stats.addCustomerStats(new CustomerStats(getCustomerSatisfaction(), totalItemsServed, served));
+    }
+
+    private int getTotalItemsServed()
+    {
+        // Calculate if the customer has been served
         int totalItemsServed = this.totalItemsOrdered;
         if (this.foodItemOrdered != null)
         {
             // we have ordered something that we have not received yet
             totalItemsServed = this.totalItemsOrdered - 1;
         }
-        bool served = (totalItemsServed == 0) ? false : true;
-        Stats.addCustomerStats(new CustomerStats(calculateCustomerSatisfaction(), totalItemsServed, served));
+        return totalItemsServed;
     }
 
     private bool shouldOrderItem()
