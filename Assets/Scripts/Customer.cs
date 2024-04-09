@@ -58,6 +58,10 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     [Tooltip("The explosion that occurs when customer gameobject is destroyed")]
     private ParticleSystem m_destroyExplosion;
 
+    [SerializeField]
+    [Tooltip("The particle system for when the customer is satisfied")]
+    private ParticleSystem m_satisfactionParticleSystem;
+
     #region Overrides
     protected override void Awake()
     {
@@ -201,8 +205,22 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
                 this.foodItemConsuming = newFoodItem;
                 this.cc_audioManager.PlaySoundEffect("cashRegister");
             }
+            showReactionIfNecessaryCoroutine();
         }
         return (newFoodItem != null);
+    }
+
+    private void showReactionIfNecessaryCoroutine()
+    {
+        if (m_satisfactionParticleSystem)
+        {
+            Debug.LogWarning("Particle sim");
+            ParticleSystem particleSim = Instantiate(this.m_satisfactionParticleSystem, transform.position + new Vector3(0, 3.2f, 0), Quaternion.identity);
+
+            // Destroy after particle sim duration + some buffer time
+            Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
+            Debug.LogWarning("Destroyed particle sim");
+        }
     }
 
     /*

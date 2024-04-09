@@ -24,6 +24,9 @@ public class UI : MonoBehaviour
     private Slider timeSlider;
     private Slider satisfactionSlider;
 
+    private static Color redColor = new Color(140, 43, 43);
+    private static Color greenColor = new Color(43, 113, 26);
+
     public void Awake()
     {
         GameObject sceneController = GameObject.Find("SceneController");
@@ -166,6 +169,13 @@ public class UI : MonoBehaviour
         TMP.text = text;
     }
 
+    private void updateTextColorOnTMP(Transform textTransform, Color color)
+    {
+        TextMeshProUGUI TMP = textTransform.GetComponent<TextMeshProUGUI>();
+        Debug.Assert(textTransform != null);
+        TMP.color = color;
+    }
+
     public void changeDayCompleteUItoMoneySlide()
     {
         this.cc_audioManager.PlaySoundEffect("softBeep");
@@ -196,9 +206,11 @@ public class UI : MonoBehaviour
         int profitInt = Stats.queryTodayMoneyMade() - Stats.queryLostMoney();
         if (profitInt < 0)
         {
-            updateTextOnTMP(profit, "-$" + profitInt.ToString());
+            updateTextColorOnTMP(profit, redColor);
+            updateTextOnTMP(profit, "-$" + profitInt.ToString().TrimStart('-'));
         } else
         {
+            updateTextColorOnTMP(profit, greenColor);
             updateTextOnTMP(profit, "$" + profitInt.ToString());
         }
     }
