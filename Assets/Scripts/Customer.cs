@@ -154,7 +154,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
         if (this.foodItemOrdered)
         {
-            cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.2f, 0), this.foodItemOrdered.itemImage);
+            cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage);
         }
 
         if (this.foodItemOrdered.prepLocation == "coffeeMachine")

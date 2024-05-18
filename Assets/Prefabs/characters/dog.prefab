@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8945070098837960407, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
+      propertyPath: m_Quality
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8757217889058464265, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -206,6 +210,10 @@ PrefabInstance:
     - target: {fileID: 8491331598488454995, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8604723605238719164, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8793001689428922700, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
       propertyPath: m_Layer

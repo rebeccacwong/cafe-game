@@ -194,12 +194,14 @@ public class SpawnController : MonoBehaviour
 
 	public void NextCustomer()
 	{
-		Debug.Log("Next customer");
+		Debug.LogWarning("Next customer");
 		GameObject npc = Instantiate(NPCPrefabs[Random.Range(0, NPCPrefabs.Length)], startPos, Quaternion.identity);
-		Customer CustomerObj = npc.GetComponent<Customer>();
+        Debug.Assert(npc != null);
+        Customer CustomerObj = npc.GetComponent<Customer>();
+		Debug.Assert(CustomerObj != null);
 
-		CustomerObj.destroyEvent.AddListener(RemoveCustomer);
-		this.allCustomerObjs.Add(npc);
+        //CustomerObj.destroyEvent.AddListener(RemoveCustomer);
+        this.allCustomerObjs.Add(npc);
 		this.m_activeCustomers++;
 	}
 

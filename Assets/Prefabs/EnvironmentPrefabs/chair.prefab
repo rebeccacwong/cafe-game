@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad461d499a4b941ffb19ece1fb8466d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightOfSeat: 1.45
+  heightOfSeat: 1.7
   offset_z: 0
   prefabFacingDirection: {x: 1, y: 0, z: 0}
   facingDirection: {x: 0, y: 0, z: 1}

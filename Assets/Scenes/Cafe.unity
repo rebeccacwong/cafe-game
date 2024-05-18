@@ -3649,8 +3649,8 @@ Transform:
   - {fileID: 638547257}
   - {fileID: 188094488}
   - {fileID: 1573942024}
-  - {fileID: 359460192}
   - {fileID: 1942495808}
+  - {fileID: 359460192}
   m_Father: {fileID: 2138920470}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9731,7 +9731,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3ef6f8b70888049a19e90a609d9f4a32, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ef6f8b70888049a19e90a609d9f4a32, type: 3}
       propertyPath: m_LocalScale.x
@@ -11334,7 +11334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 820753857194943a398682ae6ebcb509, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 820753857194943a398682ae6ebcb509, type: 3}
       propertyPath: m_LocalScale.x
@@ -34894,7 +34894,7 @@ MonoBehaviour:
       m_Calls: []
   NPCPrefabs:
   - {fileID: 3514735359109474097, guid: 805c79c32c29545f288c2a54e8a00c8b, type: 3}
-  - {fileID: 1476521052997648934, guid: a6e5344cdd85243b38432e69a26151a2, type: 3}
+  - {fileID: 4643187858860071679, guid: a9fbe32e286e4431597d6958826e75c1, type: 3}
   startPos: {x: 8.03, y: 0.37, z: -16.91}
 --- !u!4 &950009694
 Transform:
@@ -35119,6 +35119,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1877831396}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair (1)
@@ -35688,6 +35692,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361491220}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair (6)
@@ -38334,7 +38342,7 @@ Transform:
   - {fileID: 1967691452}
   - {fileID: 458882281}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1348622492
 GameObject:
@@ -39819,6 +39827,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361491220}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair (5)
@@ -40457,6 +40469,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1877831396}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair
@@ -42167,7 +42183,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 76bca9a8073df43cf909607a5379774a, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 76bca9a8073df43cf909607a5379774a, type: 3}
       propertyPath: m_LocalScale.x
@@ -42589,6 +42605,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361491220}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair (7)
@@ -42636,6 +42656,14 @@ PrefabInstance:
     - target: {fileID: 3149820158661170595, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635859979518343707, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635859979518343707, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
@@ -44231,7 +44259,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -180}
 --- !u!114 &2107836986
 MonoBehaviour:
@@ -44365,7 +44393,7 @@ Transform:
   - {fileID: 1204542248}
   - {fileID: 5792426327119248730}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &543450653716774238
 Transform:
@@ -44395,6 +44423,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361491220}
     m_Modifications:
+    - target: {fileID: 2160949912840491224, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
+      propertyPath: heightOfSeat
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2377258567748898585, guid: 7da6bfc8a3f3747ea9bd3db44e485364, type: 3}
       propertyPath: m_Name
       value: chair
