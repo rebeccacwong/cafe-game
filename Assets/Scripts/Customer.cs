@@ -234,6 +234,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             // Destroy after particle sim duration + some buffer time
             Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
             Debug.LogWarning("Destroyed particle sim");
+
+            this.cc_audioManager.PlaySoundEffect("bonus");
         }
     }
 

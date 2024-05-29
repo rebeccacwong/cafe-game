@@ -8,3 +8,5 @@ This is a cozy cafe game where you play as Pandy, who is operating his cafe and 
 
 ## how to increase customer satisfaction
 Customers want their orders served to them in a timely fashion. If you keep them waiting too long, they'll get impatient and become less satisfied. Don't leave them waiting too long, or they'll exit the cafe entirely :(
+
+You can also get bonuses by seating customers in the way that they like. Certain customers like to be seated with others while some prefer to sit alone. Seating them according to their preferences will boost customer satisfaction.

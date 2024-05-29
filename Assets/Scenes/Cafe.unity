@@ -552,6 +552,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f5a0f4b5874d9402080cf38c3c351ba5, type: 3}
   - name: dayEndMusic
     clip: {fileID: 8300000, guid: 14cbd136f742340318f71592270b6b91, type: 3}
+  - name: bonus
+    clip: {fileID: 8300000, guid: baba6afcb05dd4d4f9ddd9afe0a9ca43, type: 3}
   musicGroup: {fileID: -713836182100951202, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
   foleyGroup: {fileID: -8639698593760501628, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
 --- !u!4 &98993625
