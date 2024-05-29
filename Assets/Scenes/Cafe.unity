@@ -15,12 +15,12 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.14319408, g: 0.12640446, b: 0.084430456, a: 1}
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
   m_LinearFogStart: 80
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.2535938, g: 0.22793075, b: 0.8848374, a: 1}
+  m_AmbientSkyColor: {r: 0.21960784, g: 0.20392157, b: 0.9137255, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -3835,7 +3835,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.26031703, g: 0.26418328, b: 0.28760207, a: 1}
+  m_Color: {r: 0.15218937, g: 0.15720941, b: 0.18867922, a: 1}
   m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
@@ -3893,7 +3893,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.069145344, y: -0.6064449, z: -0.7903344, w: -0.053057093}
+  m_LocalRotation: {x: -0.061628457, y: 0.70441604, z: 0.70441604, w: 0.061628457}
   m_LocalPosition: {x: -162, y: -46.8, z: 159.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4649,7 +4649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae243f71e9b447efbde6327a50d0ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeOfDay: 23
+  timeOfDay: 0
 --- !u!1 &789562477
 GameObject:
   m_ObjectHideFlags: 0
@@ -34895,6 +34895,7 @@ MonoBehaviour:
   NPCPrefabs:
   - {fileID: 3514735359109474097, guid: 805c79c32c29545f288c2a54e8a00c8b, type: 3}
   - {fileID: 4643187858860071679, guid: a9fbe32e286e4431597d6958826e75c1, type: 3}
+  - {fileID: 6359760549729234847, guid: abb1fa7c74b2e4d57b59a177e841415a, type: 3}
   startPos: {x: 8.03, y: 0.37, z: -16.91}
 --- !u!4 &950009694
 Transform:

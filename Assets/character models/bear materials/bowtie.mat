@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: scarf
+  m_Name: bowtie
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2015
+  m_CustomRenderQueue: 2027
   stringTagMap:
     RenderType: Opaque
   disabledShaderPasses: []
@@ -84,22 +84,22 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 0
+    - _Cull: 1
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.39473683
+    - _Glossiness: 0.36928105
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.522
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _QueueOffset: 15
+    - _QueueOffset: 27
     - _ReceiveShadows: 1
-    - _Smoothness: 0.39473683
+    - _Smoothness: 0.07
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -108,12 +108,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.6433298, g: 0.14748248, b: 0.18882325, a: 1}
-    - _Color: {r: 0.6433298, g: 0.14748245, b: 0.18882322, a: 1}
+    - _BaseColor: {r: 0.8326362, g: 0.9339623, b: 0.9162302, a: 1}
+    - _Color: {r: 0.8326362, g: 0.9339623, b: 0.9162302, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &1467920625986881960
+--- !u!114 &180399566181772429
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
