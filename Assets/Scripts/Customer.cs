@@ -106,6 +106,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
         timeUntilLeavingCafe -= Time.deltaTime;
+        //Debug.LogWarningFormat("Customer {0:X} with gameObject {1} has {2} seconds until leaving.", gameObject.GetInstanceID(), gameObject, timeUntilLeavingCafe);
 
         if (this.timeUntilLeavingCafe <= 0)
         {
@@ -155,6 +156,10 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
         if (this.foodItemOrdered)
         {
+            // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
+            this.timeUntilLeavingCafe += this.maxWaitTimeSecondsForOrder;
+
+            Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage, timeUntilLeavingCafe);
         }
 
@@ -162,11 +167,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         {
             this.cc_coffeeMachine.updateCoffeeMachinePrefabList(this.foodItemOrdered, true);
         }
-
-        // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
-        this.timeUntilLeavingCafe += this.maxWaitTimeSecondsForOrder;
-
-        Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
     }
 
     /*

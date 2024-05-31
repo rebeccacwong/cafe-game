@@ -48,7 +48,7 @@ public class ChatBubble : MonoBehaviour
         }
 
         Debug.LogWarningFormat("[ChatBubble {0:X}] Beginning to flash", gameObject.GetInstanceID());
-        for (float time = 0f; time < flashColorTimeInSec; time += 2)
+        for (float time = 0f; time < flashColorTimeInSec; time += 1.5f)
         {
             if (m_chatBubbleRenderer.color == Color.red)
             {
@@ -58,7 +58,7 @@ public class ChatBubble : MonoBehaviour
             {
                 m_chatBubbleRenderer.color = Color.red;
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
         }
         Debug.LogWarningFormat("[ChatBubble {0:X}] Time is up on visual countdown.", gameObject.GetInstanceID());
     }

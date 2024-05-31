@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
 
         if (!m_timePaused)
         {
-            timeOfDay += Time.deltaTime * 0.1f;
+            timeOfDay += Time.deltaTime * 0.05f;
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 
@@ -127,7 +127,7 @@ public class GameController : MonoBehaviour
     public void openCafe()
     {
         Debug.Log("Starting day");
-        cc_spawnController.minNumCustomers = 4;
+        cc_spawnController.minNumCustomers = 5;
         cc_spawnController.maxNumCustomers = 8;
         cc_spawnController.minSpawnInterval = 5f;
         cc_spawnController.maxSpawnInterval = 10f;
