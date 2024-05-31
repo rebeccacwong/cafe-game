@@ -181,5 +181,5 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_numFramesForSitAnim: 10
-  m_destroyExplosion: {fileID: 0}
+  m_destroyExplosion: {fileID: 8456953168493472720, guid: 12dbc5cf7d2464167a7d8cd7d3d7095d, type: 3}
   m_satisfactionParticleSystem: {fileID: 2158708369295526883, guid: ebbdf97ba61f842bda3c1d2445924317, type: 3}

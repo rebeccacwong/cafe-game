@@ -218,8 +218,6 @@ public class UI : MonoBehaviour
 
     private IEnumerator customerSatisfactionHeartsAnimation(Transform Window, float customerSatisfaction, float timeInSecForWholeAnim)
     {
-        Debug.Assert(customerSatisfaction >= 0 && customerSatisfaction <= 1);
-
         Transform heartsMask = Window.Find("hearts mask");
         Debug.Assert(heartsMask != null);
 

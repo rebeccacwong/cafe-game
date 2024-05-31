@@ -30,9 +30,11 @@ public class GameController : MonoBehaviour
     public float timeOfDay;
 
     private static float startDayTime = 5f;
+    private static float lastCustomerTime = 20f;
     private static float endDayTime = 24f;
-    private bool m_timePaused = false;
+    private bool m_timePaused = true;
     private bool m_isCafeOpen = true;
+    private bool lastCallOccurred = false;
 
     private void Awake()
     {
@@ -50,6 +52,12 @@ public class GameController : MonoBehaviour
         {
             timeOfDay += Time.deltaTime * 0.05f;
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
+        }
+
+        if (!this.lastCallOccurred && timeOfDay >= lastCustomerTime)
+        {
+            cc_spawnController.StopSpawningCustomers();
+            this.lastCallOccurred = true;
         }
 
         if (timeOfDay >= endDayTime && this.m_isCafeOpen)
@@ -129,17 +137,18 @@ public class GameController : MonoBehaviour
         Debug.Log("Starting day");
         cc_spawnController.minNumCustomers = 5;
         cc_spawnController.maxNumCustomers = 8;
-        cc_spawnController.minSpawnInterval = 5f;
-        cc_spawnController.maxSpawnInterval = 10f;
+        cc_spawnController.minSpawnInterval = 15f;
+        cc_spawnController.maxSpawnInterval = 70f;
         cc_spawnController.StartSpawningCustomers();
+        this.m_timePaused = false;
     }
 
     public void closeCafe()
     {
-        Debug.LogWarning("Ending day");
-        cc_spawnController.StopSpawningCustomers();
+        Debug.Log("Ending day");
 
         this.m_isCafeOpen = false;
+        this.m_timePaused = true;
 
         // Pause everything
         foreach (IPausable pausableObj in getAllPausableObjects())

@@ -290,8 +290,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         if (m_destroyExplosion)
         {
-            // TODO: Finish this particle sim
-            Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
+            ParticleSystem particleSim = Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
+
+            // Destroy after particle sim duration + some buffer time
+            Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
+            Debug.LogWarning("Destroyed smoke particle sim");
         }
 
         this.cc_spawnController.RemoveCustomer(gameObject);

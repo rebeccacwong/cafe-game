@@ -61,11 +61,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 4
+  isSocial: 0
   destroyEvent:
     m_PersistentCalls:
       m_Calls: []
   m_numFramesForSitAnim: 9
-  m_destroyExplosion: {fileID: 0}
+  m_destroyExplosion: {fileID: 8456953168493472720, guid: 12dbc5cf7d2464167a7d8cd7d3d7095d, type: 3}
   m_satisfactionParticleSystem: {fileID: 2158708369295526883, guid: ebbdf97ba61f842bda3c1d2445924317, type: 3}
 --- !u!95 &549393317
 Animator:

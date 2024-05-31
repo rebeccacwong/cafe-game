@@ -133,7 +133,7 @@ public class SpawnController : MonoBehaviour
 			throw new System.Exception("Invalid input to num customers");
         }
 		//GameObject.Find("/Canvas/Start Selling Button").active = false;
-		m_respawnTimer = Random.Range(m_minSpawnInterval, m_maxSpawnInterval); //Respawns the enemy after this many seconds
+		m_respawnTimer = 0;
 		m_numCustomersToSpawn = Random.Range(m_minNumCustomers, m_maxNumCustomers);
 		m_remainingCustomers = m_numCustomersToSpawn;
 
@@ -163,6 +163,10 @@ public class SpawnController : MonoBehaviour
 	 */
 	public void StopSpawningCustomers()
     {
+		if (!moreCustomers)
+		{
+			return;
+		}
 		moreCustomers = false;
 		m_numCustomersToSpawn = 0;
 		m_remainingCustomers = 0;
@@ -198,7 +202,7 @@ public class SpawnController : MonoBehaviour
         Debug.Assert(npc != null);
         Customer CustomerObj = npc.GetComponent<Customer>();
 		Debug.Assert(CustomerObj != null);
-        Debug.LogWarningFormat("New customer {0:X} arrived in cafe.", npc.GetInstanceID());
+        Debug.LogWarningFormat("New customer {0:X} with gameObject {1} arrived in cafe.", npc.GetInstanceID(), gameObject);
 
         //CustomerObj.destroyEvent.AddListener(RemoveCustomer);
         this.allCustomerObjs.Add(npc);
