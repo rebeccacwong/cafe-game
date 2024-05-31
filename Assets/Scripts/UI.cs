@@ -82,11 +82,12 @@ public class UI : MonoBehaviour
         this.cc_gameController.openCafe();
     }
 
-    public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img)
+    public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img, float waitTimeInSeconds)
     {
         GameObject newChatBubble = Instantiate(chatBubbleGameObj, parent);
         newChatBubble.transform.localPosition = localPosition;
         newChatBubble.GetComponent<ChatBubble>().updateSprite(img);
+        newChatBubble.GetComponent<ChatBubble>().StartVisualCountDown(waitTimeInSeconds);
     }
 
     public void clearChatBubble(Transform parent)

@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        Debug.LogWarning("Initialized GameManager");
+        Debug.Log("Initialized GameManager");
 
         _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
     }
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         m_playerMoney += toAdd;
         if (_cc_UI)
         {
-            Debug.LogWarning("added money");
+            Debug.LogFormat("Added {0} dollars to player money amount.", toAdd);
             _cc_UI.updateMoneyUI();
         }
     }

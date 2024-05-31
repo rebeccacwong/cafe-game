@@ -82,7 +82,7 @@ public class AudioManager : MonoBehaviour
         {
             m_indexOfCurrentlyPlayingSong = (m_indexOfCurrentlyPlayingSong + 1) % songs.Count;
             songs[m_indexOfCurrentlyPlayingSong].Source.Play();
-            Debug.LogWarning("playing " + songs[m_indexOfCurrentlyPlayingSong].Name);
+            Debug.Log("playing " + songs[m_indexOfCurrentlyPlayingSong].Name);
         }
     }
 

@@ -9,7 +9,7 @@ public class SpawnController : MonoBehaviour
 
 	#region Class Variables
 	private float m_respawnTimer;
-	private float m_numCustomers;
+	private float m_numCustomersToSpawn;
 	private float m_remainingCustomers;
 	private List<GameObject> allCustomerObjs = new List<GameObject>();
     #endregion
@@ -134,10 +134,10 @@ public class SpawnController : MonoBehaviour
         }
 		//GameObject.Find("/Canvas/Start Selling Button").active = false;
 		m_respawnTimer = Random.Range(m_minSpawnInterval, m_maxSpawnInterval); //Respawns the enemy after this many seconds
-		m_numCustomers = Random.Range(m_minNumCustomers, m_maxNumCustomers);
-		m_remainingCustomers = m_numCustomers;
+		m_numCustomersToSpawn = Random.Range(m_minNumCustomers, m_maxNumCustomers);
+		m_remainingCustomers = m_numCustomersToSpawn;
 
-		Debug.Log(string.Format("Spawning {0} total customers in {1} second intervals", m_numCustomers, m_respawnTimer));
+		Debug.Log(string.Format("Spawning {0} total customers in {1} second intervals", m_numCustomersToSpawn, m_respawnTimer));
 		moreCustomers = true;
 	}
 
@@ -164,7 +164,7 @@ public class SpawnController : MonoBehaviour
 	public void StopSpawningCustomers()
     {
 		moreCustomers = false;
-		m_numCustomers = 0;
+		m_numCustomersToSpawn = 0;
 		m_remainingCustomers = 0;
     }
 
@@ -187,18 +187,18 @@ public class SpawnController : MonoBehaviour
 		allCustomerObjs.Clear();
 	}
 
-	private void RemoveCustomer(GameObject obj)
+	public void RemoveCustomer(GameObject obj)
     {
 		this.allCustomerObjs.Remove(obj);
 	}
 
 	public void NextCustomer()
 	{
-		Debug.LogWarning("Next customer");
 		GameObject npc = Instantiate(NPCPrefabs[Random.Range(0, NPCPrefabs.Length)], startPos, Quaternion.identity);
         Debug.Assert(npc != null);
         Customer CustomerObj = npc.GetComponent<Customer>();
 		Debug.Assert(CustomerObj != null);
+        Debug.LogWarningFormat("New customer {0:X} arrived in cafe.", npc.GetInstanceID());
 
         //CustomerObj.destroyEvent.AddListener(RemoveCustomer);
         this.allCustomerObjs.Add(npc);

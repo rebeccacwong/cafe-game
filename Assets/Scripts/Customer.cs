@@ -28,7 +28,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private float timeUntilLeavingCafe;
 
     // the max time that customer will wait for any singular order, this is a const.
-    private float maxWaitTimeSecondsForOrder = 2 * 60f;
+    private float maxWaitTimeSecondsForOrder = 2.5f * 60f;
 
     // the max time that customer will "eat" before potentially ordering another 
     // item, this is a const.
@@ -105,8 +105,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
 
         waitBetweenOrdersTimer = Mathf.Max(waitBetweenOrdersTimer - Time.deltaTime, 0);
+        timeUntilLeavingCafe -= Time.deltaTime;
 
-        if (this.getTimeWaited() > this.timeUntilLeavingCafe)
+        if (this.timeUntilLeavingCafe <= 0)
         {
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
@@ -154,7 +155,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         }
         if (this.foodItemOrdered)
         {
-            cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage);
+            cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage, timeUntilLeavingCafe);
         }
 
         if (this.foodItemOrdered.prepLocation == "coffeeMachine")
@@ -293,13 +294,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
         }
 
-        if (this.cc_spawnController.activeCustomers > 0)
-        {
-            this.cc_spawnController.activeCustomers--;
-        } else
-        {
-            Debug.LogError("Should never get here! This means that the customer counters are wrong.");
-        }
+        this.cc_spawnController.RemoveCustomer(gameObject);
 
         Destroy(this.gameObject);
     }
