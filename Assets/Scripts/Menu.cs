@@ -9,16 +9,9 @@ public class Menu : MonoBehaviour
     [Tooltip("The prefab of the item on the menu. It must have a foodItem script on it.")]
     GameObject[] menuGameObjects;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public FoodItem returnRandomItemFromMenu()

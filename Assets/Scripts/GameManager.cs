@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Initialized GameManager");
 
         _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public float getPlayerMoneyAmount()

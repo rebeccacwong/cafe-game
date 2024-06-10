@@ -13,6 +13,7 @@ public class SceneController : MonoBehaviour
 
         // display all logs
         //Debug.unityLogger.filterLogType = LogType.Log;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void GoToScene(string name)
@@ -20,10 +21,10 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadSceneAsync(name);
     }
 
-    public void GoToSelectionScreen()
+    public void GoToInBetweenDaysScene()
     {
 
-        GoToScene("SelectionScreen");
+        GoToScene("BetweenDays");
     }
 
     public void QuitGame()

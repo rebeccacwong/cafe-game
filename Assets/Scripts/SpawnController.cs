@@ -163,10 +163,6 @@ public class SpawnController : MonoBehaviour
 	 */
 	public void StopSpawningCustomers()
     {
-		if (!moreCustomers)
-		{
-			return;
-		}
 		moreCustomers = false;
 		m_numCustomersToSpawn = 0;
 		m_remainingCustomers = 0;
