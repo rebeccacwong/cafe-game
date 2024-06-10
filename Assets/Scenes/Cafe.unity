@@ -764,10 +764,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start the Day
+  m_text: start day
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ddb6abc6208cb4eb3b221226be2389f7, type: 2}
-  m_sharedMaterial: {fileID: -2203502909442308571, guid: ddb6abc6208cb4eb3b221226be2389f7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3420064b5ec2a463e81db515cdeb9c1d, type: 2}
+  m_sharedMaterial: {fileID: -1621309334537667803, guid: 3420064b5ec2a463e81db515cdeb9c1d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -791,8 +791,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -44551,6 +44551,7 @@ MonoBehaviour:
   - {fileID: 7416304939479734236, guid: c2b900b74378f48a792094777367c32a, type: 3}
   - {fileID: 4711851539762719719, guid: b94c8e5be28af4ca18d64123b717b6ae, type: 3}
   - {fileID: 7963879969344344047, guid: ab49c516d64ed42439ca7a600e2cabab, type: 3}
+  - {fileID: 8865028391745767533, guid: 2a63811e422de4899a52328664612eb1, type: 3}
 --- !u!1 &2138920469
 GameObject:
   m_ObjectHideFlags: 0

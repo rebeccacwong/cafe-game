@@ -23,6 +23,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI hintTextMesh;
     private Slider timeSlider;
     private Slider satisfactionSlider;
+    private Button startDayButton;
 
     private static Color redColor = new Color(140, 43, 43);
     private static Color greenColor = new Color(43, 113, 26);
@@ -41,7 +42,8 @@ public class UI : MonoBehaviour
         GameObject gameManager = GameObject.Find("GameManager");
         cc_gameManager = gameManager.GetComponent<GameManager>();
 
-        transform.Find("StartDayButton").GetComponent<Button>().onClick.AddListener(startDay);
+        startDayButton = transform.Find("StartDayButton").GetComponent<Button>();
+        startDayButton.onClick.AddListener(startDay);
 
         Transform topbar = transform.Find("topbar");
         this.moneyTextMesh = topbar.Find("MoneyUI").Find("MoneyTMP").GetComponent<TextMeshProUGUI>();
@@ -61,6 +63,7 @@ public class UI : MonoBehaviour
         Debug.Assert(this.cc_audioManager != null, "Must find an audio manager");
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,12 +78,17 @@ public class UI : MonoBehaviour
 
     public void startDay()
     {
-        GameObject.Find("SceneController").GetComponent<SceneController>().GoToInBetweenDaysScene();
-        //Debug.Log("Starting day");
-        //cc_cameraController.changeActiveCamera("far camera");
-        //GameObject.Find("Canvas/StartDayButton").GetComponent<Button>().gameObject.SetActive(false);
+        Debug.Log("Starting day");
+        cc_cameraController.changeActiveCamera("far camera");
+        startDayButton.gameObject.SetActive(false);
 
-        //this.cc_gameController.openCafe();
+        this.cc_gameController.openCafe();
+    }
+
+    public void updateDayText(int level)
+    {
+        TextMeshProUGUI startButtonTMP = startDayButton.transform.GetComponentInChildren<TextMeshProUGUI>();
+        startButtonTMP.text = "start day " + level.ToString();
     }
 
     public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img, float waitTimeInSeconds)

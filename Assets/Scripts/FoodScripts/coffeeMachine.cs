@@ -39,6 +39,7 @@ public class coffeeMachine : MonoBehaviour, IInteractable
         if (this.m_coffeePrefabs.Count == 0)
         {
             foodItem = this.m_defaultCoffeePrefab.GetComponent<FoodItem>();
+            Debug.LogWarning("Making default coffee");
         }
         else
         {
@@ -110,21 +111,25 @@ public class coffeeMachine : MonoBehaviour, IInteractable
     public void updateCoffeeMachinePrefabList(FoodItem coffeePrefab, bool AddToList)
     {
         Debug.Assert(coffeePrefab.prepLocation == "coffeeMachine");
+
         if (AddToList)
         {
+            Debug.LogWarningFormat("[Coffee Machine] Adding {0} to dictionary.", coffeePrefab.name);
             if (!m_coffeePrefabs.ContainsKey(coffeePrefab.name))
             {
-                m_coffeePrefabs.Add(coffeePrefab.name, (coffeePrefab.gameObject, 0));
+                m_coffeePrefabs.Add(coffeePrefab.name, (coffeePrefab.gameObject, 1));
             } else
             {
                 GameObject prefab = m_coffeePrefabs[coffeePrefab.name].Item1;
                 int count = m_coffeePrefabs[coffeePrefab.name].Item2;
                 m_coffeePrefabs[coffeePrefab.name] = (prefab, count + 1);
             }
+            Debug.LogWarningFormat("[Coffee Machine] Dictionary has {0} of {1}.", m_coffeePrefabs[coffeePrefab.name].Item2, coffeePrefab.name);
         } else
         {
             Debug.Assert(m_coffeePrefabs.ContainsKey(coffeePrefab.name));
             int count = m_coffeePrefabs[coffeePrefab.name].Item2;
+            Debug.LogWarningFormat("[Coffee Machine] Removing {0} from dictionary. Count before was: {1}", coffeePrefab.name, count);
             if (count - 1 == 0)
             {
                 m_coffeePrefabs.Remove(coffeePrefab.name);

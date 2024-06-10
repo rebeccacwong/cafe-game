@@ -70,7 +70,6 @@ public class FoodItem : MonoBehaviour
         if (chairSeatedIn.facingDirection.z != 0)
         {
             // chair is pointing in z direction
-            Debug.LogWarning("z direction chair");
             if (table.transform.rotation != Quaternion.identity)
             {
                 pos.x = (table.getWidthOnXAxis() / 4f) * chairSeatedIn.facingDirection.z;

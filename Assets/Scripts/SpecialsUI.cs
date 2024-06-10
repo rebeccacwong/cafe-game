@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// 
+/// This class manages the UI interaction for when the customer
+/// is picking the special of the day and the pricing for it.
+///
+/// This class is only used in the BetweenDays scene.
+/// 
+/// </summary>
 public class SpecialsUI : MonoBehaviour
 {
 

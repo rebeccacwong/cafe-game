@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// 
 /// The GameManager is a Singleton object that manages the game
 /// lifecycle, and information that needs to be retained
 /// across multiple days/rounds of the game.
+/// 
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -14,9 +16,9 @@ public class GameManager : MonoBehaviour
     #endregion
 
     private UI _cc_UI;
-    private int _level = 1;
+    private int _level = 0;
 
-    private Dictionary<int, Level> _levels;
+    private Dictionary<int, Level> _levels = new Dictionary<int, Level>();
 
     private static GameManager _instance;
     public static GameManager Instance
@@ -69,18 +71,21 @@ public class GameManager : MonoBehaviour
         m_playerMoney = moneyAmount;
     }
 
-    public void InitializeNewLevel()
+    /*
+     * Sets up the necessary variables for the next level.
+     * Returns the level that we are on.
+     */
+    public int InitializeNewLevel()
     {
-        GameController controller = GameObject.Find("GameController").GetComponent<GameController>();
-        Debug.Assert(controller != null);
-
         if (_level == 3)
         {
             // Game over
             // TODO: display a game complete screen
+            return _level;
         }
 
         _level++;
         _levels[_level].InitializeLevel();
+        return _level;
     }
 }

@@ -162,7 +162,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
             this.timeUntilLeavingCafe += maxWaitTimeSecondsForOrder;
 
-            Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
+            Debug.LogWarningFormat("[Customer {0:X}] Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage, timeUntilLeavingCafe);
         }
 
@@ -185,7 +185,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         Debug.Assert(servedItem != null);
 
         Debug.LogWarningFormat(
-            "Customer {0:X} is expecting to receive {1} and got served {2}",
+            "[Customer {0:X}] Expecting to receive {1} and got served {2}",
             gameObject.GetInstanceID(),
             servedItem.itemName,
             this.foodItemOrdered.itemName);
@@ -232,12 +232,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     {
         if (m_satisfactionParticleSystem)
         {
-            Debug.LogWarning("Particle sim");
+            Debug.LogFormat("[Customer {0:X} {1}] Instantiated happy particle sim", gameObject.GetInstanceID(), gameObject);
             ParticleSystem particleSim = Instantiate(this.m_satisfactionParticleSystem, transform.position + new Vector3(0, 4.2f, 0), Quaternion.identity);
 
             // Destroy after particle sim duration + some buffer time
             Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
-            Debug.LogWarning("Destroyed particle sim");
+            Debug.LogFormat("[Customer {0:X} {1}] Destroyed happy particle sim", gameObject.GetInstanceID(), gameObject);
 
             this.cc_audioManager.PlaySoundEffect("bonus");
         }
@@ -255,7 +255,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         Vector3 characterPosition = new Vector3(chairGameObject.transform.position.x, chairData.heightOfSeat, chairGameObject.transform.position.z + (chairData.offset_z * chairData.facingDirection.z));
         float angle = Vector3.SignedAngle(this.m_direction, chairData.facingDirection, Vector3.up);
 
-        Debug.LogFormat("Customer {4:X} Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
+        Debug.LogFormat("[Customer {4:X}] Sitting down, originally had position {0} and rotation{1}, now will sit at position {2} and rotate by {3} degrees",
             gameObject.transform.position, gameObject.transform.rotation.eulerAngles, characterPosition, angle, gameObject.GetInstanceID());
 
         this.setState(AnimationState.SITTING);
@@ -293,10 +293,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (m_destroyExplosion)
         {
             ParticleSystem particleSim = Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
+            Debug.LogFormat("[Customer {0:X} {1}] Instantiated smoke particle sim", gameObject.GetInstanceID(), gameObject);
 
             // Destroy after particle sim duration + some buffer time
             Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
-            Debug.LogWarning("Destroyed smoke particle sim");
+            Debug.LogFormat("[Customer {0:X} {1}] Destroyed smoke particle sim", gameObject.GetInstanceID(), gameObject);
         }
 
         this.cc_spawnController.RemoveCustomer(gameObject);

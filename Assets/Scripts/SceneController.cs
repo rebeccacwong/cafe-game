@@ -34,7 +34,6 @@ public class SceneController : MonoBehaviour
     public void StartNewDay()
     {
         SceneManager.LoadScene("Cafe");
-        cc_gameManager.InitializeNewLevel();
     }
 
     public void QuitGame()

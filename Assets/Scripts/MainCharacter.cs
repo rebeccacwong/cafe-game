@@ -59,7 +59,7 @@ public class MainCharacter : CharacterBase
 
                 if (hitCollider != null)
                 {
-                    Debug.LogWarningFormat("hit {0}", hitCollider.gameObject);
+                    Debug.LogWarningFormat("[Main Character] Q input occurred. Hit {0}", hitCollider.gameObject);
                     var interactableObj = hitCollider.gameObject.GetComponent<IInteractable>();
                     string errorString = "";
                     if (interactableObj != null && interactableObj.canInteract(out errorString))
@@ -152,7 +152,6 @@ public class MainCharacter : CharacterBase
 
         Vector3 foodItemPos = handLocalPosition;
         foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y + newFoodItem.offsetPosition.y;
-        Debug.LogWarning(foodItemPos);
 
         newFoodItem.transform.localPosition = foodItemPos;
         newFoodItem.transform.localRotation = Quaternion.Euler(0, 180, 0);

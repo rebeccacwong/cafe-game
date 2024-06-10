@@ -44,6 +44,12 @@ public class GameController : MonoBehaviour
         cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
+    private void Start()
+    {
+        int level = cc_gameManager.InitializeNewLevel();
+        cc_uiController.updateDayText(level);
+    }
+
     // Update is called once per frame
     void Update()
     {
