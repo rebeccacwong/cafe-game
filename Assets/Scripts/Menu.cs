@@ -9,7 +9,7 @@ public class Menu : MonoBehaviour
     [Tooltip("The prefab of the item on the menu. It must have a foodItem script on it.")]
     GameObject[] menuGameObjects;
 
-    private List<FoodItem> m_foodItems;
+    private List<FoodItem> m_foodItems = new List<FoodItem>();
 
     private void Awake()
     {
@@ -38,11 +38,12 @@ public class Menu : MonoBehaviour
         List<int> indices = new List<int>();
         List<FoodItem> items = new List<FoodItem>();
 
-        for (int i = 0; i < n; i++)
+        while (indices.Count < Mathf.Min(n, m_foodItems.Count))
         {
             int index = Random.Range(0, m_foodItems.Count);
             if (!indices.Contains(index))
             {
+                Debug.LogWarningFormat("Adding index {0}, which is {1}", index, m_foodItems[index].itemName);
                 indices.Add(index);
                 items.Add(m_foodItems[index]);
             }

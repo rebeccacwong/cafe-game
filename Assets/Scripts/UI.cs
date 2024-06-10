@@ -75,11 +75,12 @@ public class UI : MonoBehaviour
 
     public void startDay()
     {
-        Debug.Log("Starting day");
-        cc_cameraController.changeActiveCamera("far camera");
-        GameObject.Find("Canvas/StartDayButton").GetComponent<Button>().gameObject.SetActive(false);
+        GameObject.Find("SceneController").GetComponent<SceneController>().GoToInBetweenDaysScene();
+        //Debug.Log("Starting day");
+        //cc_cameraController.changeActiveCamera("far camera");
+        //GameObject.Find("Canvas/StartDayButton").GetComponent<Button>().gameObject.SetActive(false);
 
-        this.cc_gameController.openCafe();
+        //this.cc_gameController.openCafe();
     }
 
     public void createChatBubble(Transform parent, Vector3 localPosition, Sprite img, float waitTimeInSeconds)

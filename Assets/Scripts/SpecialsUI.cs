@@ -36,38 +36,43 @@ public class SpecialsUI : MonoBehaviour
         Debug.Assert(cc_specialImage != null);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        populateSpecialOptions();
     }
 
     void populateSpecialOptions()
     {
+        Debug.LogWarning("Populating special options.");
+
         List<FoodItem> options = cc_menu.getNUniqueRandomItemsFromMenu(6);
         // Populates the potential special options from the menu
         for (int i = 0; i < options.Count; i++)
         {
+            FoodItem item = options[i];
             GameObject foodDisplayOnWall = cc_cafeWall.transform.Find("FoodItem" + (i + 1)).gameObject;
             Debug.Assert(foodDisplayOnWall != null);
 
-            foodDisplayOnWall.GetComponent<Image>().sprite = options[i].itemImage;
+            foodDisplayOnWall.GetComponent<Image>().sprite = item.itemImage;
 
             Button btn = foodDisplayOnWall.GetComponent<Button>();
             Debug.Assert(btn != null);
 
-            btn.onClick.AddListener(delegate { selectNewSpecial(options[i]); });
+            btn.onClick.AddListener(delegate { selectNewSpecial(item); });
         }
     }
 
     private void getChangedPriceInput(int price)
     {
+        Debug.LogWarningFormat("Updating special price to {0}", price);
         m_specialPrice = price;
     }
 
     void selectNewSpecial(FoodItem item)
     {
         Debug.Assert(item != null);
+
+        Debug.LogWarningFormat("Selecting item {0} as special", item.itemName);
 
         Image img = cc_specialImage.GetComponent<Image>();
         Debug.Assert(img != null);
@@ -80,6 +85,8 @@ public class SpecialsUI : MonoBehaviour
     {
         Debug.Assert(m_currentSpecial != null);
         Debug.Assert(m_specialPrice != 0);
+
+        Debug.LogWarningFormat("Saving special: {0} at ${1}", m_currentSpecial.itemName, m_specialPrice);
         cc_menu.changePrice(m_currentSpecial, m_specialPrice);
     }
 }

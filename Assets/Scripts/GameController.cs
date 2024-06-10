@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     private static float lastCustomerTime = 20f;
     private static float endDayTime = 24f;
     private bool m_timePaused = true;
-    private bool m_isCafeOpen = true;
+    private bool m_isCafeOpen = false;
     private bool lastCallOccurred = false;
 
     private void Awake()
@@ -47,6 +47,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!m_isCafeOpen)
+        {
+            return;
+        }
 
         if (!m_timePaused)
         {
@@ -60,7 +64,7 @@ public class GameController : MonoBehaviour
             this.lastCallOccurred = true;
         }
 
-        if (timeOfDay >= endDayTime && this.m_isCafeOpen)
+        if (timeOfDay >= endDayTime)
         {
             closeCafe();
             // change the sun UI to moon image
@@ -141,6 +145,7 @@ public class GameController : MonoBehaviour
         cc_spawnController.maxSpawnInterval = 70f;
         cc_spawnController.StartSpawningCustomers();
         this.m_timePaused = false;
+        this.m_isCafeOpen = true;
     }
 
     public void closeCafe()

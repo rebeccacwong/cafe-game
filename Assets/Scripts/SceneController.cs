@@ -9,7 +9,7 @@ public class SceneController : MonoBehaviour
     private void Awake()
     {
         // show warning, assert, errors, and exceptions
-        Debug.unityLogger.filterLogType = LogType.Warning;
+        //Debug.unityLogger.filterLogType = LogType.Warning;
 
         // display all logs
         //Debug.unityLogger.filterLogType = LogType.Log;

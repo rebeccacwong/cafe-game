@@ -64,6 +64,8 @@ public class AudioManager : MonoBehaviour
             s.Source.outputAudioMixerGroup = foleyGroup;
             soundEffects.Add(s.Name, s);
         }
+
+        DontDestroyOnLoad(this.gameObject);
     }
     // void Start()
     // {
