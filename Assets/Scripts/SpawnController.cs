@@ -29,30 +29,30 @@ public class SpawnController : MonoBehaviour
 	private int m_activeCustomers = 0;
 	public int activeCustomers
     {
-		get { return this.m_activeCustomers; }
+		get { return m_activeCustomers; }
 		set { m_activeCustomers = value;  }
     }
 
-	private float m_minSpawnInterval;
-	public float minSpawnInterval
+	private static float m_minSpawnInterval;
+	public static float minSpawnInterval
 	{
 		set { m_minSpawnInterval = value; }
 	}
 
-	private float m_maxSpawnInterval;
-	public float maxSpawnInterval
+	private static float m_maxSpawnInterval;
+	public static float maxSpawnInterval
 	{
 		set { m_maxSpawnInterval = value; }
 	}
 
-	private int m_minNumCustomers;
-	public int minNumCustomers
+	private static int m_minNumCustomers;
+	public static int minNumCustomers
 	{
 		set { m_minNumCustomers = value; }
 	}
 
-	private int m_maxNumCustomers;
-	public int maxNumCustomers
+	private static int m_maxNumCustomers;
+	public static int maxNumCustomers
 	{
 		set { m_maxNumCustomers = value; }
 	}
@@ -118,6 +118,11 @@ public class SpawnController : MonoBehaviour
 
     private bool shouldSpawn()
     {
+		if (m_activeCustomers > 10)
+		{
+			// We can't fit more than 10 customers in the cafe at a time.
+			return false;
+		}
 		return ((Vector3.Distance(this.cc_mainCharacter.transform.position, this.spawnPosition) > 3f)
 			 && m_respawnTimer <= 0);
 	}
@@ -202,7 +207,7 @@ public class SpawnController : MonoBehaviour
 
         //CustomerObj.destroyEvent.AddListener(RemoveCustomer);
         this.allCustomerObjs.Add(npc);
-		this.m_activeCustomers++;
+		m_activeCustomers++;
 	}
 
 	public float calculateRealtimeAvgCustomerSatisfaction()

@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     #endregion
 
     private UI _cc_UI;
+    private int _level = 1;
+
+    private Dictionary<int, Level> _levels;
 
     private static GameManager _instance;
     public static GameManager Instance
@@ -34,6 +37,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Initialized GameManager");
 
         _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
+
+        _levels.Add(1, new LevelOne());
+        _levels.Add(2, new LevelTwo());
+        _levels.Add(3, new LevelThree());
+
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -59,5 +67,20 @@ public class GameManager : MonoBehaviour
     public void setPlayerMoneyAmount(float moneyAmount)
     {
         m_playerMoney = moneyAmount;
+    }
+
+    public void InitializeNewLevel()
+    {
+        GameController controller = GameObject.Find("GameController").GetComponent<GameController>();
+        Debug.Assert(controller != null);
+
+        if (_level == 3)
+        {
+            // Game over
+            // TODO: display a game complete screen
+        }
+
+        _level++;
+        _levels[_level].InitializeLevel();
     }
 }

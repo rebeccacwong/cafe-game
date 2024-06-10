@@ -139,10 +139,6 @@ public class GameController : MonoBehaviour
     public void openCafe()
     {
         Debug.Log("Starting day");
-        cc_spawnController.minNumCustomers = 5;
-        cc_spawnController.maxNumCustomers = 8;
-        cc_spawnController.minSpawnInterval = 15f;
-        cc_spawnController.maxSpawnInterval = 70f;
         cc_spawnController.StartSpawningCustomers();
         this.m_timePaused = false;
         this.m_isCafeOpen = true;

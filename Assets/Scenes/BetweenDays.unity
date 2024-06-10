@@ -994,6 +994,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FoodItem5
       objectReference: {fileID: 0}
+    - target: {fileID: 1665664985017281534, guid: 2cf3332ebf44641ab8b6857d45bd1659, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1665664985017281535, guid: 2cf3332ebf44641ab8b6857d45bd1659, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2349,6 +2353,10 @@ PrefabInstance:
     - target: {fileID: 1665664985017281534, guid: 2cf3332ebf44641ab8b6857d45bd1659, type: 3}
       propertyPath: m_Name
       value: FoodItem6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665664985017281534, guid: 2cf3332ebf44641ab8b6857d45bd1659, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1665664985017281535, guid: 2cf3332ebf44641ab8b6857d45bd1659, type: 3}
       propertyPath: m_Pivot.x

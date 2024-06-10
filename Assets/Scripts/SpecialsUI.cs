@@ -108,4 +108,12 @@ public class SpecialsUI : MonoBehaviour
         Debug.LogWarningFormat("Saving special: {0} at ${1}", m_currentSpecial.itemName, m_specialPrice);
         cc_menu.changePrice(m_currentSpecial, m_specialPrice);
     }
+
+    public void nextButtonAfterSpecialSelection()
+    {
+        SceneController sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
+        Debug.Assert(sceneController != null);
+
+        sceneController.StartNewDay();
+    }
 }

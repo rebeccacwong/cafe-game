@@ -6,10 +6,14 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class SceneController : MonoBehaviour
 {
+    private GameManager cc_gameManager;
+
     private void Awake()
     {
         // show warning, assert, errors, and exceptions
-        //Debug.unityLogger.filterLogType = LogType.Warning;
+        Debug.unityLogger.filterLogType = LogType.Warning;
+
+        cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // display all logs
         //Debug.unityLogger.filterLogType = LogType.Log;
@@ -25,6 +29,12 @@ public class SceneController : MonoBehaviour
     {
 
         GoToScene("BetweenDays");
+    }
+
+    public void StartNewDay()
+    {
+        SceneManager.LoadScene("Cafe");
+        cc_gameManager.InitializeNewLevel();
     }
 
     public void QuitGame()

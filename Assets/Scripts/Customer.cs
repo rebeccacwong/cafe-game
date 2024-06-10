@@ -28,11 +28,11 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     private float timeUntilLeavingCafe;
 
     // the max time that customer will wait for any singular order, this is a const.
-    private float maxWaitTimeSecondsForOrder = 2.5f * 60f;
+    static private float maxWaitTimeSecondsForOrder = 2.5f * 60f;
 
     // the max time that customer will "eat" before potentially ordering another 
     // item, this is a const.
-    private float waitBetweenOrders = 25f;
+    static private float waitBetweenOrders = 25f;
 
     // this timer represents a countdown until the customer can order another item.
     // when it's 0, the customer potentially order another item.
@@ -44,9 +44,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     [Tooltip("True if customer enjoys sitting with others, false if they prefer to sit alone.")]
     private bool isSocial;
     #endregion
-
-    // Event is invoked when customer is destroyed
-    public UnityEvent<GameObject> destroyEvent;
 
     #region Cached components
     private SpawnController cc_spawnController;
@@ -134,6 +131,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     }
     #endregion
 
+    #region Static Methods
+    static public void setCustomerWaitTime(float waitTime)
+    {
+        maxWaitTimeSecondsForOrder = waitTime;
+    }
+    #endregion
 
     #region Customer methods
     private MainCharacter getMainCharacter()
@@ -157,7 +160,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (this.foodItemOrdered)
         {
             // when we create a new order, we are willing to wait for it up to maxWaitTimeSecondsForOrder time.
-            this.timeUntilLeavingCafe += this.maxWaitTimeSecondsForOrder;
+            this.timeUntilLeavingCafe += maxWaitTimeSecondsForOrder;
 
             Debug.LogWarningFormat("Customer {0:X} Ordered item {1} and will wait up to {2} seconds for it before leaving", gameObject.GetInstanceID(), this.foodItemOrdered, this.timeUntilLeavingCafe);
             cc_uiController.createChatBubble(gameObject.transform, new Vector3(0, 4.75f, 0), this.foodItemOrdered.itemImage, timeUntilLeavingCafe);
@@ -200,7 +203,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             if (newFoodItem = servedItem.InstantiateFoodItem(this.m_chairSeatedIn))
             {
                 // reset the time to "eat"
-                this.waitBetweenOrdersTimer = this.waitBetweenOrders;
+                this.waitBetweenOrdersTimer = waitBetweenOrders;
 
                 // extend the time that the customer will stay in the cafe
                 this.timeUntilLeavingCafe += this.waitBetweenOrdersTimer;
@@ -275,7 +278,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     public void exitCafe()
     {
-        this.destroyEvent.Invoke(this.gameObject);
         if (this.foodItemConsuming)
         {
             Destroy(this.foodItemConsuming.gameObject);
@@ -305,7 +307,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     public float getCustomerSatisfaction()
     {
         return CustomerSatisfaction.calculateCustomerSatisfaction(
-            this.totalItemsOrdered, this.waitBetweenOrders, this.maxWaitTimeSecondsForOrder, getTimeWaited(), this.customerSatisfactionBonus);
+            this.totalItemsOrdered, waitBetweenOrders, maxWaitTimeSecondsForOrder, getTimeWaited(), this.customerSatisfactionBonus);
     }
 
     public void pushCustomerStats()
@@ -342,7 +344,6 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return probabilityList[UnityEngine.Random.Range(0, probabilityList.Length)];
     }
     #endregion
-
 
     #region IDraggableObject override
     public bool isBeingDragged
