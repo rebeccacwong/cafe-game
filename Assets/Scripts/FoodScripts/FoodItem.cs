@@ -35,6 +35,11 @@ public class FoodItem : MonoBehaviour
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
     }
 
+    public void setPrice(int price)
+    {
+        itemPrice = price;
+    }
+
     /*
      * Spawns an instance of the food item.
      * Takes in the chair that the customer is seated in
