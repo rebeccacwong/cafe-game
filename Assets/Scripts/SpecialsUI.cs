@@ -16,7 +16,7 @@ public class SpecialsUI : MonoBehaviour
     private FoodItem m_currentSpecial;
     private int m_specialPrice = 0;
 
-    void Awake()
+    private void Awake()
     {
         cc_menu = GameObject.Find("menu").GetComponent<Menu>();
         Debug.Assert(cc_menu != null);
@@ -41,7 +41,7 @@ public class SpecialsUI : MonoBehaviour
         populateSpecialOptions();
     }
 
-    void populateSpecialOptions()
+    private void populateSpecialOptions()
     {
         Debug.LogWarning("Populating special options.");
 
@@ -62,13 +62,27 @@ public class SpecialsUI : MonoBehaviour
         }
     }
 
-    private void getChangedPriceInput(int price)
+    public void getChangedPriceInput(string price)
     {
-        Debug.LogWarningFormat("Updating special price to {0}", price);
-        m_specialPrice = price;
+        int priceInt = 0;
+        int.TryParse(price, out priceInt);
+        if (priceInt == 0)
+        {
+            Debug.LogWarning("Invalid price input of 0 received. Player should try another number between 1-9.");
+            this.cc_nextButton.interactable = false;
+            return;
+        }
+
+        Debug.LogWarningFormat("Updating special price to {0}", priceInt);
+        m_specialPrice = priceInt;
+
+        if (m_currentSpecial != null)
+        {
+            this.cc_nextButton.interactable = true;
+        }
     }
 
-    void selectNewSpecial(FoodItem item)
+    public void selectNewSpecial(FoodItem item)
     {
         Debug.Assert(item != null);
 
@@ -79,9 +93,14 @@ public class SpecialsUI : MonoBehaviour
         img.sprite = item.itemImage;
 
         m_currentSpecial = item;
+
+        if (m_specialPrice != 0)
+        {
+            this.cc_nextButton.interactable = true;
+        }
     }
 
-    private void saveSpecial()
+    public void saveSpecial()
     {
         Debug.Assert(m_currentSpecial != null);
         Debug.Assert(m_specialPrice != 0);
