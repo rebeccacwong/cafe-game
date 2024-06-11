@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BetweenDays.unity
     guid: b2a37ca45d9bf40f9a4ce435d38d3eb6
+  - enabled: 1
+    path: Assets/Scenes/StartingScreen.unity
+    guid: 4373ebc5392ee4b42a0d3a37da3dbf89
   m_configObjects: {}

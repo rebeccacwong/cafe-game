@@ -72,8 +72,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
-        cc_menu = GameObject.Find("menu").GetComponent<Menu>();
         cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        cc_menu = GameObject.Find("Menu").GetComponent<Menu>();
         cc_coffeeMachine = GameObject.Find("coffee machine").GetComponent<coffeeMachine>();
 
         this.cc_animator = gameObject.GetComponent<Animator>();
@@ -105,7 +105,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         timeUntilLeavingCafe -= Time.deltaTime;
         //Debug.LogWarningFormat("Customer {0:X} with gameObject {1} has {2} seconds until leaving.", gameObject.GetInstanceID(), gameObject, timeUntilLeavingCafe);
 
-        if (this.timeUntilLeavingCafe <= 0)
+        if (this.timeUntilLeavingCafe <= 0 || doneOrdering())
         {
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
             this.exitCafe();
@@ -340,9 +340,19 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             return false;
         }
 
-        // order a new item with 33% probability
-        bool[] probabilityList = { true, false, false };
+        if (doneOrdering())
+        {
+            return false;
+        }
+        // order a new item with 25% probability
+        bool[] probabilityList = { true, false, false, false };
         return probabilityList[UnityEngine.Random.Range(0, probabilityList.Length)];
+    }
+
+    private bool doneOrdering()
+    {
+        // We say that we are done ordering after 3 items have been served to the customer.
+        return (totalItemsOrdered >= 3 && this.getTotalItemsServed() >= 3);
     }
     #endregion
 

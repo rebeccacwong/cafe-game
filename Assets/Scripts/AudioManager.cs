@@ -95,6 +95,12 @@ public class AudioManager : MonoBehaviour
         m_isMusicPaused = true;
     }
 
+    public void ResumeCurrentBackgroundSong()
+    {
+        songs[m_indexOfCurrentlyPlayingSong].Source.Play();
+        m_isMusicPaused = false;
+    }
+
     public void NextBackgroundSong(int index)
     {
         songs[index % songs.Count].Source.Play();
@@ -126,6 +132,30 @@ public class AudioManager : MonoBehaviour
         {
             soundEffects[soundEffectName].Source.Play();
         }
+    }
+
+    public void PlaySoundEffectThenResumeBackgroundMusic(string soundEffectName)
+    {
+        if (!soundEffects.ContainsKey(soundEffectName))
+        {
+            Debug.Log("Cant find the sound effect with that name");
+        }
+        else
+        {
+            PauseCurrentBackgroundSong();
+            Sound sound = soundEffects[soundEffectName];
+            sound.Source.Play();
+            StartCoroutine(resumeBackgroundMusicWhenSoundDone(sound));
+        }
+    }
+
+    private IEnumerator resumeBackgroundMusicWhenSoundDone(Sound sound)
+    {
+        while (sound.Source.isPlaying)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        ResumeCurrentBackgroundSong();
     }
 
     public void PlaySoundEffectLoop(string soundEffectName)

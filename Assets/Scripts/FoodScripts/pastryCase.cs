@@ -34,6 +34,8 @@ public class pastryCase : MonoBehaviour, IInteractable
         {
             cc_CameraController.changeActiveCamera("far camera");
             this.cc_mainCharacter.gameObject.SetActive(true);
+            m_CurrentlyInteracting = false;
+            m_oldCamera = null;
         }
 
         if (Input.GetMouseButtonDown(0))
