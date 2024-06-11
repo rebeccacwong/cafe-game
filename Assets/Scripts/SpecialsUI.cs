@@ -26,7 +26,7 @@ public class SpecialsUI : MonoBehaviour
 
     private void Awake()
     {
-        cc_menu = GameObject.Find("menu").GetComponent<Menu>();
+        cc_menu = GameObject.Find("Menu").GetComponent<Menu>();
         Debug.Assert(cc_menu != null);
 
         cc_uiParent = GameObject.Find("Canvas/DailySpecialSelection");

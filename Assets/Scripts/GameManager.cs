@@ -38,8 +38,6 @@ public class GameManager : MonoBehaviour
         _instance = this;
         Debug.Log("Initialized GameManager");
 
-        _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
-
         _levels.Add(1, new LevelOne());
         _levels.Add(2, new LevelTwo());
         _levels.Add(3, new LevelThree());
@@ -55,11 +53,13 @@ public class GameManager : MonoBehaviour
     public void addToPlayerMoneyAmount(float toAdd)
     {
         m_playerMoney += toAdd;
-        if (_cc_UI)
+        if (!_cc_UI)
         {
-            Debug.LogFormat("Added {0} dollars to player money amount.", toAdd);
-            _cc_UI.updateMoneyUI();
+            _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
+            Debug.Assert(_cc_UI != null);
         }
+        Debug.LogFormat("Added {0} dollars to player money amount.", toAdd);
+        _cc_UI.updateMoneyUI();
     }
 
     /*

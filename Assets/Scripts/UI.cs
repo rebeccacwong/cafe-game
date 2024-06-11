@@ -150,8 +150,7 @@ public class UI : MonoBehaviour
 
         this.showHidePopUpWindow(satisfactionSlide, true);
 
-        this.cc_audioManager.PauseCurrentBackgroundSong();
-        this.cc_audioManager.PlaySoundEffect("dayEndMusic");
+        this.cc_audioManager.PlaySoundEffectThenResumeBackgroundMusic("dayEndMusic");
 
         //Transform Button = satisfactionSlide.Find("NextButton");
         //Debug.Assert(Button != null);
@@ -223,6 +222,10 @@ public class UI : MonoBehaviour
             updateTextColorOnTMP(profit, greenColor);
             updateTextOnTMP(profit, "$" + profitInt.ToString());
         }
+
+        Button nextButton = moneySlide.Find("NextButton").GetComponent<Button>();
+        Debug.Assert(nextButton != null);
+        nextButton.onClick.AddListener(cc_sceneController.GoToInBetweenDaysScene);
     }
 
     private IEnumerator customerSatisfactionHeartsAnimation(Transform Window, float customerSatisfaction, float timeInSecForWholeAnim)
