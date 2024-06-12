@@ -128,3 +128,4 @@ MonoBehaviour:
   itemPrice: 6
   prepLocation: pastryCase
   tableScaleFactor: 0.75
+  offsetPosition: {x: 0, y: 0, z: 0}

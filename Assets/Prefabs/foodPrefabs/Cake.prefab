@@ -146,7 +146,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 5.38, y: 2.59, z: 5.63}
-  m_Center: {x: 0, y: 1.15, z: -0.12}
+  m_Center: {x: 0, y: 1.24, z: -0.12}
 --- !u!114 &-3542175642288101272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,3 +164,4 @@ MonoBehaviour:
   itemPrice: 6
   prepLocation: pastryCase
   tableScaleFactor: 0.4
+  offsetPosition: {x: 0, y: 0, z: 0}

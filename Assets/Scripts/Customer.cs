@@ -115,9 +115,16 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         if (this.m_chairSeatedIn)
         {
-            if (this.shouldOrderItem())
+            if (this.canOrderItem())
             {
-                orderItem();
+                if (willOrderAnotherItem())
+                {
+                    orderItem();
+                }
+                else
+                {
+                    exitCafe();
+                }
             }
         } else {
             this.onUpdateMoveTowardsTarget();
@@ -334,20 +341,26 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return totalItemsServed;
     }
 
-    private bool shouldOrderItem()
+    private bool canOrderItem()
     {
-        if (this.foodItemOrdered || waitBetweenOrdersTimer > 0)
+        if (this.foodItemOrdered || waitBetweenOrdersTimer > 0 || doneOrdering())
         {
             // only order if we haven't already ordered and aren't waiting between orders
             return false;
         }
+        return true;
+    }
 
-        if (doneOrdering())
+    private bool willOrderAnotherItem()
+    {
+        if (totalItemsOrdered == 0)
         {
-            return false;
+            // Always order at least one item
+            return true;
         }
-        // order a new item with 25% probability
-        bool[] probabilityList = { true, false, false, false };
+
+        // order a new item with 50% probability
+        bool[] probabilityList = { true, false };
         return probabilityList[UnityEngine.Random.Range(0, probabilityList.Length)];
     }
 

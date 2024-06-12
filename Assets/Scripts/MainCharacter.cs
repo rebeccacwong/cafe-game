@@ -151,7 +151,8 @@ public class MainCharacter : CharacterBase
         FoodItem newFoodItem = newFoodItemObj.GetComponent<FoodItem>();
 
         Vector3 foodItemPos = handLocalPosition;
-        foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y + newFoodItem.offsetPosition.y;
+        float buffer = 0.15f;
+        foodItemPos.y += (newFoodItem.getHeight() / 2) - newFoodItem.getCenter().y + newFoodItem.offsetPosition.y + buffer;
 
         newFoodItem.transform.localPosition = foodItemPos;
         newFoodItem.transform.localRotation = Quaternion.Euler(0, 180, 0);

@@ -89,8 +89,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.04, y: 1.09, z: 2.72}
-  m_Center: {x: 0, y: -0.5, z: 0}
+  m_Size: {x: 3.04, y: 1.26, z: 2.72}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &3227434691113137036
 Animator:
   serializedVersion: 4
@@ -128,4 +128,4 @@ MonoBehaviour:
   itemPrice: 4
   prepLocation: coffeeMachine
   tableScaleFactor: 0.8
-  offsetPosition: {x: 0, y: -0.395, z: 0}
+  offsetPosition: {x: 0, y: -0.25, z: 0}
