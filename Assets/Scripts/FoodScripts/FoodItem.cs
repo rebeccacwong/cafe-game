@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -146,6 +147,9 @@ public class FoodItem : MonoBehaviour
         {
             if (cat == category)
             {
+                Debug.LogWarningFormat("Boosting popularity of foodItem {0}, since it's in popular category {1}",
+                    this.itemName, Enum.GetName(typeof(SpecialItemCategory), cat));
+
                 this.popularityIndex = 1.0f;
                 break;
             }

@@ -6,9 +6,31 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class SceneController : MonoBehaviour
 {
+    private static SceneController _instance;
+    public static SceneController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("SceneConntroller is null!");
+            }
+            return _instance;
+        }
+    }
+
 
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            _instance = this;
+        }
+
         // show warning, assert, errors, and exceptions
         Debug.unityLogger.filterLogType = LogType.Warning;
 
@@ -22,10 +44,16 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadSceneAsync(name);
     }
 
-    public void GoToInBetweenDaysScene()
+    public void GoToSpecialSelection()
     {
-        Debug.Log("Switching to BetweenDays scene");
-        GoToScene("BetweenDays");
+        Debug.Log("Switching to SpecialSelection scene");
+        GoToScene("SpecialSelection");
+    }
+
+    public void GoToFeedback()
+    {
+        Debug.Log("Switching to Feedback scene");
+        GoToScene("Feedback");
     }
 
     public void StartNewDay()

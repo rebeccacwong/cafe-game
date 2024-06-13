@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
             songs.Add(s);
             //s.Source.loop = true;
         }
-        Debug.LogWarning("playing " + songs[0].Name);
+        Debug.Log("playing " + songs[0].Name);
         songs[0].Source.Play();
 
         soundEffects = new Dictionary<string, Sound>();

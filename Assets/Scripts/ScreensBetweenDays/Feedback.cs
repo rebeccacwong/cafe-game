@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public enum SpecialItemCategory
 {
@@ -12,12 +14,30 @@ public enum SpecialItemCategory
     SWEETS = 4
 }
 
+/// <summary>
+/// 
+/// This class manages the generated customer feedback.
+/// It will also influence the popularity of items for the next
+/// day according to the generated feedback.
+///
+/// This class is only used in the Feedback scene.
+/// 
+/// </summary>
+/// 
 public class Feedback : MonoBehaviour
 {
     //List<FeedbackItem> m_feedbackPool = new List<FeedbackItem>();
     Dictionary<SpecialItemCategory, string[]> hintStringsByCategory = new Dictionary<SpecialItemCategory, string[]>();
 
-    private static int m_feedbackBubbleCount = 3;
+    private static int m_feedbackBubbleCount = 2;
+
+    #region Cached Components
+    private GameObject cc_firstFeedbackBubble;
+    private GameObject cc_secondFeedbacKBubble;
+    #endregion
+
+    [SerializeField]
+    public GameObject NextButtonGameObj;
 
     #region Feedback Strings
     private string[] cozyArray = {
@@ -53,41 +73,94 @@ public class Feedback : MonoBehaviour
         hintStringsByCategory.Add(SpecialItemCategory.FANCY, fancyArray);
         hintStringsByCategory.Add(SpecialItemCategory.BREAKFAST, breakfastArray);
         hintStringsByCategory.Add(SpecialItemCategory.SWEETS, sweetsArray);
+
+        this.cc_firstFeedbackBubble = gameObject.transform.Find("FeedbackBubbleRight").gameObject;
+        this.cc_secondFeedbacKBubble = gameObject.transform.Find("FeedbackBubbleLeft").gameObject;
+
+        Debug.Assert(cc_firstFeedbackBubble);
+        Debug.Assert(cc_secondFeedbacKBubble);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         int numCategories = Enum.GetNames(typeof(SpecialItemCategory)).Length;
         SpecialItemCategory popularCategory = (SpecialItemCategory) UnityEngine.Random.Range(0, numCategories);
+
+        Debug.LogWarningFormat("Selected popular item category as {0}", Enum.GetName(typeof(SpecialItemCategory), popularCategory));
 
         foreach (FoodItem foodItem in Menu.Instance.listMenuFoodItems())
         {
             foodItem.boostPopularityIfApplicable(popularCategory);
         }
 
-        // TODO: Generate the feedback and show it in the UI
         int i = 0;
         foreach (string s in hintStringsByCategory[popularCategory])
         {
-            AddFeedbackBubbleToScreen(s);
+            AddFeedbackBubbleToScreen(s, i);
             i++;
         }
         if (i < m_feedbackBubbleCount)
         {
-            // TODO: create some generic strings and populate the rest of the bubbles with that
+            AddNGenericFeedback(m_feedbackBubbleCount - i, i);
+        }
+
+        Button nextButton = NextButtonGameObj.GetComponent<Button>();
+        Debug.Assert(nextButton != null);
+        nextButton.onClick.AddListener(SceneController.Instance.GoToSpecialSelection);
+    }
+
+    /*
+     * Adds count new generic feedback messages, starting by modifying the 
+     * nthFeedbackBubble out of the m_feedbackBubbleCount available bubbles.
+     * 
+     * This method is designed to handle if we have more than 2 feedback bubbles.
+     */
+    private void AddNGenericFeedback(int count, int nthFeedbackBubble)
+    {
+        List<int> indices = new List<int>();
+
+        while (indices.Count < count)
+        {
+            int index = UnityEngine.Random.Range(0, genericFeedback.Length);
+            if (!indices.Contains(index))
+            {
+                indices.Add(index);
+                AddFeedbackBubbleToScreen(genericFeedback[index], nthFeedbackBubble);
+            }
+            nthFeedbackBubble++;
         }
     }
 
-    private void AddFeedbackBubbleToScreen(string s)
+    /*
+     * Mutates the UI by adding the string S to the available UI feedback bubbles.
+     * nthFeedbackBubble will modify the according bubble in order from top to bottom
+     * of the screen, where there are at most m_feedbackBubbleCount UI elements
+     * that we can modify.
+     */
+    private void AddFeedbackBubbleToScreen(string s, int nthFeedbackBubble)
     {
-        // TODO: Implement
-    }
+        if (nthFeedbackBubble >= m_feedbackBubbleCount)
+        {
+            Debug.LogWarningFormat("Only {0} feedback bubbles can be populated. Attempted to add a {1}th bubble.", m_feedbackBubbleCount, nthFeedbackBubble);
+            return;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        TextMeshProUGUI feedbackTMP = null;
+        if (nthFeedbackBubble == 0)
+        {
+            feedbackTMP = cc_firstFeedbackBubble.transform.Find("feedback").GetComponent<TextMeshProUGUI>();
+            Debug.Assert(feedbackTMP != null);
+            feedbackTMP.text = s;
+        }
+        else if (nthFeedbackBubble == 1)
+        {
+            feedbackTMP = cc_secondFeedbacKBubble.transform.Find("feedback").GetComponent<TextMeshProUGUI>();
+        }
+
+        Debug.Assert(feedbackTMP != null);
+        feedbackTMP.text = s;
+
+        Debug.LogWarningFormat("Added feedback string {0} to {1}th bubble", s, nthFeedbackBubble);
     }
 }
 

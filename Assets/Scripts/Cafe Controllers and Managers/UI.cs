@@ -8,7 +8,6 @@ public class UI : MonoBehaviour
 {
 
     #region
-    private SceneController cc_sceneController;
     private CameraController cc_cameraController;
     private GameController cc_gameController;
     private AudioManager cc_audioManager;
@@ -29,8 +28,6 @@ public class UI : MonoBehaviour
 
     public void Awake()
     {
-        GameObject sceneController = GameObject.Find("SceneController");
-        cc_sceneController = sceneController.GetComponent<SceneController>();
 
         GameObject cameraController = GameObject.Find("CameraController");
         cc_cameraController = cameraController.GetComponent<CameraController>();
@@ -221,7 +218,7 @@ public class UI : MonoBehaviour
 
         Button nextButton = moneySlide.Find("NextButton").GetComponent<Button>();
         Debug.Assert(nextButton != null);
-        nextButton.onClick.AddListener(cc_sceneController.GoToInBetweenDaysScene);
+        nextButton.onClick.AddListener(SceneController.Instance.GoToFeedback);
     }
 
     private IEnumerator customerSatisfactionHeartsAnimation(Transform Window, float customerSatisfaction, float timeInSecForWholeAnim)
