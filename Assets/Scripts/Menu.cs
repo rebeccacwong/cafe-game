@@ -29,6 +29,7 @@ public class Menu : MonoBehaviour
 
     public FoodItem returnRandomItemFromMenu()
     {
+        // TODO: update so that it returns popular items with higher probability, weighted random with popularityIndex as the weight
         return m_foodItems[Random.Range(0, m_foodItems.Count)].GetComponent<FoodItem>();
     }
 

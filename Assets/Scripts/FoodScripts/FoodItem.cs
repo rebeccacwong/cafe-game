@@ -28,11 +28,18 @@ public class FoodItem : MonoBehaviour
     [Tooltip("Optional parameter, the offset that the transform should be so it's in the center of model")]
     public Vector3 offsetPosition;
 
+    [SerializeField]
+    [Tooltip("Categories indicating that this foodItem might be optimal special of the day")]
+    public SpecialItemCategory[] itemCategories;
+
+    private float popularityIndex;
+
     private BoxCollider cc_boxCollider;
 
     private void Awake()
     {
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
+        this.popularityIndex = 0.5f;
     }
 
     public void setPrice(int price)
@@ -126,5 +133,22 @@ public class FoodItem : MonoBehaviour
     public Vector3 getCenter()
     {
         return this.cc_boxCollider.center;
+    }
+
+    public float getPopularityIndex()
+    {
+        return popularityIndex;
+    }
+
+    public void boostPopularityIfApplicable(SpecialItemCategory category)
+    {
+        foreach (SpecialItemCategory cat in itemCategories)
+        {
+            if (cat == category)
+            {
+                this.popularityIndex = 1.0f;
+                break;
+            }
+        }
     }
 }

@@ -129,3 +129,4 @@ MonoBehaviour:
   prepLocation: coffeeMachine
   tableScaleFactor: 0.8
   offsetPosition: {x: 0, y: -0.25, z: 0}
+  itemCategories: 0000000003000000

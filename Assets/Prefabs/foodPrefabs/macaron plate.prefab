@@ -197,3 +197,4 @@ MonoBehaviour:
   prepLocation: pastryCase
   tableScaleFactor: 0.75
   offsetPosition: {x: 0, y: -0.25, z: 0.5}
+  itemCategories: 020000000100000004000000

@@ -1649,9 +1649,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Choose wisely from the feedback you got! \nIf you pick an item customers
-    are interested in, you can charge more. But if they\u2019re not as interested,
-    they\u2019ll only order it if it\u2019s cheap."
+  m_text: "Choose wisely from the feedback you got! \nPicking an item that customers
+    are more interested in and pricing it higher can increase your revenue!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ddb6abc6208cb4eb3b221226be2389f7, type: 2}
   m_sharedMaterial: {fileID: -2203502909442308571, guid: ddb6abc6208cb4eb3b221226be2389f7, type: 2}
