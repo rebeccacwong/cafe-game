@@ -27,12 +27,13 @@ public class SceneController : MonoBehaviour
 
     public void GoToInBetweenDaysScene()
     {
-
+        Debug.Log("Switching to BetweenDays scene");
         GoToScene("BetweenDays");
     }
 
     public void StartNewDay()
     {
+        Debug.Log("Switching to cafe scene.");
         SceneManager.LoadScene("Cafe");
     }
 

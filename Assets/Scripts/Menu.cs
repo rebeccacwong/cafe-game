@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// The Menu is a Singleton object that manages the FoodItems that can
+/// be sold in the cafe. It persists across scenes.
+/// 
+/// </summary>
 public class Menu : MonoBehaviour
 {
 
@@ -9,12 +15,38 @@ public class Menu : MonoBehaviour
     [Tooltip("The prefab of the item on the menu. It must have a foodItem script on it.")]
     GameObject[] menuGameObjects;
 
+    private static Menu _instance;
+    public static Menu Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("Menu is null!");
+            }
+            return _instance;
+        }
+    }
+
     private List<FoodItem> m_foodItems = new List<FoodItem>();
 
     private void Awake()
     {
-        updateFoodItemsList();
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            _instance = this;
+        }
+
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void Start()
+    {
+        updateFoodItemsList();
     }
 
     private void updateFoodItemsList()
