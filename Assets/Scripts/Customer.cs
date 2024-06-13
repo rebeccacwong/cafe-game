@@ -47,9 +47,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
     #region Cached components
     private SpawnController cc_spawnController;
-    private Menu cc_menu;
     private UI cc_uiController;
-    private GameManager cc_gameManager;
     private coffeeMachine cc_coffeeMachine;
     #endregion
 
@@ -72,10 +70,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
 
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
-        cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Debug.Assert(cc_gameManager != null);
 
-        cc_menu = GameObject.Find("Menu").GetComponent<Menu>();
         cc_coffeeMachine = GameObject.Find("coffee machine").GetComponent<coffeeMachine>();
 
         this.cc_animator = gameObject.GetComponent<Animator>();
@@ -159,7 +154,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
     public void orderItem()
     {
         this.totalItemsOrdered++;
-        this.foodItemOrdered = this.cc_menu.returnRandomItemFromMenu();
+        this.foodItemOrdered = Menu.Instance.returnRandomItemFromMenu();
 
         // if we're already eating something, destroy it
         if (this.foodItemConsuming)
@@ -200,7 +195,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.foodItemOrdered.itemName);
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
-            this.cc_gameManager.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
+            GameManager.Instance.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
             cc_uiController.clearChatBubble(gameObject.transform);
 
             if (this.foodItemOrdered.prepLocation == "coffeeMachine")

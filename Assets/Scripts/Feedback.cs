@@ -17,7 +17,6 @@ public class Feedback : MonoBehaviour
     //List<FeedbackItem> m_feedbackPool = new List<FeedbackItem>();
     Dictionary<SpecialItemCategory, string[]> hintStringsByCategory = new Dictionary<SpecialItemCategory, string[]>();
 
-    private Menu cc_menu;
     private static int m_feedbackBubbleCount = 3;
 
     #region Feedback Strings
@@ -49,9 +48,6 @@ public class Feedback : MonoBehaviour
 
     private void Awake()
     {
-        cc_menu = GameObject.Find("Menu").GetComponent<Menu>();
-        Debug.Assert(cc_menu != null);
-
         hintStringsByCategory.Add(SpecialItemCategory.COZY, cozyArray);
         hintStringsByCategory.Add(SpecialItemCategory.BERRIES, berriesArray);
         hintStringsByCategory.Add(SpecialItemCategory.FANCY, fancyArray);
@@ -65,7 +61,7 @@ public class Feedback : MonoBehaviour
         int numCategories = Enum.GetNames(typeof(SpecialItemCategory)).Length;
         SpecialItemCategory popularCategory = (SpecialItemCategory) UnityEngine.Random.Range(0, numCategories);
 
-        foreach (FoodItem foodItem in cc_menu.listMenuFoodItems())
+        foreach (FoodItem foodItem in Menu.Instance.listMenuFoodItems())
         {
             foodItem.boostPopularityIfApplicable(popularCategory);
         }

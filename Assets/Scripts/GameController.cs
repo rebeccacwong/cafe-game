@@ -23,7 +23,6 @@ public class GameController : MonoBehaviour
     #region Cached components
     private SpawnController cc_spawnController;
     private UI cc_uiController;
-    private GameManager cc_gameManager;
     #endregion
 
     [SerializeField, Range(0, 24)]
@@ -41,12 +40,11 @@ public class GameController : MonoBehaviour
         this.timeOfDay = startDayTime;
         cc_spawnController = GameObject.Find("CustomerSpawner").GetComponent<SpawnController>();
         cc_uiController = GameObject.Find("Canvas").GetComponent<UI>();
-        cc_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Start()
     {
-        int level = cc_gameManager.InitializeNewLevel();
+        int level = GameManager.Instance.InitializeNewLevel();
         cc_uiController.updateDayText(level);
     }
 
@@ -167,6 +165,6 @@ public class GameController : MonoBehaviour
 
         cc_uiController.showDayCompleteUI();
 
-        Stats.pushTodayMoneyMade(this.cc_gameManager.getPlayerMoneyAmount());
+        Stats.pushTodayMoneyMade(GameManager.Instance.getPlayerMoneyAmount());
     }
 }

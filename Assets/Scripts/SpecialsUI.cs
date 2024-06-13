@@ -15,7 +15,6 @@ using TMPro;
 public class SpecialsUI : MonoBehaviour
 {
 
-    private Menu cc_menu;
     private GameObject cc_uiParent;
     private GameObject cc_cafeWall;
     private Button cc_nextButton;
@@ -26,9 +25,6 @@ public class SpecialsUI : MonoBehaviour
 
     private void Awake()
     {
-        cc_menu = GameObject.Find("Menu").GetComponent<Menu>();
-        Debug.Assert(cc_menu != null);
-
         cc_uiParent = GameObject.Find("Canvas/DailySpecialSelection");
         Debug.Assert(cc_uiParent != null);
 
@@ -53,7 +49,7 @@ public class SpecialsUI : MonoBehaviour
     {
         Debug.LogWarning("Populating special options.");
 
-        List<FoodItem> options = cc_menu.getNUniqueRandomItemsFromMenu(6);
+        List<FoodItem> options = Menu.Instance.getNUniqueRandomItemsFromMenu(6);
         // Populates the potential special options from the menu
         for (int i = 0; i < options.Count; i++)
         {
@@ -114,7 +110,7 @@ public class SpecialsUI : MonoBehaviour
         Debug.Assert(m_specialPrice != 0);
 
         Debug.LogWarningFormat("Saving special: {0} at ${1}", m_currentSpecial.itemName, m_specialPrice);
-        cc_menu.changePrice(m_currentSpecial, m_specialPrice);
+        Menu.Instance.changePrice(m_currentSpecial, m_specialPrice);
     }
 
     public void nextButtonAfterSpecialSelection()

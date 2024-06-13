@@ -11,7 +11,6 @@ public class UI : MonoBehaviour
     private SceneController cc_sceneController;
     private CameraController cc_cameraController;
     private GameController cc_gameController;
-    private GameManager cc_gameManager;
     private AudioManager cc_audioManager;
     #endregion
 
@@ -38,9 +37,6 @@ public class UI : MonoBehaviour
 
         GameObject gameController = GameObject.Find("GameController");
         cc_gameController = gameController.GetComponent<GameController>();
-
-        GameObject gameManager = GameObject.Find("GameManager");
-        cc_gameManager = gameManager.GetComponent<GameManager>();
 
         startDayButton = transform.Find("StartDayButton").GetComponent<Button>();
         startDayButton.onClick.AddListener(startDay);
@@ -108,7 +104,7 @@ public class UI : MonoBehaviour
 
     public void updateMoneyUI()
     {
-        this.moneyTextMesh.text = "$" + cc_gameManager.getPlayerMoneyAmount().ToString();
+        this.moneyTextMesh.text = "$" + GameManager.Instance.getPlayerMoneyAmount().ToString();
     }
 
     public void flashHintText(string hintText)
