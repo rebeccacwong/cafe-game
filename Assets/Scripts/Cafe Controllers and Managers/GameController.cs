@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
 
         if (!m_timePaused)
         {
-            timeOfDay += Time.deltaTime * 1f;
+            timeOfDay += Time.deltaTime * 0.08f;
             cc_uiController.updateTimeSlider((timeOfDay - startDayTime) / (endDayTime - startDayTime));
         }
 

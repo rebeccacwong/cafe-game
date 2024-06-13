@@ -22,7 +22,7 @@ public class LevelOne : Level
         Customer.setCustomerWaitTime(3f * 60f);
         SpawnController.minNumCustomers = 5;
         SpawnController.maxNumCustomers = 8;
-        SpawnController.minSpawnInterval = 15f;
+        SpawnController.minSpawnInterval = 12f;
         SpawnController.maxSpawnInterval = 50f;
     }
 }
@@ -33,7 +33,7 @@ public class LevelTwo : Level
     {
         Customer.setCustomerWaitTime(2.5f * 60f);
         SpawnController.minNumCustomers = 8;
-        SpawnController.maxNumCustomers = 12;
+        SpawnController.maxNumCustomers = 10;
         SpawnController.minSpawnInterval = 12f;
         SpawnController.maxSpawnInterval = 45f;
     }

@@ -92,6 +92,7 @@ public class Feedback : MonoBehaviour
         {
             foodItem.boostPopularityIfApplicable(popularCategory);
         }
+        Menu.Instance.refreshPopularities();
 
         int i = 0;
         foreach (string s in hintStringsByCategory[popularCategory])

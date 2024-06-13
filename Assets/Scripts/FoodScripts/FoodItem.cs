@@ -33,14 +33,13 @@ public class FoodItem : MonoBehaviour
     [Tooltip("Categories indicating that this foodItem might be optimal special of the day")]
     public SpecialItemCategory[] itemCategories;
 
-    private float popularityIndex;
+    private float popularityIndex = 0.5f;
 
     private BoxCollider cc_boxCollider;
 
     private void Awake()
     {
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
-        this.popularityIndex = 0.5f;
     }
 
     public void setPrice(int price)
