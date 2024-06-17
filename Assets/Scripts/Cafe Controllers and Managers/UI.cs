@@ -10,7 +10,6 @@ public class UI : MonoBehaviour
     #region
     private CameraController cc_cameraController;
     private GameController cc_gameController;
-    private AudioManager cc_audioManager;
     #endregion
 
     [SerializeField]
@@ -51,9 +50,6 @@ public class UI : MonoBehaviour
         this.hintTextMesh = transform.Find("HintText").GetComponent<TextMeshProUGUI>();
         Debug.Assert(this.hintTextMesh != null, "Must find textmesh to represent hint text");
         this.hintTextMesh.gameObject.SetActive(false);
-
-        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        Debug.Assert(this.cc_audioManager != null, "Must find an audio manager");
     }
 
 
@@ -143,7 +139,7 @@ public class UI : MonoBehaviour
 
         this.showHidePopUpWindow(satisfactionSlide, true);
 
-        this.cc_audioManager.PlaySoundEffectThenResumeBackgroundMusic("dayEndMusic");
+        AudioManager.Instance.PlaySoundEffectThenResumeBackgroundMusic("dayEndMusic");
 
         //Transform Button = satisfactionSlide.Find("NextButton");
         //Debug.Assert(Button != null);
@@ -179,7 +175,7 @@ public class UI : MonoBehaviour
 
     public void changeDayCompleteUItoMoneySlide()
     {
-        this.cc_audioManager.PlaySoundEffect("softBeep");
+        AudioManager.Instance.PlaySoundEffect("softBeep");
 
         Debug.LogWarning("Changed to money slide");
         Transform Window = transform.Find("DayCompleteWindow");

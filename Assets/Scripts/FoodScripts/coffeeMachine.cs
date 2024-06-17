@@ -15,7 +15,6 @@ public class coffeeMachine : MonoBehaviour, IInteractable
     #region Cached components
     private CameraController cc_CameraController;
     private MainCharacter cc_mainCharacter;
-    private AudioManager cc_audioManager;
     #endregion
 
     private Camera m_oldCamera = null;
@@ -27,7 +26,6 @@ public class coffeeMachine : MonoBehaviour, IInteractable
     {
         this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
         this.cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
-        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     #region IInteractable Methods
@@ -78,7 +76,7 @@ public class coffeeMachine : MonoBehaviour, IInteractable
         {
             animator.SetBool("animate", true);
         }
-        this.cc_audioManager.PlaySoundEffect("coffeePour");
+        AudioManager.Instance.PlaySoundEffect("coffeePour");
 
         StartCoroutine(waitOutAnimationThenExitCoffeeCam(4.5f, newCoffee));
     }

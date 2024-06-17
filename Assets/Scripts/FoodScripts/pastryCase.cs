@@ -7,7 +7,6 @@ public class pastryCase : MonoBehaviour, IInteractable
     #region Cached components
     private CameraController cc_CameraController;
     private MainCharacter cc_mainCharacter;
-    private AudioManager cc_audioManager;
     #endregion
 
     private Camera m_oldCamera = null;
@@ -18,7 +17,6 @@ public class pastryCase : MonoBehaviour, IInteractable
     {
         this.cc_CameraController = GameObject.Find("CameraController").GetComponent<CameraController>();
         this.cc_mainCharacter = GameObject.Find("MainCharacter").GetComponent<MainCharacter>();
-        this.cc_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -43,7 +41,7 @@ public class pastryCase : MonoBehaviour, IInteractable
             GameObject foodItem = Utils.returnObjectMouseIsOn(LayerMask.GetMask("FoodItems"));
             if (foodItem)
             {
-                this.cc_audioManager.PlaySoundEffect("softBeep");
+                AudioManager.Instance.PlaySoundEffect("softBeep");
                 this.cc_mainCharacter.gameObject.SetActive(true);
 
                 Debug.LogFormat("Received food item {0} from pastry case", foodItem);
@@ -51,7 +49,7 @@ public class pastryCase : MonoBehaviour, IInteractable
                 this.m_CurrentlyInteracting = false;
                 closeCase();
             }
-            this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
+            AudioManager.Instance.PlaySoundEffect("errorNotInteractable");
         }
     }
 
