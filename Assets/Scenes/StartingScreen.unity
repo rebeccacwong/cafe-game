@@ -377,6 +377,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 14cbd136f742340318f71592270b6b91, type: 3}
   - name: bonus
     clip: {fileID: 8300000, guid: baba6afcb05dd4d4f9ddd9afe0a9ca43, type: 3}
+  - name: poof
+    clip: {fileID: 8300000, guid: f64c9eab08f5d4528a4043a88ac57e6e, type: 3}
+  - name: doorChime
+    clip: {fileID: 8300000, guid: 336818f52e21e4e18a91d076d3151eec, type: 3}
+  - name: disappearBad
+    clip: {fileID: 8300000, guid: 30ada7a1f2fba4113ad9080527f829e7, type: 3}
   musicGroup: {fileID: -713836182100951202, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
   foleyGroup: {fileID: -8639698593760501628, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
 --- !u!4 &98993625

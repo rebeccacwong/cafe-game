@@ -75,12 +75,12 @@ public class MainCharacter : CharacterBase
                         }
                     } else
                     {
-                        this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
+                        AudioManager.Instance.PlaySoundEffect("errorNotInteractable");
                         this.cc_UI.flashHintText(errorString);
                     }
                 } else
                 {
-                    this.cc_audioManager.PlaySoundEffect("errorNotInteractable");
+                    AudioManager.Instance.PlaySoundEffect("errorNotInteractable");
                 }
             }
         }

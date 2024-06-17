@@ -71,7 +71,9 @@ public class Menu : MonoBehaviour
     */
     public FoodItem returnRandomItemFromMenu()
     {
-        return m_foodItems[(int) invCdf.Evaluate(Random.value)].GetComponent<FoodItem>();
+        float rand = Random.value;
+        Debug.LogWarningFormat("Random float: {0}, evaluated: {1}, int: {2}", rand, invCdf.Evaluate(rand), (int)invCdf.Evaluate(rand));
+        return m_foodItems[(int) invCdf.Evaluate(rand)].GetComponent<FoodItem>();
     }
 
     // Returns a list of length n, containing n unique uniformly random items from the menu.

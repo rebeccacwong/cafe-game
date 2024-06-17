@@ -146,6 +146,9 @@ public class GameController : MonoBehaviour
         cc_spawnController.StartSpawningCustomers();
         this.m_timePaused = false;
         this.m_isCafeOpen = true;
+
+        Stats.clearStatsForDay();
+        cc_uiController.updateMoneyUI();
     }
 
     public void closeCafe()
@@ -164,7 +167,5 @@ public class GameController : MonoBehaviour
         cc_spawnController.RemoveAllCustomers();
 
         cc_uiController.showDayCompleteUI();
-
-        Stats.pushTodayMoneyMade(GameManager.Instance.getPlayerMoneyAmount());
     }
 }

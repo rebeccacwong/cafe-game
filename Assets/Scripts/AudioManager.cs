@@ -41,9 +41,31 @@ public class AudioManager : MonoBehaviour
     private bool m_isMusicPaused = false;
     #endregion
 
+    private static AudioManager _instance;
+    public static AudioManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("AudioManager is null!");
+            }
+            return _instance;
+        }
+    }
+
     #region Initialization
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            _instance = this;
+        }
+
         songs = new List<Sound>(); ;
         foreach (Sound s in musicTracks)
         {
@@ -53,7 +75,7 @@ public class AudioManager : MonoBehaviour
             songs.Add(s);
             //s.Source.loop = true;
         }
-        Debug.Log("playing " + songs[0].Name);
+        Debug.Log("Playing " + songs[0].Name + " upon initialization of AudioManager.");
         songs[0].Source.Play();
 
         soundEffects = new Dictionary<string, Sound>();
@@ -67,15 +89,6 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
     }
-    // void Start()
-    // {
-    //     Sound s = musicTracks[0];
-    //     s.Source = gameObject.AddComponent<AudioSource>();
-    //     s.Source.clip = s.Clip;
-    //     s.Source.outputAudioMixerGroup = musicGroup;
-    //     musicTracks[0].Source.loop = true;
-    //     musicTracks[0].Source.Play();
-    // }
     #endregion
 
     private void Update()
@@ -105,22 +118,6 @@ public class AudioManager : MonoBehaviour
     {
         songs[index % songs.Count].Source.Play();
     }
-
-    // public void StopTimeSong(int index) {
-    // 	if (index < 0 || index >= musicTracks.Length) {
-    // 		Debug.Log("Out of bounds: index of song should match time of day index.");
-    // 	} else {
-    // 		musicTracks[index].Source.Stop();
-    // 	}
-    // }
-
-    // public void PlayTimeSong(int index) {
-    // 	if (index < 0 || index >= musicTracks.Length) {
-    // 		Debug.Log("Out of bounds: index of song should match time of day index.");
-    // 	} else {
-    // 		musicTracks[index].Source.Play();
-    // 	}
-    // }
 
     public void PlaySoundEffect(string soundEffectName)
     {

@@ -88,11 +88,6 @@ public class SpawnController : MonoBehaviour
 	#endregion
 
 	#region Main Functions
-	// Start is called before the first frame update
-	void Start()
-	{
-	}
-
 	// Update is called once per frame
 	void Update()
 	{
@@ -208,6 +203,8 @@ public class SpawnController : MonoBehaviour
         //CustomerObj.destroyEvent.AddListener(RemoveCustomer);
         this.allCustomerObjs.Add(npc);
 		m_activeCustomers++;
+
+		AudioManager.Instance.PlaySoundEffect("doorChime");
 	}
 
 	public float calculateRealtimeAvgCustomerSatisfaction()

@@ -105,7 +105,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (this.timeUntilLeavingCafe <= 0 || doneOrdering())
         {
             Debug.LogWarningFormat("Customer {0:X} exited the cafe", gameObject.GetInstanceID());
-            this.exitCafe();
+            this.exitCafe(doneOrdering());
         }
 
         if (this.m_chairSeatedIn)
@@ -118,7 +118,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
                 }
                 else
                 {
-                    exitCafe();
+                    exitCafe(true);
                 }
             }
         } else {
@@ -196,6 +196,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (servedItem.itemName == this.foodItemOrdered.itemName)
         {
             GameManager.Instance.addToPlayerMoneyAmount(this.foodItemOrdered.itemPrice);
+            Stats.incrementTodayMoneyMade(this.foodItemOrdered.itemPrice);
+
             cc_uiController.clearChatBubble(gameObject.transform);
 
             if (this.foodItemOrdered.prepLocation == "coffeeMachine")
@@ -213,7 +215,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
                 this.timeUntilLeavingCafe += this.waitBetweenOrdersTimer;
 
                 this.foodItemConsuming = newFoodItem;
-                this.cc_audioManager.PlaySoundEffect("cashRegister");
+                AudioManager.Instance.PlaySoundEffect("cashRegister");
             }
 
             // can we change this to only show happy reaction if they're served fast enough?
@@ -243,7 +245,7 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Destroy(particleSim.gameObject, particleSim.main.duration + 1f);
             Debug.LogFormat("[Customer {0:X} {1}] Destroyed happy particle sim", gameObject.GetInstanceID(), gameObject);
 
-            this.cc_audioManager.PlaySoundEffect("bonus");
+            AudioManager.Instance.PlaySoundEffect("bonus");
         }
     }
 
@@ -274,14 +276,9 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         return (Time.realtimeSinceStartup - this.timeInstantiated);
     }
 
-    public bool shouldExitCafe()
+    public void exitCafe(bool doneOrderingBool)
     {
-        // TODO: implement
-        return false;
-    }
-
-    public void exitCafe()
-    {
+        // Remove traces of customer
         if (this.foodItemConsuming)
         {
             Destroy(this.foodItemConsuming.gameObject);
@@ -292,8 +289,12 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             this.m_chairSeatedIn.leaveChair(isSocial);
         }
 
+        this.cc_spawnController.RemoveCustomer(gameObject);
+
+        // Push customer stats
         this.pushCustomerStats();
 
+        // Start destroy explosion
         if (m_destroyExplosion)
         {
             ParticleSystem particleSim = Instantiate(this.m_destroyExplosion, transform.position, Quaternion.identity);
@@ -304,8 +305,18 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             Debug.LogFormat("[Customer {0:X} {1}] Destroyed smoke particle sim", gameObject.GetInstanceID(), gameObject);
         }
 
-        this.cc_spawnController.RemoveCustomer(gameObject);
+        // Play destroy sound effect
+        if (doneOrderingBool)
+        {
+            AudioManager.Instance.PlaySoundEffect("poof");
+        }
+        else
+        {
+            // play negative sound effect, since customer got impatient.
+            AudioManager.Instance.PlaySoundEffect("disappearBad");
+        }
 
+        // Finally, remove this instance.
         Destroy(this.gameObject);
     }
 

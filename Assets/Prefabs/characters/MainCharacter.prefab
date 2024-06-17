@@ -44,14 +44,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3982433152296299928}
   serializedVersion: 2
-  m_Mass: 20
-  m_Drag: 0
+  m_Mass: 50
+  m_Drag: 1
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  m_Constraints: 116
+  m_CollisionDetection: 1
 --- !u!65 &-2783149446773449119
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.36, y: 3.19, z: 1.97}
-  m_Center: {x: 1.18, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.64, z: 0}
 --- !u!114 &905775479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,8 +87,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3982433152296299928}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 69e8cbdf4bea04194b900444787fb076, type: 3}
-  m_Controller: {fileID: 9100000, guid: b2fdf103b020d4b4393001aca60d0ad0, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4d02e07d39c634f56a21e866fcc5ef94, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -110,12 +110,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.19
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.37
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.08997393
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.000000059604645
+      value: -1.13
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -149,6 +161,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 731256284166303632, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -6944168939871324987, guid: 58097482620f2498393018f4ee43fdb0, type: 3}
     - target: {fileID: 919132149155446097, guid: 5099b04d25a864b71abf3d04be236bc8, type: 3}
       propertyPath: m_Name
       value: panda rigged2

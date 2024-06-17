@@ -23,8 +23,8 @@ public class UI : MonoBehaviour
     private Slider satisfactionSlider;
     private Button startDayButton;
 
-    private static Color redColor = new Color(140, 43, 43);
-    private static Color greenColor = new Color(43, 113, 26);
+    private static Color redColor = new Color(0.547f, 0.167f, 0.167f);
+    private static Color greenColor = new Color(0.167f, 0.443f, 0.102f);
 
     public void Awake()
     {
@@ -159,7 +159,6 @@ public class UI : MonoBehaviour
         Debug.Assert(ordersCompleted != null);
         updateTextOnTMP(ordersCompleted, Stats.queryTodayItemsServed().ToString());
 
-
         Debug.LogWarning(Stats.queryTodayCustomerSatisfaction());
         StartCoroutine(customerSatisfactionHeartsAnimation(satisfactionSlide, Stats.queryTodayCustomerSatisfaction(), 2f));
     }
@@ -215,6 +214,10 @@ public class UI : MonoBehaviour
             updateTextColorOnTMP(profit, greenColor);
             updateTextOnTMP(profit, "$" + profitInt.ToString());
         }
+
+        Transform totalMoney = moneySlide.Find("TotalMoneyDynamic");
+        Debug.Assert(totalMoney != null);
+        updateTextOnTMP(totalMoney, "$" + GameManager.Instance.getPlayerMoneyAmount());
 
         Button nextButton = moneySlide.Find("NextButton").GetComponent<Button>();
         Debug.Assert(nextButton != null);

@@ -154,6 +154,11 @@ public static class Stats
         todayStats.setMoneyMade(Mathf.RoundToInt(money));
     }
 
+    public static void incrementTodayMoneyMade(float money)
+    {
+        todayStats.setMoneyMade(Mathf.RoundToInt(money) + todayStats.getMoneyMade());
+    }
+
     public static int queryTodayCustomersServed()
     {
         int customers = todayStats.getCustomersServed();
