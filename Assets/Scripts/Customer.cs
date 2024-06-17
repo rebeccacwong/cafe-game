@@ -309,11 +309,13 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
         if (doneOrderingBool)
         {
             AudioManager.Instance.PlaySoundEffect("poof");
+            Debug.LogFormat("Customer {0:X} {1} Exited the cafe after completing all orders they wanted.", gameObject.GetInstanceID(), gameObject);
         }
         else
         {
             // play negative sound effect, since customer got impatient.
             AudioManager.Instance.PlaySoundEffect("disappearBad");
+            Debug.LogFormat("Customer {0:X} {1} Exited the cafe because they ran out of patience.", gameObject.GetInstanceID(), gameObject);
         }
 
         // Finally, remove this instance.
@@ -365,8 +367,8 @@ public class Customer : CharacterBase, IDraggableObject, IInteractable
             return true;
         }
 
-        // order a new item with 50% probability
-        bool[] probabilityList = { true, false };
+        // order a new item with 66% probability
+        bool[] probabilityList = { true, true, false };
         return probabilityList[UnityEngine.Random.Range(0, probabilityList.Length)];
     }
 

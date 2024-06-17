@@ -358,31 +358,44 @@ MonoBehaviour:
   musicTracks:
   - name: honeyjam
     clip: {fileID: 8300000, guid: 2f17a578117ee4c578f95e12a381d55b, type: 3}
+    volume: 0
   - name: jasminetea
     clip: {fileID: 8300000, guid: c091ef62526d14142a7df81d69185093, type: 3}
+    volume: 0
   soundEffectSources:
   - name: errorNotInteractable
     clip: {fileID: 8300000, guid: 60637d462012148709b8bef034f61ff9, type: 3}
+    volume: 0.85
   - name: correctItem
     clip: {fileID: 8300000, guid: 4e6de0d3c0f0b4976b83a343f56d96c9, type: 3}
+    volume: 0.7
   - name: cashRegister
     clip: {fileID: 8300000, guid: 1737268ca45564707ad0cb280e81628a, type: 3}
+    volume: 0.85
   - name: softBeep
     clip: {fileID: 8300000, guid: a7b9d0f654eb0445cb99f0ebc26ea9b8, type: 3}
+    volume: 0.8
   - name: trash
     clip: {fileID: 8300000, guid: 0dc81565d2d414a4687feb91885e85ea, type: 3}
+    volume: 0.9
   - name: coffeePour
     clip: {fileID: 8300000, guid: f5a0f4b5874d9402080cf38c3c351ba5, type: 3}
+    volume: 1
   - name: dayEndMusic
     clip: {fileID: 8300000, guid: 14cbd136f742340318f71592270b6b91, type: 3}
+    volume: 0.7
   - name: bonus
     clip: {fileID: 8300000, guid: baba6afcb05dd4d4f9ddd9afe0a9ca43, type: 3}
+    volume: 0.8
   - name: poof
     clip: {fileID: 8300000, guid: f64c9eab08f5d4528a4043a88ac57e6e, type: 3}
+    volume: 1
   - name: doorChime
     clip: {fileID: 8300000, guid: 336818f52e21e4e18a91d076d3151eec, type: 3}
+    volume: 0.3
   - name: disappearBad
     clip: {fileID: 8300000, guid: 30ada7a1f2fba4113ad9080527f829e7, type: 3}
+    volume: 1
   musicGroup: {fileID: -713836182100951202, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
   foleyGroup: {fileID: -8639698593760501628, guid: ede792bd0f0e342d79f4e50ddcea8b85, type: 2}
 --- !u!4 &98993625

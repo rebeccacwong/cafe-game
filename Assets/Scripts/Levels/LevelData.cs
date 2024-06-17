@@ -19,7 +19,7 @@ public class LevelOne : Level
 {
     public void InitializeLevel()
     {
-        Customer.setCustomerWaitTime(3f * 60f);
+        Customer.setCustomerWaitTime(2.5f * 60f);
         SpawnController.minNumCustomers = 5;
         SpawnController.maxNumCustomers = 8;
         SpawnController.minSpawnInterval = 12f;
@@ -31,7 +31,7 @@ public class LevelTwo : Level
 {
     public void InitializeLevel()
     {
-        Customer.setCustomerWaitTime(2.5f * 60f);
+        Customer.setCustomerWaitTime(2f * 60f);
         SpawnController.minNumCustomers = 8;
         SpawnController.maxNumCustomers = 10;
         SpawnController.minSpawnInterval = 12f;
@@ -43,7 +43,7 @@ public class LevelThree : Level
 {
     public void InitializeLevel()
     {
-        Customer.setCustomerWaitTime(2f * 60f);
+        Customer.setCustomerWaitTime(1.5f * 60f);
         SpawnController.minNumCustomers = 12;
         SpawnController.maxNumCustomers = 15;
         SpawnController.minSpawnInterval = 10f;

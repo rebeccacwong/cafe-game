@@ -72,6 +72,7 @@ public class AudioManager : MonoBehaviour
             s.Source = gameObject.AddComponent<AudioSource>();
             s.Source.clip = s.Clip;
             s.Source.outputAudioMixerGroup = musicGroup;
+            s.Source.volume = s.Volume;
             songs.Add(s);
             //s.Source.loop = true;
         }
@@ -127,7 +128,9 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            soundEffects[soundEffectName].Source.Play();
+            Sound sound = soundEffects[soundEffectName];
+            Debug.LogWarningFormat("Playing {0} sound effect with volume {1}", soundEffectName, sound.Volume);
+            sound.Source.PlayOneShot(sound.Clip, sound.Volume);
         }
     }
 

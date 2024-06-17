@@ -113,10 +113,12 @@ public class MainCharacter : CharacterBase
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
+                Debug.LogWarning("Setting state to WALKING (0)");
                 this.setState(AnimationState.WALKING);
             }
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
             {
+                Debug.LogWarning("Setting state to IDLE (1)");
                 this.setState(AnimationState.IDLE);
             }
         }
@@ -179,6 +181,7 @@ public class MainCharacter : CharacterBase
     {
         Destroy(this.m_currentlyCarrying.gameObject);
         this.setState(AnimationState.EXIT_CARRYING_POSE);
+        Debug.LogWarning("Setting state to EXIT_CARRYING_POSE (4)");
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)

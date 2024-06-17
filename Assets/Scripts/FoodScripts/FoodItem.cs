@@ -33,7 +33,7 @@ public class FoodItem : MonoBehaviour
     [Tooltip("Categories indicating that this foodItem might be optimal special of the day")]
     public SpecialItemCategory[] itemCategories;
 
-    private float popularityIndex = 0.5f;
+    private float popularityIndex = 0.3f;
 
     private BoxCollider cc_boxCollider;
 
