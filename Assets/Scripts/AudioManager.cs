@@ -124,12 +124,11 @@ public class AudioManager : MonoBehaviour
     {
         if (!soundEffects.ContainsKey(soundEffectName))
         {
-            Debug.Log("Cant find the sound effect with that name");
+            Debug.Log("Cant find the sound effect with name " + soundEffectName);
         }
         else
         {
             Sound sound = soundEffects[soundEffectName];
-            Debug.LogWarningFormat("Playing {0} sound effect with volume {1}", soundEffectName, sound.Volume);
             sound.Source.PlayOneShot(sound.Clip, sound.Volume);
         }
     }
@@ -138,7 +137,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!soundEffects.ContainsKey(soundEffectName))
         {
-            Debug.Log("Cant find the sound effect with that name");
+            Debug.Log("Cant find the sound effect with name " + soundEffectName);
         }
         else
         {
@@ -162,7 +161,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!soundEffects.ContainsKey(soundEffectName))
         {
-            Debug.Log("Cant find the sound effect with that name");
+            Debug.Log("Cant find the sound effect with name " + soundEffectName);
         }
         else
         {
@@ -175,7 +174,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!soundEffects.ContainsKey(soundEffectName))
         {
-            Debug.Log("Cant find the sound effect with that name");
+            Debug.Log("Cant find the sound effect with name " + soundEffectName);
         }
         else
         {

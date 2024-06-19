@@ -113,12 +113,10 @@ public class MainCharacter : CharacterBase
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
-                Debug.LogWarning("Setting state to WALKING (0)");
                 this.setState(AnimationState.WALKING);
             }
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
             {
-                Debug.LogWarning("Setting state to IDLE (1)");
                 this.setState(AnimationState.IDLE);
             }
         }
@@ -133,15 +131,17 @@ public class MainCharacter : CharacterBase
     {
         GameObject prefabToClone = null;
 
-        Debug.LogWarning("Going to carry the item");
-
         // Map the pastry case item to the associated food item if necessary, otherwise just use the received one
         if (foodPrefab.GetComponent<pastryCaseItem>())
         {
             prefabToClone = foodPrefab.GetComponent<pastryCaseItem>().prefab;
-        } else {
+        }
+        else
+        {
             prefabToClone = foodPrefab;
         }
+
+        Debug.LogFormat("Going to carry the item {0}", prefabToClone);
 
         this.setState(AnimationState.CARRYING_POSE);
         GameObject newFoodItemObj = Instantiate(prefabToClone, gameObject.transform);
@@ -181,7 +181,6 @@ public class MainCharacter : CharacterBase
     {
         Destroy(this.m_currentlyCarrying.gameObject);
         this.setState(AnimationState.EXIT_CARRYING_POSE);
-        Debug.LogWarning("Setting state to EXIT_CARRYING_POSE (4)");
     }
 
     //protected void setNewTargetFromMousePosition(bool adjustForCollisions)
