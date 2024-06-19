@@ -34,14 +34,13 @@ public class FoodItem : MonoBehaviour
     public SpecialItemCategory[] itemCategories;
 
     private float startingPopularityIndex = 0.4f;
-    private float popularityIndex;
+    private float popularityIndex = 0.4f;
 
     private BoxCollider cc_boxCollider;
 
     private void Awake()
     {
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
-        this.popularityIndex = this.startingPopularityIndex;
     }
 
     public void setPrice(int price)
@@ -139,7 +138,10 @@ public class FoodItem : MonoBehaviour
 
     public float getPopularityIndex()
     {
-        Debug.LogWarningFormat("Popularity index of {0} is {1}", gameObject, popularityIndex);
+        if (popularityIndex == 0)
+        {
+            return startingPopularityIndex;
+        }
         return popularityIndex;
     }
 

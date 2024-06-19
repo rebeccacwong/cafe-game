@@ -368,31 +368,31 @@ MonoBehaviour:
     volume: 0.85
   - name: correctItem
     clip: {fileID: 8300000, guid: 4e6de0d3c0f0b4976b83a343f56d96c9, type: 3}
-    volume: 0.7
+    volume: 0.6
   - name: cashRegister
     clip: {fileID: 8300000, guid: 1737268ca45564707ad0cb280e81628a, type: 3}
     volume: 0.85
   - name: softBeep
     clip: {fileID: 8300000, guid: a7b9d0f654eb0445cb99f0ebc26ea9b8, type: 3}
-    volume: 0.8
+    volume: 0.5
   - name: trash
     clip: {fileID: 8300000, guid: 0dc81565d2d414a4687feb91885e85ea, type: 3}
     volume: 0.9
   - name: coffeePour
     clip: {fileID: 8300000, guid: f5a0f4b5874d9402080cf38c3c351ba5, type: 3}
-    volume: 1
+    volume: 0.95
   - name: dayEndMusic
     clip: {fileID: 8300000, guid: 14cbd136f742340318f71592270b6b91, type: 3}
     volume: 0.7
   - name: bonus
     clip: {fileID: 8300000, guid: baba6afcb05dd4d4f9ddd9afe0a9ca43, type: 3}
-    volume: 0.8
+    volume: 0.4
   - name: poof
     clip: {fileID: 8300000, guid: f64c9eab08f5d4528a4043a88ac57e6e, type: 3}
     volume: 1
   - name: doorChime
     clip: {fileID: 8300000, guid: 336818f52e21e4e18a91d076d3151eec, type: 3}
-    volume: 0.3
+    volume: 0.24
   - name: disappearBad
     clip: {fileID: 8300000, guid: 30ada7a1f2fba4113ad9080527f829e7, type: 3}
     volume: 1

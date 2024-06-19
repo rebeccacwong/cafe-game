@@ -197,6 +197,7 @@ public class UI : MonoBehaviour
         Transform costs = moneySlide.Find("CostDynamic");
         Debug.Assert(costs != null);
         updateTextOnTMP(costs, "$" + Stats.queryLostMoney().ToString());
+        GameManager.Instance.subtractFromPlayerMoneyAmount(Stats.queryLostMoney());
 
         Transform profit = moneySlide.Find("ProfitDynamic");
         Debug.Assert(profit != null);

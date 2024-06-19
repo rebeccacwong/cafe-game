@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     public void addToPlayerMoneyAmount(float toAdd)
     {
+        Debug.Assert(toAdd >= 0);
         m_playerMoney += toAdd;
         if (!_cc_UI)
         {
@@ -59,6 +60,19 @@ public class GameManager : MonoBehaviour
             Debug.Assert(_cc_UI != null);
         }
         Debug.LogFormat("Added {0} dollars to player money amount.", toAdd);
+        _cc_UI.updateMoneyUI();
+    }
+
+    public void subtractFromPlayerMoneyAmount(float toSubtract)
+    {
+        Debug.Assert(toSubtract >= 0);
+        m_playerMoney -= toSubtract;
+        if (!_cc_UI)
+        {
+            _cc_UI = GameObject.Find("Canvas").GetComponent<UI>();
+            Debug.Assert(_cc_UI != null);
+        }
+        Debug.LogFormat("Subtracted {0} dollars to player money amount.", toSubtract);
         _cc_UI.updateMoneyUI();
     }
 
