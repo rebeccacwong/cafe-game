@@ -73,7 +73,7 @@ public class Menu : MonoBehaviour
     {
         float rand = Random.value;
         Debug.LogWarningFormat("Random float: {0}, evaluated: {1}, int: {2}", rand, invCdf.Evaluate(rand), (int)invCdf.Evaluate(rand));
-        return m_foodItems[Mathf.RoundToInt(invCdf.Evaluate(rand))].GetComponent<FoodItem>();
+        return m_foodItems[Mathf.CeilToInt(invCdf.Evaluate(rand)) - 1].GetComponent<FoodItem>();
     }
 
     // Returns a list of length n, containing n unique uniformly random items from the menu.
@@ -87,7 +87,7 @@ public class Menu : MonoBehaviour
             int index = Random.Range(0, m_foodItems.Count);
             if (!indices.Contains(index))
             {
-                Debug.LogWarningFormat("Adding index {0}, which is {1}", index, m_foodItems[index].itemName);
+                Debug.LogFormat("Adding index {0}, which is {1}", index, m_foodItems[index].itemName);
                 indices.Add(index);
                 items.Add(m_foodItems[index]);
             }
@@ -116,7 +116,7 @@ public class Menu : MonoBehaviour
         {
             cumulativeSum += m_foodItems[i].getPopularityIndex();
             Debug.LogWarningFormat("Item {0}, cumulative sum {1}, sumOfPopularities {2}, cumulative prob {3}", m_foodItems[i].itemName, cumulativeSum, sumOfPopularities, cumulativeSum / sumOfPopularities);
-            invCdf.AddKey(cumulativeSum / sumOfPopularities, i);
+            invCdf.AddKey(cumulativeSum / sumOfPopularities, i + 1);
         }
     }
 

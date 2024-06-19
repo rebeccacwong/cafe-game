@@ -33,13 +33,15 @@ public class FoodItem : MonoBehaviour
     [Tooltip("Categories indicating that this foodItem might be optimal special of the day")]
     public SpecialItemCategory[] itemCategories;
 
-    private float popularityIndex = 0.3f;
+    private float startingPopularityIndex = 0.4f;
+    private float popularityIndex;
 
     private BoxCollider cc_boxCollider;
 
     private void Awake()
     {
         this.cc_boxCollider = gameObject.GetComponent<BoxCollider>();
+        this.popularityIndex = this.startingPopularityIndex;
     }
 
     public void setPrice(int price)
@@ -137,6 +139,7 @@ public class FoodItem : MonoBehaviour
 
     public float getPopularityIndex()
     {
+        Debug.LogWarningFormat("Popularity index of {0} is {1}", gameObject, popularityIndex);
         return popularityIndex;
     }
 
@@ -153,5 +156,10 @@ public class FoodItem : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void resetPopularity()
+    {
+        this.popularityIndex = this.startingPopularityIndex;
     }
 }

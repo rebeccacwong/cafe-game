@@ -57,6 +57,8 @@ public class SpecialsUI : MonoBehaviour
             GameObject foodDisplayOnWall = cc_cafeWall.transform.Find("FoodItem" + (i + 1)).gameObject;
             Debug.Assert(foodDisplayOnWall != null);
 
+            item.resetPopularity();
+
             foodDisplayOnWall.GetComponent<Image>().sprite = item.itemImage;
 
             Button btn = foodDisplayOnWall.GetComponent<Button>();
