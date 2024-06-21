@@ -108,6 +108,12 @@ public class FoodItem : MonoBehaviour
         {
             // because the coffee models have the animation pour, the center of the bounding box is not useful info for these
             pos.y += (this.getHeight() / 2) - offsetPosition.y;
+
+            if (Math.Abs(chairSeatedIn.facingDirection.z) == 1)
+            {
+                Debug.LogWarning("Rotating by 90 degrees");
+                newFoodItem.transform.Rotate(new Vector3(0, 90, 1), Space.World);
+            }
         }
         else
         {
@@ -116,12 +122,6 @@ public class FoodItem : MonoBehaviour
         
         Debug.LogFormat("FoodItem position relative to table parent is: {0}", pos);
         newFoodItem.transform.localPosition = pos;
-
-        // TODO: determine if this is needed. It may be needed for coffee items.
-        if (chairSeatedIn.facingDirection.z == 0)
-    {
-            newFoodItem.transform.Rotate(new Vector3(0, 90, 1), Space.World);
-        }
 
         return newFoodItem;
     }
